@@ -1,0 +1,25 @@
+@import "~bulma/sass/utilities/initial-variables";
+@import "~bulma/sass/utilities/functions";
+
+$blue: #009ec3;
+$primary: $blue;
+
+.mini-info {
+    i {
+        margin-left: 10px;
+    }
+}
+
+.section-small {
+    padding: 1.5rem 1.5rem;
+}
+
+.section-xsmall {
+    padding: 0.5rem 1.5rem;
+}
+
+@import "~bulma/bulma";
+
+$wi-path: "~weathericons/font";
+@import "~weathericons/sass/weather-icons";
+
