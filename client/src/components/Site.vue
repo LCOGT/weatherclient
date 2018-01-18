@@ -7,37 +7,37 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Air Temp</p>
-            <p class="title">24 <i class="wi wi-celsius"></i></p>
+            <p class="title">{{ airTemp | latestVal }} <sup><i class="wi wi-celsius"></i></sup></p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Pressure</p>
-            <p class="title">456 mmHg</p>
+            <p class="title">{{ pressure | latestVal }} <sup><small>mbar</small></sup></p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Humidity</p>
-            <p class="title">47%</p>
+            <p class="title">{{ humidity | latestVal }}<sup><small>%</small></sup></p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Wind</p>
-            <p class="title">1.3m/s N</p>
+            <p class="title">{{ windSpeed | latestVal }}<sup><small>m/s {{ windDirection | latestVal | cardinal }}</small></sup></p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Brigtness</p>
-            <p class="title">0 W/m2 </p>
+            <p class="title">{{ brightness | latestVal }} <sup><small>mag/arcs<sup>^</sup>2</small></sup> </p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Cloud</p>
-            <p class="title">Wet</p>
+            <p class="heading">Sky Temp</p>
+            <p class="title">{{ skyTemp | latestVal }} <sup><i class="wi wi-celsius"></i></sup></p>
           </div>
         </div>
       </nav>
@@ -53,7 +53,14 @@ export default {
   props: ['sitecode'],
   data(){
     return {
-      site: {}
+      site: {},
+      airTemp: [],
+      pressure: [],
+      humidity: [],
+      windSpeed: [],
+      windDirection: [],
+      brightness: [],
+      skyTemp: []
     };
   },
   watch: {
@@ -69,6 +76,44 @@ export default {
           break;
         }
       }
+      this.fetchDatum('Weather Air Temperature Value', (resp) => {
+        this.airTemp = resp;
+      });
+      this.fetchDatum('Weather Barometric Pressure Value', (resp) => {
+        this.pressure = resp;
+      });
+      this.fetchDatum('Weather Humidity Value', (resp) => {
+        this.humidity = resp;
+      });
+      this.fetchDatum('Weather Wind Speed Value', (resp) => {
+        this.windSpeed = resp;
+      });
+      this.fetchDatum('Weather Wind Direction Value', (resp) => {
+        this.windDirection = resp;
+      });
+      this.fetchDatum('Weather Sky Brightness Value', (resp) => {
+        this.brightness = resp;
+      });
+      this.fetchDatum('Boltwood Sky Minus Ambient Temperature', (resp) => {
+        this.skyTemp = resp;
+      });
+    },
+    fetchDatum(datumName, cb){
+      let request = new XMLHttpRequest();
+      request.open('GET', 'http://127.0.0.1:8080/query?site=' + this.site.code + '&datumname=' + datumName, true);
+      request.onload = () => {
+        if (request.status >=200 && request.status < 400) {
+          cb(JSON.parse(request.responseText));
+        } else {
+          console.log('error:' + request.responseText);
+        }
+      };
+
+      request.onerror = function() {
+        console.log('There was a connection error');
+      };
+
+      request.send();
     }
   },
   created(){
@@ -82,8 +127,20 @@ export default {
       return moment.utc((this.suntTimes.sunrise)).format('HH:mm');
     },
     sunset(){
-     return moment.utc((this.suntTimes.sunset)).format('HH:mm');
+      return moment.utc((this.suntTimes.sunset)).format('HH:mm');
     },
+  },
+  filters: {
+    latestVal(values){
+      if (values.length < 1) return 0;
+      let val = values[values.length - 1].Value;
+      return val.toFixed(2);
+    },
+    cardinal(val){
+      const num = Math.floor((val / 22.5) + 0.5);
+      const compass = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+      return compass[num % 16];
+    }
   }
 };
 </script>
