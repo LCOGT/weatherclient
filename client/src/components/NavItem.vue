@@ -25,8 +25,8 @@
                 &markers=size:mid%7Ccolor:0x009ec3%7Clabel:%7C${this.site.lat},${this.site.lng}`;
       },
       isNight(){
-        const times = suncalc.getTimes(moment.utc().valueOf(), this.site.lat, this.site.lng)
-        return moment.utc().isBefore(times.sunrise) || moment.utc().isAfter(times.sunset);
+        const position = suncalc.getPosition(moment.utc().valueOf(), this.site.lat, this.site.lng);
+        return position.altitude < 0;
       },
       offsetSign(){
         return this.site.tz >= 0 ? '+' : '';
