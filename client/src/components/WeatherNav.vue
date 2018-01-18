@@ -1,8 +1,5 @@
 <template>
 <aside class="menu">
-  <p class="menu-label">
-    All Sites
-  </p>
   <ul class="menu-list">
     <li v-for="site in sites">
       <router-link :to="`/${site.code}`" active-class="is-active">
