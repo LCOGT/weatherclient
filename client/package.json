@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "bulma": "^0.6.2",
+    "moment": "^2.20.1",
+    "suncalc": "^1.8.0",
     "vue": "^2.5.11",
     "vue-router": "^3.0.1",
     "weathericons": "^2.1.0"

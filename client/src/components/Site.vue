@@ -2,7 +2,7 @@
   <div class="site">
     <div class="site-header has-text-centered">
       <h2 class="is-size-2">{{ site.name }} ({{ site.code }})</h2>
-      <p class="subtitle"><i class="wi wi-sunrise"></i>06:21&nbsp;&nbsp; <i class="wi wi-sunset"></i>18:30</p>
+      <p class="subtitle"><i class="wi wi-sunrise"></i>{{ sunrise }}&nbsp;&nbsp; <i class="wi wi-sunset"></i>{{ sunset }}</p>
       <nav class="level">
         <div class="level-item has-text-centered">
           <div>
@@ -45,6 +45,8 @@
   </div>
 </template>
 <script>
+import suncalc from 'suncalc';
+import moment from 'moment';
 import {sites} from '../config';
 export default {
   name: 'Site',
@@ -71,6 +73,17 @@ export default {
   },
   created(){
     this.initialize();
+  },
+  computed:{
+    suntTimes(){
+      return suncalc.getTimes(moment.utc().valueOf(), this.site.lat, this.site.lng);
+    },
+    sunrise(){
+      return moment.utc((this.suntTimes.sunrise)).format('HH:mm');
+    },
+    sunset(){
+     return moment.utc((this.suntTimes.sunset)).format('HH:mm');
+    },
   }
 };
 </script>
