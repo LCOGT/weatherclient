@@ -6,38 +6,38 @@
       <nav class="level">
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Air Temp</p>
-            <p class="title">{{ airTemp | latestVal }} <sup><i class="wi wi-celsius"></i></sup></p>
+            <p class="heading">Air Temp &deg;C</i></p>
+            <p class="title">{{ airTemp | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Pressure</p>
-            <p class="title">{{ pressure | latestVal }} <sup><small>mbar</small></sup></p>
+            <p class="heading">Pressure mbar</p>
+            <p class="title">{{ pressure | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Humidity</p>
-            <p class="title">{{ humidity | latestVal }}<sup><small>%</small></sup></p>
+            <p class="heading">Humidity %</p>
+            <p class="title">{{ humidity | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Wind</p>
-            <p class="title">{{ windSpeed | latestVal }}<sup><small>m/s {{ windDirection | latestVal | cardinal }}</small></sup></p>
+            <p class="heading">Wind m/s</p>
+            <p class="title">{{ windSpeed | latestVal }} <small>{{ windDirection | latestVal | cardinal }}</small></p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Brigtness</p>
-            <p class="title">{{ brightness | latestVal }} <sup><small>mag/arcs<sup>^</sup>2</small></sup> </p>
+            <p class="heading">Brigtness mag/arcsec<sup>^</sup>2</p>
+            <p class="title">{{ brightness | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Sky Temp</p>
-            <p class="title">{{ skyTemp | latestVal }} <sup><i class="wi wi-celsius"></i></sup></p>
+            <p class="heading">Sky Temp &deg;C</p>
+            <p class="title">{{ skyTemp | latestVal }}</p>
           </div>
         </div>
       </nav>
