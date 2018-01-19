@@ -20,9 +20,7 @@
     props: ['site'],
     computed: {
       mapimg(){
-        return `https://maps.googleapis.com/maps/api/staticmap?center=${this.site.lat},${this.site.lng}
-                &zoom=2&scale=false&size=400x200&maptype=hybrid&format=png&visual_refresh=true
-                &markers=size:mid%7Ccolor:0x009ec3%7Clabel:%7C${this.site.lat},${this.site.lng}`;
+        return require(`../assets/maps/${this.site.code}.png`); // eslint-disable-line no-undef
       },
       isNight(){
         const position = suncalc.getPosition(moment.utc().valueOf(), this.site.lat, this.site.lng);
