@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "bulma": "^0.6.2",
+    "chart.js": "^2.7.1",
     "moment": "^2.20.1",
     "suncalc": "^1.8.0",
     "vue": "^2.5.11",

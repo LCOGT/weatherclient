@@ -42,15 +42,65 @@
         </div>
       </nav>
     </div>
+    <section class="section section-small has-text-centered">
+      <h4 class="is-size-4">Air Temperature</h4>
+      <figure class="image">
+          <TimeChart datumid="airtemp" datumname="Air Temperature" :cdata="airTemp"></TimeChart>
+      </figure>
+    </section>
+
+    <section class="section section-small has-text-centered">
+      <h4 class="is-size-4">Pressure</h4>
+      <figure class="image">
+          <TimeChart datumid="pressure" datumname="Weather Barometric Pressure Value" :cdata="pressure"></TimeChart>
+      </figure>
+    </section>
+
+    <section class="section section-small has-text-centered">
+      <h4 class="is-size-4">Humidity</h4>
+      <figure class="image">
+          <TimeChart datumid="humidity" datumname="Weather Humidity Value" :cdata="humidity"></TimeChart>
+      </figure>
+    </section>
+
+    <section class="section section-small has-text-centered">
+      <h4 class="is-size-4">Wind Speed</h4>
+      <figure class="image">
+          <TimeChart datumid="windspeed" datumname="Weather Wind Speed Value" :cdata="windSpeed"></TimeChart>
+      </figure>
+    </section>
+
+    <section class="section section-small has-text-centered">
+      <h4 class="is-size-4">Wind Direction</h4>
+      <figure class="image">
+          <TimeChart datumid="winddirection" datumname="Weather Wind Direction Value" :cdata="windDirection"></TimeChart>
+      </figure>
+    </section>
+
+    <section class="section section-small has-text-centered">
+      <h4 class="is-size-4">Brightness</h4>
+      <figure class="image">
+          <TimeChart datumid="brightness" datumname="Weather Sky Brightness Value" :cdata="brightness"></TimeChart>
+      </figure>
+    </section>
+
+    <section class="section section-small has-text-centered">
+      <h4 class="is-size-4">Sky Temp</h4>
+      <figure class="image">
+          <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" :cdata="skyTemp"></TimeChart>
+      </figure>
+    </section>
   </div>
 </template>
 <script>
 import suncalc from 'suncalc';
 import moment from 'moment';
 import {sites} from '../config';
+import TimeChart from './TimeChart';
 export default {
   name: 'Site',
   props: ['sitecode'],
+  components: {TimeChart},
   data(){
     return {
       site: {},

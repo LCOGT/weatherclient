@@ -4,6 +4,8 @@
 $blue: #009ec3;
 $primary: $blue;
 
+@import "~bulma/bulma";
+
 .mini-info {
     i {
         margin-left: 10px;
@@ -18,7 +20,6 @@ $primary: $blue;
     padding: 0.5rem 1.5rem;
 }
 
-@import "~bulma/bulma";
 
 $wi-path: "~weathericons/font";
 @import "~weathericons/sass/weather-icons";
