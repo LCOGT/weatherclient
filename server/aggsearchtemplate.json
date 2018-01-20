@@ -3,13 +3,25 @@
     "excludes": [],
     "includes": [
       "site",
-      "timestampmeasured",
-      "value_string",
-      "value_float"
+      "timestampmeasured"
     ]
   },
-  "from" : 0,
-  "size" : 10000,
+  "aggregations": {
+    "date(timestampmeasured,30m)": {
+      "aggregations": {
+        "avg(value_float)": {
+          "avg": {
+            "field": "value_float"
+          }
+        }
+      },
+      "date_histogram": {
+        "field": "timestampmeasured",
+        "format": "yyyy/MM/dd HH:mm:ss",
+        "interval": "30m"
+      }
+    }
+  },
   "query": {
     "bool": {
       "filter": {
@@ -43,5 +55,6 @@
         }
       }
     }
-  }
+  },
+  "size": 0
 }
