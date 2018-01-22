@@ -10,6 +10,13 @@
   },
   "from" : 0,
   "size" : 10000,
+  "sort": [
+    {
+      "timestampmeasured": {
+        "order": "asc"
+      }
+    }
+  ],
   "query": {
     "bool": {
       "filter": {

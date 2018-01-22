@@ -44,9 +44,9 @@ type EsAggResponse struct {
 }
 
 type Source struct {
-	TimeStampMeasured 	string 	`json:"timestampmeasured"`
-	ValueFloat 			float32 `json:"value_float"`
-	ValueString 		string 	`json:"value_string"`
+	TimeStampMeasured string  `json:"timestampmeasured"`
+	ValueFloat        float32 `json:"value_float"`
+	ValueString       string  `json:"value_string"`
 }
 
 type SubHit struct {
@@ -65,14 +65,14 @@ type EsResponse interface {
 	toDatums() []Datum
 }
 type Datum struct {
-	TimeStamp string
-	Value     float32
+	TimeStamp   string
+	Value       float32
 	ValueString string
 }
 
 func (esStdResponse *EsStdResponse) toDatums() []Datum {
 	var datums []Datum
-	for _, subhit := range esStdResponse.Hit.SubHits{
+	for _, subhit := range esStdResponse.Hit.SubHits {
 		datums = append(datums, Datum{subhit.Source.TimeStampMeasured, subhit.Source.ValueFloat, subhit.Source.ValueString})
 	}
 	return datums
@@ -95,7 +95,7 @@ func ParamsToEsQuery(site string, datumName string, start string, end string, ag
 	query := DatumQuery{site, datumName, start, end}
 
 	template_str := ""
-	if agg{
+	if agg {
 		template_str = "aggsearchtemplate.json"
 	} else {
 		template_str = "searchtemplate.json"
@@ -121,7 +121,7 @@ func EsSearch(SearchString []byte, agg bool) (EsResponse, error) {
 	// Golang doesn't like commas in keys
 	newbody := string(body)
 	replaced := strings.Replace(newbody, ",30m", "30m", -1)
-	if(agg){
+	if agg {
 		esr = new(EsAggResponse)
 	} else {
 		esr = new(EsStdResponse)
