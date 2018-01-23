@@ -163,7 +163,7 @@ export default {
     },
     fetchDatum(datumName, cb){
       let request = new XMLHttpRequest();
-      let url = 'http://127.0.0.1:8080/query?site=' + this.site.code + '&datumname=' + datumName;
+      let url = 'https://weather-api.lco.global/query?site=' + this.site.code + '&datumname=' + datumName;
       if(datumName === 'Weather Ok To Open'){
         url += '&agg=False';
       }
