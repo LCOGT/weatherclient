@@ -142,7 +142,7 @@ func Query(w http.ResponseWriter, r *http.Request) {
 	start := queryValues.Get("start")
 	if start == "" {
 		start_time := time.Now().UTC()
-		start_time = start_time.Add(-time.Duration(36000) * time.Second)
+		start_time = start_time.Add(-time.Duration(3600*24) * time.Second)
 		start = start_time.Format("2006-01-02T15:04:05Z")
 	}
 	log.Println(start)

@@ -43,6 +43,12 @@
       </nav>
     </div>
     <section class="section section-small has-text-centered">
+      <h4 class="is-size-4">OK to Open</h4>
+      <figure class="image">
+        <Timeline datumid="oktoopen" datumname="Weather Ok To Open" :cdata="okToOpen"></Timeline>
+      </figure>
+    </section>
+    <section class="section section-small has-text-centered">
       <h4 class="is-size-4">Air Temperature</h4>
       <figure class="image">
           <TimeChart datumid="airtemp" datumname="Air Temperature" :cdata="airTemp"></TimeChart>
@@ -97,10 +103,11 @@ import suncalc from 'suncalc';
 import moment from 'moment';
 import {sites} from '../config';
 import TimeChart from './TimeChart';
+import Timeline from './Timeline';
 export default {
   name: 'Site',
   props: ['sitecode'],
-  components: {TimeChart},
+  components: {TimeChart, Timeline},
   data(){
     return {
       site: {},
@@ -110,7 +117,8 @@ export default {
       windSpeed: [],
       windDirection: [],
       brightness: [],
-      skyTemp: []
+      skyTemp: [],
+      okToOpen: [],
     };
   },
   watch: {
@@ -147,10 +155,17 @@ export default {
       this.fetchDatum('Boltwood Sky Minus Ambient Temperature', (resp) => {
         this.skyTemp = resp;
       });
+      this.fetchDatum('Weather Ok To Open', (resp) => {
+        this.okToOpen = resp;
+      });
     },
     fetchDatum(datumName, cb){
       let request = new XMLHttpRequest();
-      request.open('GET', 'http://127.0.0.1:8080/query?site=' + this.site.code + '&datumname=' + datumName, true);
+      let url = 'http://127.0.0.1:8080/query?site=' + this.site.code + '&datumname=' + datumName;
+      if(datumName === 'Weather Ok To Open'){
+        url += '&agg=False';
+      }
+      request.open('GET', url, true);
       request.onload = () => {
         if (request.status >=200 && request.status < 400) {
           cb(JSON.parse(request.responseText));

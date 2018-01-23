@@ -45,6 +45,11 @@
               "term": {
                 "site": "{{.Site}}"
               }
+            },
+            {
+              "term": {
+                "datuminstance": "1"
+              }
             }
           ]
         }
