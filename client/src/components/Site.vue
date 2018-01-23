@@ -2,7 +2,13 @@
   <div class="site">
     <div class="site-header has-text-centered">
       <h2 class="is-size-2">{{ site.name }} ({{ site.code }})</h2>
-      <p class="subtitle"><i class="wi wi-sunrise"></i>{{ sunrise }}&nbsp;&nbsp; <i class="wi wi-sunset"></i>{{ sunset }}</p>
+      <p class="subtitle">
+        <span title="sunrise"><i class="wi wi-sunrise"></i>{{ sunrise }}&nbsp;&nbsp;</span>
+        <span title="sunset"><i class="wi wi-sunset"></i>{{ sunset }}</span>
+        <small>UTC</small>
+      </p>
+    </div>
+    <div>
       <p class="level-heading heading">Current Values</p>
       <nav class="level">
         <div class="level-item has-text-centered">
@@ -43,59 +49,59 @@
         </div>
       </nav>
     </div>
-    <section class="section section-small has-text-centered">
+    <section class="section section-small">
       <p class="heading">Last 24 Hours</p>
       <h4 class="is-size-4">OK to Open</h4>
       <figure class="image">
         <Timeline datumid="oktoopen" datumname="Weather Ok To Open" :cdata="okToOpen"></Timeline>
       </figure>
     </section>
-    <section class="section section-small has-text-centered">
+    <section class="section section-small ">
       <h4 class="is-size-4">Air Temperature</h4>
       <figure class="image">
-          <TimeChart datumid="airtemp" datumname="Air Temperature" :cdata="airTemp"></TimeChart>
+          <TimeChart datumid="airtemp" datumname="Air Temperature" :cdata="airTemp" unit="C"></TimeChart>
       </figure>
     </section>
 
-    <section class="section section-small has-text-centered">
+    <section class="section section-small ">
       <h4 class="is-size-4">Pressure</h4>
       <figure class="image">
-          <TimeChart datumid="pressure" datumname="Weather Barometric Pressure Value" :cdata="pressure"></TimeChart>
+          <TimeChart datumid="pressure" datumname="Weather Barometric Pressure Value" :cdata="pressure" unit="mbar"></TimeChart>
       </figure>
     </section>
 
-    <section class="section section-small has-text-centered">
+    <section class="section section-small ">
       <h4 class="is-size-4">Humidity</h4>
       <figure class="image">
-          <TimeChart datumid="humidity" datumname="Weather Humidity Value" :cdata="humidity"></TimeChart>
+          <TimeChart datumid="humidity" datumname="Weather Humidity Value" :cdata="humidity" unit="%"></TimeChart>
       </figure>
     </section>
 
-    <section class="section section-small has-text-centered">
+    <section class="section section-small ">
       <h4 class="is-size-4">Wind Speed</h4>
       <figure class="image">
-          <TimeChart datumid="windspeed" datumname="Weather Wind Speed Value" :cdata="windSpeed"></TimeChart>
+          <TimeChart datumid="windspeed" datumname="Weather Wind Speed Value" :cdata="windSpeed" unit="m/s"></TimeChart>
       </figure>
     </section>
 
-    <section class="section section-small has-text-centered">
+    <section class="section section-small ">
       <h4 class="is-size-4">Wind Direction</h4>
       <figure class="image">
-          <TimeChart datumid="winddirection" datumname="Weather Wind Direction Value" :cdata="windDirection"></TimeChart>
+          <TimeChart datumid="winddirection" datumname="Weather Wind Direction Value" :cdata="windDirection" unit="deg"></TimeChart>
       </figure>
     </section>
 
-    <section class="section section-small has-text-centered">
+    <section class="section section-small ">
       <h4 class="is-size-4">Brightness</h4>
       <figure class="image">
-          <TimeChart datumid="brightness" datumname="Weather Sky Brightness Value" :cdata="brightness"></TimeChart>
+          <TimeChart datumid="brightness" datumname="Weather Sky Brightness Value" :cdata="brightness" unit="mag/arcsec^2"></TimeChart>
       </figure>
     </section>
 
-    <section class="section section-small has-text-centered">
+    <section class="section section-small ">
       <h4 class="is-size-4">Sky Temp</h4>
       <figure class="image">
-          <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" :cdata="skyTemp"></TimeChart>
+          <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" :cdata="skyTemp" unit="C"></TimeChart>
       </figure>
     </section>
   </div>
@@ -211,8 +217,14 @@ export default {
   }
 };
 </script>
-<style>
-.level-heading {
-  padding: 0.5rem 1.5rem;
-}
+<style lang="scss">
+  .level-heading {
+    padding: 0.5rem 1.5rem;
+  }
+
+  .subtitle {
+    small {
+      font-size: 0.8rem;
+    }
+  }
 </style>

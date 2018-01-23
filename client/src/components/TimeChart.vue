@@ -6,7 +6,7 @@ import Chart from 'chart.js';
 import moment from 'moment';
 export default {
   name: 'Timechart',
-  props: ['cdata', 'datumid', 'datumname'],
+  props: ['cdata', 'datumid', 'datumname', 'unit'],
   computed: {
     chartData(){
       return this.cdata.map(point => ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'), y: point.Value}));
@@ -46,6 +46,12 @@ export default {
               }
             },
             type: 'time',
+          }],
+          yAxes: [{
+              scaleLabel :{
+                display: true,
+                labelString: that.unit
+              }
           }]
         }
       },

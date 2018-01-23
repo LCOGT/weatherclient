@@ -4,7 +4,9 @@
       <div class="container">
         <div class="columns">
           <div class="column is-one-quarter">
-            <WeatherNav/>
+            <div class="fixed">
+              <WeatherNav/>
+            </div>
           </div>
           <div class="column">
             <router-view/>
@@ -21,3 +23,11 @@
     components: {WeatherNav}
   };
 </script>
+<style lang="scss">
+  @media screen and (min-width: 1224px){
+  .fixed {
+      position: fixed;
+      width: 20rem;
+    }
+  }
+</style>
