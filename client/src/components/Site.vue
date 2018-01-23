@@ -3,6 +3,7 @@
     <div class="site-header has-text-centered">
       <h2 class="is-size-2">{{ site.name }} ({{ site.code }})</h2>
       <p class="subtitle"><i class="wi wi-sunrise"></i>{{ sunrise }}&nbsp;&nbsp; <i class="wi wi-sunset"></i>{{ sunset }}</p>
+      <p class="level-heading heading">Current Values</p>
       <nav class="level">
         <div class="level-item has-text-centered">
           <div>
@@ -43,6 +44,7 @@
       </nav>
     </div>
     <section class="section section-small has-text-centered">
+      <p class="heading">Last 24 Hours</p>
       <h4 class="is-size-4">OK to Open</h4>
       <figure class="image">
         <Timeline datumid="oktoopen" datumname="Weather Ok To Open" :cdata="okToOpen"></Timeline>
@@ -209,3 +211,8 @@ export default {
   }
 };
 </script>
+<style>
+.level-heading {
+  padding: 0.5rem 1.5rem;
+}
+</style>

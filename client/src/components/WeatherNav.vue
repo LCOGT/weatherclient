@@ -1,6 +1,15 @@
 <template>
 <aside class="menu">
   <ul class="menu-list">
+    <li>
+      <div class="navheader">
+        <div class="columns level mini-info">
+          <div class="column place is-two-thirds heading">Location</div>
+          <div class="column time is-one-fifth heading">UTC</div>
+          <div class="column mini-weather heading">Night</div>
+        </div>
+      </div>
+    </li>
     <li v-for="site in sites">
       <router-link :to="`/${site.code}`" active-class="is-active">
         <NavItem :site="site"/>
@@ -27,5 +36,8 @@
     .minimap {
       display: block;
   }
+}
+.navheader {
+  padding: 0.5em 0.75em;
 }
 </style>
