@@ -36,4 +36,7 @@
   .minimap {
     display: none;
   }
+  .mini-info {
+    margin-right: 0rem;
+  }
 </style>
