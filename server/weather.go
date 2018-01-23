@@ -184,6 +184,6 @@ func Query(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", Index)
 	http.HandleFunc("/query", Query)
-	log.Println("Starting server on http://127.0.0.1:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Println("Starting server on http://127.0.0.1:80")
+	log.Fatal(http.ListenAndServe(":80", nil))
 }
