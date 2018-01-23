@@ -4,7 +4,7 @@ MAINTAINER Austin Riba <ariba@lco.global>
 EXPOSE 80
 
 COPY . .
-RUN npm install && npm run build
+RUN npm install && npm run build && npm cache clean --force
 
 RUN mkdir /srv/weather && cp -r dist/ index.html index.js /srv/weather
 
