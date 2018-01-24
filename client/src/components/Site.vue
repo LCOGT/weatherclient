@@ -1,7 +1,7 @@
 <template>
   <div class="site">
     <div class="site-header has-text-centered">
-      <h2 class="is-size-2">{{ site.name }} ({{ site.code }})</h2>
+      <h2 class="is-size-2">{{ site.name }} ({{ site.code | uppercase }})</h2>
       <p class="subtitle">
         <span title="sunrise"><i class="wi wi-sunrise"></i>{{ sunrise }}&nbsp;&nbsp;</span>
         <span title="sunset"><i class="wi wi-sunset"></i>{{ sunset }}</span>
@@ -213,6 +213,9 @@ export default {
       const num = Math.floor((val / 22.5) + 0.5);
       const compass = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
       return compass[num % 16];
+    },
+    uppercase(str){
+      return str.toUpperCase();
     }
   }
 };
