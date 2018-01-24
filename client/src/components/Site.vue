@@ -37,7 +37,7 @@
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Brigtness mag/arcsec<sup>^</sup>2</p>
+            <p class="heading">Brightness mag/arcsec<sup>^</sup>2</p>
             <p class="title">{{ brightness | latestVal }}</p>
           </div>
         </div>
