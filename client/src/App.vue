@@ -27,7 +27,7 @@
   @media screen and (min-width: 1224px){
   .fixed {
       position: fixed;
-      width: 20rem;
+      width: 19rem;
     }
   }
 </style>
