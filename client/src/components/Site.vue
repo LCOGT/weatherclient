@@ -14,37 +14,37 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Air Temp &deg;C</i></p>
-            <p class="title">{{ airTemp | latestVal }}</p>
+            <p class="title">{{ datums['Weather Air Temperature Value'] | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Pressure mbar</p>
-            <p class="title">{{ pressure | latestVal }}</p>
+            <p class="title">{{ datums['Weather Barometric Pressure Value'] | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Humidity %</p>
-            <p class="title">{{ humidity | latestVal }}</p>
+            <p class="title">{{ datums['Weather Humidity Value'] | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Wind m/s</p>
-            <p class="title">{{ windSpeed | latestVal }} <small>{{ windDirection | latestVal | cardinal }}</small></p>
+            <p class="title">{{ datums['Weather Wind Speed Value'] | latestVal }} <small>{{ datums['Weather Wind Direction Value'] | latestVal | cardinal }}</small></p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Brightness mag/arcsec<sup>^</sup>2</p>
-            <p class="title">{{ brightness | latestVal }}</p>
+            <p class="title">{{ datums['Weather Sky Brightness Value'] | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Sky Temp &deg;C</p>
-            <p class="title">{{ skyTemp | latestVal }}</p>
+            <p class="title">{{ datums['Boltwood Sky Minus Ambient Temperature'] | latestVal }}</p>
           </div>
         </div>
       </nav>
@@ -53,55 +53,55 @@
       <p class="heading">Last {{ this.$store.state.range }}</p>
       <h4 class="is-size-4">OK to Open</h4>
       <figure class="image">
-        <Timeline datumid="oktoopen" datumname="Weather Ok To Open" :cdata="okToOpen"></Timeline>
+        <Timeline datumid="oktoopen" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open']"></Timeline>
       </figure>
     </section>
     <section class="section section-small ">
       <h4 class="is-size-4">Air Temperature</h4>
       <figure class="image">
-          <TimeChart datumid="airtemp" datumname="Air Temperature" :cdata="airTemp" unit="C"></TimeChart>
+          <TimeChart datumid="airtemp" datumname="Air Temperature" :cdata="datums['Weather Air Temperature Value']" unit="C"></TimeChart>
       </figure>
     </section>
 
     <section class="section section-small ">
       <h4 class="is-size-4">Pressure</h4>
       <figure class="image">
-          <TimeChart datumid="pressure" datumname="Weather Barometric Pressure Value" :cdata="pressure" unit="mbar"></TimeChart>
+          <TimeChart datumid="pressure" datumname="Weather Barometric Pressure Value" :cdata="datums['Weather Barometric Pressure Value']" unit="mbar"></TimeChart>
       </figure>
     </section>
 
     <section class="section section-small ">
       <h4 class="is-size-4">Humidity</h4>
       <figure class="image">
-          <TimeChart datumid="humidity" datumname="Weather Humidity Value" :cdata="humidity" unit="%"></TimeChart>
+          <TimeChart datumid="humidity" datumname="Weather Humidity Value" :cdata="datums['Weather Humidity Value']" unit="%"></TimeChart>
       </figure>
     </section>
 
     <section class="section section-small ">
       <h4 class="is-size-4">Wind Speed</h4>
       <figure class="image">
-          <TimeChart datumid="windspeed" datumname="Weather Wind Speed Value" :cdata="windSpeed" unit="m/s"></TimeChart>
+          <TimeChart datumid="windspeed" datumname="Weather Wind Speed Value" :cdata="datums['Weather Wind Speed Value']" unit="m/s"></TimeChart>
       </figure>
     </section>
 
     <section class="section section-small ">
       <h4 class="is-size-4">Wind Direction</h4>
       <figure class="image">
-          <TimeChart datumid="winddirection" datumname="Weather Wind Direction Value" :cdata="windDirection" unit="deg"></TimeChart>
+          <TimeChart datumid="winddirection" datumname="Weather Wind Direction Value" :cdata="datums['Weather Wind Direction Value']" unit="deg"></TimeChart>
       </figure>
     </section>
 
     <section class="section section-small ">
       <h4 class="is-size-4">Brightness</h4>
       <figure class="image">
-          <TimeChart datumid="brightness" datumname="Weather Sky Brightness Value" :cdata="brightness" unit="mag/arcsec^2"></TimeChart>
+          <TimeChart datumid="brightness" datumname="Weather Sky Brightness Value" :cdata="datums['Weather Sky Brightness Value']" unit="mag/arcsec^2"></TimeChart>
       </figure>
     </section>
 
     <section class="section section-small ">
       <h4 class="is-size-4">Sky Temp</h4>
       <figure class="image">
-          <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" :cdata="skyTemp" unit="C"></TimeChart>
+          <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" :cdata="datums['Boltwood Sky Minus Ambient Temperature']" unit="C"></TimeChart>
       </figure>
     </section>
   </div>
@@ -119,14 +119,16 @@ export default {
   data(){
     return {
       site: {},
-      airTemp: [],
-      pressure: [],
-      humidity: [],
-      windSpeed: [],
-      windDirection: [],
-      brightness: [],
-      skyTemp: [],
-      okToOpen: [],
+      datums: {
+        'Weather Air Temperature Value': [],
+        'Weather Barometric Pressure Value': [],
+        'Weather Humidity Value': [],
+        'Weather Wind Speed Value': [],
+        'Weather Wind Direction Value': [],
+        'Weather Sky Brightness Value': [],
+        'Boltwood Sky Minus Ambient Temperature': [],
+        'Weather Ok To Open': [],
+      }
     };
   },
   watch: {
@@ -151,29 +153,10 @@ export default {
       this.fetchDatums();
     },
     fetchDatums(){
-      this.fetchDatum('Weather Air Temperature Value', (resp) => {
-        this.airTemp = resp;
-      });
-      this.fetchDatum('Weather Barometric Pressure Value', (resp) => {
-        this.pressure = resp;
-      });
-      this.fetchDatum('Weather Humidity Value', (resp) => {
-        this.humidity = resp;
-      });
-      this.fetchDatum('Weather Wind Speed Value', (resp) => {
-        this.windSpeed = resp;
-      });
-      this.fetchDatum('Weather Wind Direction Value', (resp) => {
-        this.windDirection = resp;
-      });
-      this.fetchDatum('Weather Sky Brightness Value', (resp) => {
-        this.brightness = resp;
-      });
-      this.fetchDatum('Boltwood Sky Minus Ambient Temperature', (resp) => {
-        this.skyTemp = resp;
-      });
-      this.fetchDatum('Weather Ok To Open', (resp) => {
-        this.okToOpen = resp;
+      Object.keys(this.datums).forEach((key, index) => {
+        this.fetchDatum(key, (resp) => {
+          this.datums[key] = resp;
+        });
       });
     },
     fetchDatum(datumName, cb){
@@ -223,7 +206,7 @@ export default {
     latestVal(values){
       if (!values || values.length < 1) return 0;
       let val = values[values.length - 1].Value;
-      return val.toFixed(2);
+      return val.toFixed(1);
     },
     cardinal(val){
       const num = Math.floor((val / 22.5) + 0.5);
