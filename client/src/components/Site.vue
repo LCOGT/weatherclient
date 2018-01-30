@@ -50,7 +50,7 @@
       </nav>
     </div>
     <section class="section section-small">
-      <p class="heading">Last 24 Hours</p>
+      <p class="heading">Last {{ this.$store.state.range }}</p>
       <h4 class="is-size-4">OK to Open</h4>
       <figure class="image">
         <Timeline datumid="oktoopen" datumname="Weather Ok To Open" :cdata="okToOpen"></Timeline>
@@ -130,8 +130,14 @@ export default {
     };
   },
   watch: {
-    '$route' (){
+    '$route'(){
       this.initialize();
+    },
+    start(){
+      this.fetchDatums();
+    },
+    end(){
+      this.fetchDatums();
     }
   },
   methods:{
@@ -142,6 +148,9 @@ export default {
           break;
         }
       }
+      this.fetchDatums();
+    },
+    fetchDatums(){
       this.fetchDatum('Weather Air Temperature Value', (resp) => {
         this.airTemp = resp;
       });
@@ -173,6 +182,7 @@ export default {
       if(datumName === 'Weather Ok To Open'){
         url += '&agg=False';
       }
+      url += '&start=' + this.start + '&end=' + this.end;
       request.open('GET', url, true);
       request.onload = () => {
         if (request.status >=200 && request.status < 400) {
@@ -202,6 +212,12 @@ export default {
     sunset(){
       return moment.utc((this.suntTimes.sunset)).format('HH:mm');
     },
+    start(){
+      return this.$store.getters.startStr;
+    },
+    end(){
+      return this.$store.getters.endStr;
+    }
   },
   filters: {
     latestVal(values){

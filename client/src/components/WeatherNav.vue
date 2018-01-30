@@ -11,6 +11,18 @@
             <h2 class="is-size-3-desktop is-size-4-mobile">Weather</h2>
           </div>
         </div>
+        <div class="columns level">
+          <div class="column">
+            Time Range:
+            <select v-model="timeRange">
+              <option value="1:hours">1 Hour</option>
+              <option value="24:hours">24 Hours</option>
+              <option value="2:days">2 Days</option>
+              <option value="7:days">7 Days</option>
+              <option value="30:days">30 Days</option>
+            </select>
+          </div>
+        </div>
         <div class="columns level mini-info">
           <div class="column place is-two-thirds heading">Location</div>
           <div class="column time is-one-fifth heading">UTC</div>
@@ -27,6 +39,7 @@
 </aside>
 </template>
 <script>
+  import moment from 'moment';
   import {sites} from '../config.js';
   import NavItem from './NavItem';
   export default {
@@ -34,8 +47,26 @@
     components: {NavItem},
     data: function(){
       return {
-        sites: sites
+        sites: sites,
+        timeRange: '24:hours'
       };
+    },
+    computed:{
+      num(){
+        return Number(this.timeRange.split(':')[0])
+      },
+      unit(){
+        return this.timeRange.split(':')[1]
+      },
+      start(){
+        return moment.utc().subtract(this.num, this.unit);
+      }
+    },
+    watch:{
+      timeRange(){
+        this.$store.commit('setStart', this.start);
+        this.$store.commit('setRange', '' + this.num + ' ' + this.unit);
+      }
     }
   };
 </script>
