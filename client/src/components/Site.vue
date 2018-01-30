@@ -221,7 +221,7 @@ export default {
   },
   filters: {
     latestVal(values){
-      if (values.length < 1) return 0;
+      if (!values || values.length < 1) return 0;
       let val = values[values.length - 1].Value;
       return val.toFixed(2);
     },

@@ -9,6 +9,7 @@ export default {
   props: ['cdata', 'datumid', 'datumname', 'unit'],
   computed: {
     chartData(){
+      if(!this.cdata) return [];
       return this.cdata.map(point => ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'), y: point.Value}));
     }
   },

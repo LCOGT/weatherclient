@@ -32,6 +32,12 @@ export default {
         intervals.push([start, end])
       }
       return intervals
+    },
+    chartMin(){
+      return this.$store.getters.startStr;
+    },
+    chartMax(){
+      return this.$store.getters.endStr;
     }
   },
   watch: {
@@ -41,6 +47,10 @@ export default {
     },
     '$route' (){
       this.chart.update();
+    },
+    chartMin(){
+      this.chart.options.scales.xAxes[0].time.min = this.chartMin;
+      this.chart.options.scales.xAxes[0].time.max = this.chartMax;
     }
   },
   mounted(){
@@ -61,8 +71,8 @@ export default {
         scales: {
           xAxes:[{
             time: {
-              min: moment().subtract(24, 'hours').utc(),
-              max: moment().utc()
+              min: this.chartMin,
+              max: this.chartMax
             },
             ticks: {
               callback: function(value, index, values){
