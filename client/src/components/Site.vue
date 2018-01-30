@@ -49,57 +49,76 @@
         </div>
       </nav>
     </div>
+
     <section class="section section-small">
       <p class="heading">Last {{ this.$store.state.range }}</p>
-      <h4 class="is-size-4">OK to Open</h4>
+      <h4 class="is-size-4 helptoggle">OK to Open
+        <a class="helptoggle"><sup><small>?</small></sup></a><span class="help">If the weather subsystem at site considers the weather conditions sufficient for observing.</span>
+      </h4>
       <figure class="image">
         <Timeline datumid="oktoopen" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open']"></Timeline>
       </figure>
     </section>
+
     <section class="section section-small ">
-      <h4 class="is-size-4">Air Temperature</h4>
+      <h4 class="is-size-4">Air Temperature
+        <a class="helptoggle"><sup><small>?</small></sup></a><span class="help">Temperature of the air at the weather station.</span>
+      </h4>
       <figure class="image">
           <TimeChart datumid="airtemp" datumname="Air Temperature" :cdata="datums['Weather Air Temperature Value']" unit="C"></TimeChart>
       </figure>
     </section>
 
     <section class="section section-small ">
-      <h4 class="is-size-4">Pressure</h4>
+      <h4 class="is-size-4">Pressure
+        <a class="helptoggle"><sup><small>?</small></sup></a><span class="help">Barometric (atmospheric) pressure, is a measurement of the force per unit area exerted against a surface by the weight the atmosphere.</span>
+      </h4>
       <figure class="image">
           <TimeChart datumid="pressure" datumname="Weather Barometric Pressure Value" :cdata="datums['Weather Barometric Pressure Value']" unit="mbar"></TimeChart>
       </figure>
     </section>
 
     <section class="section section-small ">
-      <h4 class="is-size-4">Humidity</h4>
+      <h4 class="is-size-4">Humidity
+        <a class="helptoggle"><sup><small>?</small></sup></a><span class="help">Relative humidity is a percentage representation of the amount of moisture present in the air.</span>
+      </h4>
       <figure class="image">
           <TimeChart datumid="humidity" datumname="Weather Humidity Value" :cdata="datums['Weather Humidity Value']" unit="%"></TimeChart>
       </figure>
     </section>
 
     <section class="section section-small ">
-      <h4 class="is-size-4">Wind Speed</h4>
+      <h4 class="is-size-4">Wind Speed
+        <a class="helptoggle"><sup><small>?</small></sup></a><span class="help">The speed of wind in meteres per second.</span>
+      </h4>
       <figure class="image">
           <TimeChart datumid="windspeed" datumname="Weather Wind Speed Value" :cdata="datums['Weather Wind Speed Value']" unit="m/s"></TimeChart>
       </figure>
     </section>
 
     <section class="section section-small ">
-      <h4 class="is-size-4">Wind Direction</h4>
+      <h4 class="is-size-4">Wind Direction
+        <a class="helptoggle"><sup><small>?</small></sup></a><span class="help">The direction of the wind, in degrees from North.</span>
+      </h4>
       <figure class="image">
           <TimeChart datumid="winddirection" datumname="Weather Wind Direction Value" :cdata="datums['Weather Wind Direction Value']" unit="deg"></TimeChart>
       </figure>
     </section>
 
     <section class="section section-small ">
-      <h4 class="is-size-4">Brightness</h4>
+      <h4 class="is-size-4">Sky Brightness
+        <a class="helptoggle"><sup><small>?</small></sup></a><span class="help">As measured by the sky quality meter. Values increase as the sky gets darker.</span>
+
+      </h4>
       <figure class="image">
           <TimeChart datumid="brightness" datumname="Weather Sky Brightness Value" :cdata="datums['Weather Sky Brightness Value']" unit="mag/arcsec^2"></TimeChart>
       </figure>
     </section>
 
     <section class="section section-small ">
-      <h4 class="is-size-4">Sky Temp</h4>
+      <h4 class="is-size-4">Sky Temp
+        <a class="helptoggle"><sup><small>?</small></sup></a><span class="help">Higher temperatures generally indicate the presence of clouds.</span>
+      </h4>
       <figure class="image">
           <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" :cdata="datums['Boltwood Sky Minus Ambient Temperature']" unit="C"></TimeChart>
       </figure>
@@ -220,6 +239,13 @@ export default {
 };
 </script>
 <style lang="scss">
+  .help {
+    display: none;
+    margin-left: 20px;
+  }
+  .helptoggle:hover + .help {
+    display: inline;
+  }
   .level-heading {
     padding: 0.5rem 1.5rem;
   }
