@@ -15,7 +15,6 @@
           <div class="column">
             Time Range:
             <select v-model="timeRange">
-              <option value="1:hours">1 Hour</option>
               <option value="24:hours">24 Hours</option>
               <option value="2:days">2 Days</option>
               <option value="7:days">7 Days</option>
