@@ -11,6 +11,12 @@ export default {
     chartData(){
       if(!this.cdata) return [];
       return this.cdata.map(point => ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'), y: point.Value}));
+    },
+    chartMin(){
+      return this.$store.getters.startStr;
+    },
+    chartMax(){
+      return this.$store.getters.endStr;
     }
   },
   watch: {
@@ -20,6 +26,10 @@ export default {
     },
     '$route' (){
       this.chart.update();
+    },
+    chartMin(){
+      this.chart.options.scales.xAxes[0].time.min = this.chartMin;
+      this.chart.options.scales.xAxes[0].time.max = this.chartMax;
     }
   },
   mounted(){
@@ -40,6 +50,10 @@ export default {
         },
         scales: {
           xAxes: [{
+            time: {
+              min: this.chartMin,
+              max: this.chartMax
+            },
             ticks: {
               callback: function(value, index, values){
                 if (!values[index]) return;
@@ -49,10 +63,10 @@ export default {
             type: 'time',
           }],
           yAxes: [{
-              scaleLabel :{
-                display: true,
-                labelString: that.unit
-              }
+            scaleLabel :{
+              display: true,
+              labelString: that.unit
+            }
           }]
         }
       },

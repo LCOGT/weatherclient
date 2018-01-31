@@ -172,7 +172,7 @@ export default {
       this.fetchDatums();
     },
     fetchDatums(){
-      Object.keys(this.datums).forEach((key, index) => {
+      Object.keys(this.datums).forEach((key) => {
         this.fetchDatum(key, (resp) => {
           this.datums[key] = resp;
         });
