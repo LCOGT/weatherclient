@@ -18,7 +18,8 @@
       "date_histogram": {
         "field": "timestampmeasured",
         "format": "yyyy/MM/dd HH:mm:ss",
-        "interval": "30m"
+        "interval": "30m",
+        "min_doc_count": 1
       }
     }
   },
