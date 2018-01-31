@@ -27,6 +27,18 @@
     "bool": {
       "filter": {
         "bool": {
+          "must_not": [
+            {
+              "term": {
+                "value_string": "NaN"
+              }
+            },
+            {
+              "term": {
+                "value_string": ""
+              }
+            }
+          ],
           "must": [
             {
               "range": {
