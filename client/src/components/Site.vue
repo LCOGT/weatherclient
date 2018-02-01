@@ -92,7 +92,7 @@
 
     <section class="section section-small ">
       <h4 class="is-size-4">Wind Speed
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">The speed of wind in meteres per second.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">The speed of wind in meters per second.</span>
       </h4>
       <figure class="image">
           <TimeChart datumid="windspeed" datumname="Weather Wind Speed Value" :cdata="datums['Weather Wind Speed Value']" unit="m/s"></TimeChart>
