@@ -187,7 +187,7 @@ export default {
       if(datumName === 'Weather Ok To Open'){
         url += '&agg=False';
       }
-      url += '&start=' + this.start + '&end=' + this.end;
+      url += '&start=' + this.start.format() + '&end=' + this.end.format();
       request.open('GET', url, true);
       request.onload = () => {
         if (request.status >=200 && request.status < 400) {
@@ -218,10 +218,13 @@ export default {
       return moment.utc((this.suntTimes.sunset)).format('HH:mm');
     },
     start(){
-      return this.$store.getters.startStr;
+      // Make sure we get a little data leading up to the time range to avoid gaps
+      let start = this.$store.getters.start.clone();
+      start.subtract(moment.duration(3, 'hours'));
+      return start;
     },
     end(){
-      return this.$store.getters.endStr;
+      return this.$store.getters.end;
     }
   },
   filters: {

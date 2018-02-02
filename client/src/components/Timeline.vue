@@ -34,10 +34,10 @@ export default {
       return intervals
     },
     chartMin(){
-      return this.$store.getters.startStr;
+      return this.$store.getters.start;
     },
     chartMax(){
-      return this.$store.getters.endStr;
+      return this.$store.getters.end;
     }
   },
   watch: {

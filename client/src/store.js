@@ -11,11 +11,11 @@ export default new Vuex.Store({
     range: '24 hours'
   },
   getters: {
-    startStr: state => {
-      return state.start.format();
+    start: state => {
+      return state.start;
     },
-    endStr: state => {
-      return state.end.format();
+    end: state => {
+      return state.end;
     }
   },
   mutations:{

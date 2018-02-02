@@ -13,10 +13,10 @@ export default {
       return this.cdata.map(point => ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'), y: point.Value}));
     },
     chartMin(){
-      return this.$store.getters.startStr;
+      return this.$store.getters.start;
     },
     chartMax(){
-      return this.$store.getters.endStr;
+      return this.$store.getters.end;
     }
   },
   watch: {
