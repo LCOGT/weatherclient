@@ -101,7 +101,7 @@
 
     <section class="section section-small ">
       <h4 class="is-size-4">Wind Direction
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">The direction of the wind, in degrees from North.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">The direction of the wind, in degrees East of North.</span>
       </h4>
       <figure class="image">
           <TimeChart datumid="winddirection" datumname="Weather Wind Direction Value" :cdata="datums['Weather Wind Direction Value']" unit="deg"></TimeChart>
