@@ -4,10 +4,10 @@
       <h2 class="is-size-2">{{ site.name }} ({{ site.code | uppercase }})</h2>
       <p class="subtitle">
         <span class="heading">Elevation: {{ site.elevation }}m Location: {{ site.lat }}N {{ site.lng }}E</span>
-        <span title="sunset"><i class="wi wi-sunset"></i>{{ sunset }}</span>
+        <span title="sunset">Sunset: {{ sunset }}</span>
         <small>UTC</small>
         &nbsp;&nbsp;
-        <span title="sunrise"><i class="wi wi-sunrise"></i>{{ sunrise }}</span>
+        <span title="sunrise">Sunrise: {{ sunrise }}</span>
         <small>UTC</small>
       </p>
     </div>

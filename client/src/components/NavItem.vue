@@ -1,7 +1,10 @@
 <template>
 <div class="navitem">
   <div class="columns level mini-info">
-    <div class="column place is-two-thirds">{{site.name}} {{ site.country }}</div>
+    <div class="column place is-two-thirds">
+      {{site.name}} {{ site.country }}
+      <span v-if="site.code === 'tfn'">*</span>
+    </div>
     <div class="column time is-one-fifth">{{ offsetSign }}{{ site.tz }}</div>
     <div class="column mini-weather"><i :class="[isNight ? 'wi-night-clear' : 'wi-day-sunny', 'wi']"></i></div>
   </div>
