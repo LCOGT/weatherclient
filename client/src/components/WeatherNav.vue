@@ -35,7 +35,6 @@
       </router-link>
     </li>
   </ul>
-  <p><em><small>* Weather data from SONG site</small></em></p>
 </aside>
 </template>
 <script>

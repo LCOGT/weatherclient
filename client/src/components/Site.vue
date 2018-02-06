@@ -2,6 +2,7 @@
   <div class="site">
     <div class="site-header has-text-centered">
       <h2 class="is-size-2">{{ site.name }} ({{ site.code | uppercase }})</h2>
+      <h4 class="is-size-4" v-if="site.code === 'tfn'">Weather data from SONG site.</h4>
       <p class="subtitle">
         <span class="heading">Elevation: {{ site.elevation }}m Location: {{ site.lat }}N {{ site.lng }}E</span>
         <span title="sunset">Sunset: {{ sunset }}</span>
@@ -73,11 +74,11 @@
     </section>
 
     <section class="section section-small ">
-      <h4 class="is-size-4">Pressure
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Barometric (atmospheric) pressure, is a measurement of the force per unit area exerted against a surface by the weight the atmosphere.</span>
+      <h4 class="is-size-4">Sky - Ambient Temp
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Higher temperatures generally indicate the presence of clouds.</span>
       </h4>
       <figure class="image">
-          <TimeChart datumid="pressure" datumname="Weather Barometric Pressure Value" :cdata="datums['Weather Barometric Pressure Value']" unit="mbar"></TimeChart>
+          <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" :cdata="datums['Boltwood Sky Minus Ambient Temperature']" unit="C"></TimeChart>
       </figure>
     </section>
 
@@ -87,6 +88,15 @@
       </h4>
       <figure class="image">
           <TimeChart datumid="humidity" datumname="Weather Humidity Value" :cdata="datums['Weather Humidity Value']" unit="%"></TimeChart>
+      </figure>
+    </section>
+
+    <section class="section section-small ">
+      <h4 class="is-size-4">Pressure
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Barometric (atmospheric) pressure, is a measurement of the force per unit area exerted against a surface by the weight the atmosphere.</span>
+      </h4>
+      <figure class="image">
+          <TimeChart datumid="pressure" datumname="Weather Barometric Pressure Value" :cdata="datums['Weather Barometric Pressure Value']" unit="mbar"></TimeChart>
       </figure>
     </section>
 
@@ -118,12 +128,12 @@
       </figure>
     </section>
 
-    <section class="section section-small ">
-      <h4 class="is-size-4">Sky Temp
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Higher temperatures generally indicate the presence of clouds.</span>
+     <section class="section section-small ">
+      <h4 class="is-size-4">Transparency
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">The transparency of the sky.</span>
       </h4>
       <figure class="image">
-          <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" :cdata="datums['Boltwood Sky Minus Ambient Temperature']" unit="C"></TimeChart>
+          <TimeChart datumid="transparency" datumname="Boltwood Transparency Average" :cdata="datums['Boltwood Transparency Average']" unit="%"></TimeChart>
       </figure>
     </section>
   </div>
@@ -149,6 +159,7 @@ export default {
         'Weather Wind Direction Value': [],
         'Weather Sky Brightness Value': [],
         'Boltwood Sky Minus Ambient Temperature': [],
+        'Boltwood Transparency Average': [],
         'Weather Ok To Open': [],
       }
     };
