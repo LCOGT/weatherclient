@@ -54,7 +54,7 @@
       </nav>
     </div>
 
-    <section class="section section-small">
+    <section class="section section-xsmall">
       <p class="heading">Last {{ this.$store.state.range }}</p>
       <h4 class="is-size-4 helptoggle">OK to Open
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">If the weather subsystem at site considers the weather conditions sufficient for observing.</span>
@@ -64,7 +64,7 @@
       </figure>
     </section>
 
-    <section class="section section-small ">
+    <section class="section section-xsmall ">
       <h4 class="is-size-4">Air Temperature
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Temperature of the air at the weather station.</span>
       </h4>
@@ -73,7 +73,7 @@
       </figure>
     </section>
 
-    <section class="section section-small ">
+    <section class="section section-xsmall ">
       <h4 class="is-size-4">Sky - Ambient Temp
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Higher temperatures generally indicate the presence of clouds.</span>
       </h4>
@@ -82,7 +82,7 @@
       </figure>
     </section>
 
-    <section class="section section-small ">
+    <section class="section section-xsmall ">
       <h4 class="is-size-4">Humidity
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Relative humidity is a percentage representation of the amount of moisture present in the air.</span>
       </h4>
@@ -91,7 +91,7 @@
       </figure>
     </section>
 
-    <section class="section section-small ">
+    <section class="section section-xsmall ">
       <h4 class="is-size-4">Pressure
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Barometric (atmospheric) pressure, is a measurement of the force per unit area exerted against a surface by the weight the atmosphere.</span>
       </h4>
@@ -100,7 +100,7 @@
       </figure>
     </section>
 
-    <section class="section section-small ">
+    <section class="section section-xsmall ">
       <h4 class="is-size-4">Wind Speed
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">The speed of wind in meters per second.</span>
       </h4>
@@ -109,7 +109,7 @@
       </figure>
     </section>
 
-    <section class="section section-small ">
+    <section class="section section-xsmall ">
       <h4 class="is-size-4">Wind Direction
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">The direction of the wind, in degrees East of North.</span>
       </h4>
@@ -118,7 +118,7 @@
       </figure>
     </section>
 
-    <section class="section section-small ">
+    <section class="section section-xsmall ">
       <h4 class="is-size-4">Sky Brightness
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">As measured by the sky quality meter. Values increase as the sky gets darker.</span>
 
@@ -128,7 +128,7 @@
       </figure>
     </section>
 
-     <section class="section section-small ">
+     <section class="section section-xsmall ">
       <h4 class="is-size-4">Transparency
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">The transparency of the sky.</span>
       </h4>
