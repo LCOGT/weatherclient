@@ -5,10 +5,10 @@
       <h4 class="is-size-4" v-if="site.code === 'tfn'">Weather data from SONG site.</h4>
       <p class="subtitle">
         <span class="heading">Elevation: {{ site.elevation }}m Location: {{ site.lat }}N {{ site.lng }}E</span>
-        <span title="sunset">Sunset: {{ sunset }}</span>
+        <span title="sunset">sunset: {{ sunset }}</span>
         <small>UTC</small>
         &nbsp;&nbsp;
-        <span title="sunrise">Sunrise: {{ sunrise }}</span>
+        <span title="sunrise">sunrise: {{ sunrise }}</span>
         <small>UTC</small>
       </p>
     </div>
@@ -35,8 +35,8 @@
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Wind m/s</p>
-            <p class="title">{{ datums['Weather Wind Speed Value'] | latestVal }} <small>{{ datums['Weather Wind Direction Value'] | latestVal | cardinal }}</small></p>
+            <p class="heading">Wind meters per sec / &deg;E of N</p>
+            <p class="title">{{ datums['Weather Wind Speed Value'] | latestVal }} / <small>{{ datums['Weather Wind Direction Value'] | latestVal }}&deg;</small></p>
           </div>
         </div>
         <div class="level-item has-text-centered">
@@ -57,7 +57,7 @@
     <section class="section section-xsmall">
       <p class="heading">Last {{ this.$store.state.range }}</p>
       <h4 class="is-size-4 helptoggle">OK to Open
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">If the weather subsystem at site considers the weather conditions sufficient for observing.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">All weather conditions are within acceptable range to allow observing.</span>
       </h4>
       <figure class="image">
         <Timeline datumid="oktoopen" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open']"></Timeline>
@@ -66,7 +66,7 @@
 
     <section class="section section-xsmall ">
       <h4 class="is-size-4">Air Temperature
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Temperature of the air at the weather station.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right"> Ambient temperature measured by HMP45C-L temperature probe at the site's weather station.</span>
       </h4>
       <figure class="image">
           <TimeChart datumid="airtemp" datumname="Air Temperature" :cdata="datums['Weather Air Temperature Value']" unit="C"></TimeChart>
@@ -75,7 +75,7 @@
 
     <section class="section section-xsmall ">
       <h4 class="is-size-4">Sky - Ambient Temp
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Higher temperatures generally indicate the presence of clouds.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Temperature is inferred from 8-14µm irradiance measure by a Boltwood II cloud sensor at the site's weather station.</span>
       </h4>
       <figure class="image">
           <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" :cdata="datums['Boltwood Sky Minus Ambient Temperature']" unit="C"></TimeChart>
@@ -84,7 +84,7 @@
 
     <section class="section section-xsmall ">
       <h4 class="is-size-4">Humidity
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Relative humidity is a percentage representation of the amount of moisture present in the air.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Relative humidity measured by HMP45C-L humidity probe at the site's weather station.</span>
       </h4>
       <figure class="image">
           <TimeChart datumid="humidity" datumname="Weather Humidity Value" :cdata="datums['Weather Humidity Value']" unit="%"></TimeChart>
@@ -93,7 +93,7 @@
 
     <section class="section section-xsmall ">
       <h4 class="is-size-4">Pressure
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Barometric (atmospheric) pressure, is a measurement of the force per unit area exerted against a surface by the weight the atmosphere.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Barometric pressure measured by Vaisala PTB110 barometer at the site's weather station.</span>
       </h4>
       <figure class="image">
           <TimeChart datumid="pressure" datumname="Weather Barometric Pressure Value" :cdata="datums['Weather Barometric Pressure Value']" unit="mbar"></TimeChart>
@@ -102,7 +102,7 @@
 
     <section class="section section-xsmall ">
       <h4 class="is-size-4">Wind Speed
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">The speed of wind in meters per second.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Wind speed measured by Windsonic1-L wind sensor at the site's weather station.</span>
       </h4>
       <figure class="image">
           <TimeChart datumid="windspeed" datumname="Weather Wind Speed Value" :cdata="datums['Weather Wind Speed Value']" unit="m/s"></TimeChart>
@@ -111,7 +111,7 @@
 
     <section class="section section-xsmall ">
       <h4 class="is-size-4">Wind Direction
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">The direction of the wind, in degrees East of North.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Wind direction, in degrees East of North, measured by Windsonic1-L wind sensor at the site's weather station.</span>
       </h4>
       <figure class="image">
           <TimeChart datumid="winddirection" datumname="Weather Wind Direction Value" :cdata="datums['Weather Wind Direction Value']" unit="deg"></TimeChart>
@@ -120,7 +120,7 @@
 
     <section class="section section-xsmall ">
       <h4 class="is-size-4">Sky Brightness
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">As measured by the sky quality meter. Values increase as the sky gets darker.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky brightness, in magnitudes per square arcsecond, measured by Unihedron SQM-LE at the site's weather station.</span>
 
       </h4>
       <figure class="image">
