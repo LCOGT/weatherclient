@@ -3,14 +3,15 @@
 </template>
 <script>
 import Chart from 'chart.js';
+import 'chartjs-plugin-annotation';
 import moment from 'moment';
 export default {
   name: 'Timechart',
-  props: ['cdata', 'datumid', 'datumname', 'unit'],
+  props: ['cdata', 'datumid', 'datumname', 'unit', 'limit'],
   computed: {
     chartData(){
-      if(!this.cdata.data) return [];
-      return this.cdata.data.map(point => ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'), y: point.Value}));
+      if(!this.cdata) return [];
+      return this.cdata.map(point => ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'), y: point.Value}));
     },
     chartMin(){
       return this.$store.getters.start;
@@ -20,7 +21,7 @@ export default {
     }
   },
   watch: {
-    'cdata.data' (){
+    cdata (){
       this.chart.data.datasets[0].data = this.chartData;
       this.chart.update();
     },
@@ -45,6 +46,15 @@ export default {
         }]
       },
       options: {
+        annotation:{
+          annotations:[{
+            type: 'line',
+            mode: 'horizontal',
+            scaleID: 'y-axis-0',
+            value: this.limit,
+            borderColor: 'red'
+          }]
+        },
         legend: {
           display: false
         },

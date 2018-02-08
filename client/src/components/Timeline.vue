@@ -10,11 +10,11 @@ export default {
   props: ['cdata', 'datumid', 'datumname'],
   computed: {
     chartData(){
-      const open = this.cdata.data.filter(item => item.ValueString === 'true').map(
-          point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
+      const open = this.cdata.filter(item => item.ValueString === 'true').map(
+        point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
       );
-      const closed = this.cdata.data.filter(item => item.ValueString === 'false').map(
-          point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
+      const closed = this.cdata.filter(item => item.ValueString === 'false').map(
+        point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
       );
       let intervals = [];
       for (let i = 0; i < open.length; i++) {
@@ -29,9 +29,9 @@ export default {
         if(!end){
           end = moment.utc();
         }
-        intervals.push([start, end])
+        intervals.push([start, end]);
       }
-      return intervals
+      return intervals;
     },
     chartMin(){
       return this.$store.getters.start;
@@ -41,7 +41,7 @@ export default {
     }
   },
   watch: {
-    'cdata.data': function(){
+    cdata: function(){
       this.chart.data.datasets[0].data = this.chartData;
       this.chart.update();
     },

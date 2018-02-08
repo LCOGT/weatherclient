@@ -12,6 +12,7 @@
   "dependencies": {
     "bulma": "^0.6.2",
     "chart.js": "^2.7.1",
+    "chartjs-plugin-annotation": "^0.5.7",
     "moment": "^2.20.1",
     "serve-static": "^1.13.1",
     "suncalc": "^1.8.0",

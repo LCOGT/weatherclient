@@ -60,7 +60,7 @@
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">All weather conditions are within acceptable range to allow observing.</span>
       </h4>
       <figure class="image">
-        <Timeline datumid="oktoopen" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open']"></Timeline>
+        <Timeline datumid="oktoopen" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data"></Timeline>
       </figure>
     </section>
 
@@ -69,7 +69,10 @@
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right"> Ambient temperature measured by HMP45C-L temperature probe at the site's weather station.</span>
       </h4>
       <figure class="image">
-          <TimeChart datumid="airtemp" datumname="Air Temperature" :cdata="datums['Weather Air Temperature Value']" unit="C"></TimeChart>
+          <TimeChart datumid="airtemp" datumname="Air Temperature" unit="C"
+                     :cdata="datums['Weather Air Temperature Value'].data"
+                     :limit="limit('Weather Air Temperature Value')">
+           </TimeChart>
       </figure>
     </section>
 
@@ -78,7 +81,10 @@
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Temperature is inferred from 8-14µm irradiance measure by a Boltwood II cloud sensor at the site's weather station.</span>
       </h4>
       <figure class="image">
-          <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" :cdata="datums['Boltwood Sky Minus Ambient Temperature']" unit="C"></TimeChart>
+          <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" unit="C"
+                    :cdata="datums['Boltwood Sky Minus Ambient Temperature'].data"
+                    :limit="limit('Boltwood Sky Minus Ambient Temperature')">
+          </TimeChart>
       </figure>
     </section>
 
@@ -87,7 +93,10 @@
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Relative humidity measured by HMP45C-L humidity probe at the site's weather station.</span>
       </h4>
       <figure class="image">
-          <TimeChart datumid="humidity" datumname="Weather Humidity Value" :cdata="datums['Weather Humidity Value']" unit="%"></TimeChart>
+          <TimeChart datumid="humidity" datumname="Weather Humidity Value" unit="%"
+                     :cdata="datums['Weather Humidity Value'].data"
+                     :limit="limit('Weather Humidity Value')">
+          </TimeChart>
       </figure>
     </section>
 
@@ -96,7 +105,10 @@
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Barometric pressure measured by Vaisala PTB110 barometer at the site's weather station.</span>
       </h4>
       <figure class="image">
-          <TimeChart datumid="pressure" datumname="Weather Barometric Pressure Value" :cdata="datums['Weather Barometric Pressure Value']" unit="mbar"></TimeChart>
+          <TimeChart datumid="pressure" datumname="Weather Barometric Pressure Value" unit="mbar"
+                     :cdata="datums['Weather Barometric Pressure Value'].data"
+                     :limit="limit('Weather Barometric Pressure Value')">
+          </TimeChart>
       </figure>
     </section>
 
@@ -105,7 +117,10 @@
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Wind speed measured by Windsonic1-L wind sensor at the site's weather station.</span>
       </h4>
       <figure class="image">
-          <TimeChart datumid="windspeed" datumname="Weather Wind Speed Value" :cdata="datums['Weather Wind Speed Value']" unit="m/s"></TimeChart>
+          <TimeChart datumid="windspeed" datumname="Weather Wind Speed Value" unit="m/s"
+                     :cdata="datums['Weather Wind Speed Value'].data"
+                     :limit="limit('Weather Wind Speed Value')">
+          </TimeChart>
       </figure>
     </section>
 
@@ -114,7 +129,10 @@
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Wind direction, in degrees East of North, measured by Windsonic1-L wind sensor at the site's weather station.</span>
       </h4>
       <figure class="image">
-          <TimeChart datumid="winddirection" datumname="Weather Wind Direction Value" :cdata="datums['Weather Wind Direction Value']" unit="deg"></TimeChart>
+          <TimeChart datumid="winddirection" datumname="Weather Wind Direction Value" unit="deg"
+                     :cdata="datums['Weather Wind Direction Value'].data"
+                     :limit="limit('Weather Wind Direction Value')">
+          </TimeChart>
       </figure>
     </section>
 
@@ -124,7 +142,10 @@
 
       </h4>
       <figure class="image">
-          <TimeChart datumid="brightness" datumname="Weather Sky Brightness Value" :cdata="datums['Weather Sky Brightness Value']" unit="mag/arcsec^2"></TimeChart>
+          <TimeChart datumid="brightness" datumname="Weather Sky Brightness Value" unit="mag/arcsec^2"
+                     :cdata="datums['Weather Sky Brightness Value'].data"
+                     :limit="limit('Weather Sky Brightness Value')">
+          </TimeChart>
       </figure>
     </section>
 
@@ -133,7 +154,10 @@
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">The transparency of the sky.</span>
       </h4>
       <figure class="image">
-          <TimeChart datumid="transparency" datumname="Boltwood Transparency Average" :cdata="datums['Boltwood Transparency Average']" unit="%"></TimeChart>
+          <TimeChart datumid="transparency" datumname="Boltwood Transparency Average" unit="%"
+                     :cdata="datums['Boltwood Transparency Average'].data"
+                     :limit="limit('Boltwood Transparency Average')">
+          </TimeChart>
       </figure>
     </section>
   </div>
@@ -264,6 +288,13 @@ export default {
       };
 
       request.send();
+    },
+    limit(datumName){
+      if(this.datums[datumName].limit.hasOwnProperty(this.site.code)){
+        return this.datums[datumName].limit[this.site.code];
+      }else{
+        return this.datums[datumName].default;
+      }
     }
   },
   created(){
@@ -287,13 +318,6 @@ export default {
     },
     end(){
       return this.$store.getters.end;
-    },
-    limit(datum){
-      if(this.datums[datum].limit.hasOwnProperty(this.site.code)){
-        return this.datums[datum].limit[this.site.code];
-      }else{
-        return this.datums[datum].default;
-      }
     }
   },
   filters: {
