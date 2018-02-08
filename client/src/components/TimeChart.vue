@@ -9,8 +9,8 @@ export default {
   props: ['cdata', 'datumid', 'datumname', 'unit'],
   computed: {
     chartData(){
-      if(!this.cdata) return [];
-      return this.cdata.map(point => ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'), y: point.Value}));
+      if(!this.cdata.data) return [];
+      return this.cdata.data.map(point => ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'), y: point.Value}));
     },
     chartMin(){
       return this.$store.getters.start;
@@ -20,7 +20,7 @@ export default {
     }
   },
   watch: {
-    cdata(){
+    'cdata.data' (){
       this.chart.data.datasets[0].data = this.chartData;
       this.chart.update();
     },

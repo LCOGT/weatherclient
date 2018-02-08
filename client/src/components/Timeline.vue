@@ -10,10 +10,10 @@ export default {
   props: ['cdata', 'datumid', 'datumname'],
   computed: {
     chartData(){
-      const open = this.cdata.filter(item => item.ValueString === 'true').map(
+      const open = this.cdata.data.filter(item => item.ValueString === 'true').map(
           point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
       );
-      const closed = this.cdata.filter(item => item.ValueString === 'false').map(
+      const closed = this.cdata.data.filter(item => item.ValueString === 'false').map(
           point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
       );
       let intervals = [];
@@ -41,7 +41,7 @@ export default {
     }
   },
   watch: {
-    cdata(){
+    'cdata.data': function(){
       this.chart.data.datasets[0].data = this.chartData;
       this.chart.update();
     },

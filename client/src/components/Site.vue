@@ -18,37 +18,37 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Air Temp &deg;C</i></p>
-            <p class="title">{{ datums['Weather Air Temperature Value'] | latestVal }}</p>
+            <p class="title">{{ datums['Weather Air Temperature Value'].data | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Pressure mbar</p>
-            <p class="title">{{ datums['Weather Barometric Pressure Value'] | latestVal }}</p>
+            <p class="title">{{ datums['Weather Barometric Pressure Value'].data | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Humidity %</p>
-            <p class="title">{{ datums['Weather Humidity Value'] | latestVal }}</p>
+            <p class="title">{{ datums['Weather Humidity Value'].data | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Wind meters per sec / &deg;E of N</p>
-            <p class="title">{{ datums['Weather Wind Speed Value'] | latestVal }} / <small>{{ datums['Weather Wind Direction Value'] | latestVal }}&deg;</small></p>
+            <p class="title">{{ datums['Weather Wind Speed Value'].data | latestVal }} / <small>{{ datums['Weather Wind Direction Value'].data | latestVal }}&deg;</small></p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Brightness mag/arcsec<sup>^</sup>2</p>
-            <p class="title">{{ datums['Weather Sky Brightness Value'] | latestVal }}</p>
+            <p class="title">{{ datums['Weather Sky Brightness Value'].data | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Sky Temp &deg;C</p>
-            <p class="title">{{ datums['Boltwood Sky Minus Ambient Temperature'] | latestVal }}</p>
+            <p class="title">{{ datums['Boltwood Sky Minus Ambient Temperature'].data | latestVal }}</p>
           </div>
         </div>
       </nav>
@@ -152,15 +152,66 @@ export default {
     return {
       site: {},
       datums: {
-        'Weather Air Temperature Value': [],
-        'Weather Barometric Pressure Value': [],
-        'Weather Humidity Value': [],
-        'Weather Wind Speed Value': [],
-        'Weather Wind Direction Value': [],
-        'Weather Sky Brightness Value': [],
-        'Boltwood Sky Minus Ambient Temperature': [],
-        'Boltwood Transparency Average': [],
-        'Weather Ok To Open': [],
+        'Weather Air Temperature Value': {
+          data: [],
+          limit: {
+            default: -20,
+            coj: -4,
+            ogg: 0
+          }
+        },
+        'Weather Barometric Pressure Value': {
+          data: [],
+          limit: {
+            default: null
+          }
+        },
+        'Weather Humidity Value': {
+          data: [],
+          limit: {
+            default: 92.5,
+            coj: 85,
+            tfn: 75,
+            ogg: 85
+          }
+        },
+        'Weather Wind Speed Value': {
+          data: [],
+          limit: {
+            default: 15,
+            ogg: 17
+          }
+        },
+        'Weather Wind Direction Value': {
+          data: [],
+          limit: {
+            default: null
+          }
+        },
+        'Weather Sky Brightness Value': {
+          data: [],
+          limit: {
+            default: null
+          }
+        },
+        'Boltwood Sky Minus Ambient Temperature': {
+          data: [],
+          limit: {
+            default: 30
+          }
+        },
+        'Boltwood Transparency Average': {
+          data: [],
+          limit: {
+            default: null
+          }
+        },
+        'Weather Ok To Open': {
+          data: [],
+          limit: {
+            default: null
+          }
+        }
       }
     };
   },
@@ -188,7 +239,7 @@ export default {
     fetchDatums(){
       Object.keys(this.datums).forEach((key) => {
         this.fetchDatum(key, (resp) => {
-          this.datums[key] = resp;
+          this.datums[key]['data'] = resp;
         });
       });
     },
@@ -236,6 +287,13 @@ export default {
     },
     end(){
       return this.$store.getters.end;
+    },
+    limit(datum){
+      if(this.datums[datum].limit.hasOwnProperty(this.site.code)){
+        return this.datums[datum].limit[this.site.code];
+      }else{
+        return this.datums[datum].default;
+      }
     }
   },
   filters: {
