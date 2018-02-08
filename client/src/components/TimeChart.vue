@@ -18,6 +18,9 @@ export default {
     },
     chartMax(){
       return this.$store.getters.end;
+    },
+    scaleMax(){
+      return this.unit === 'deg' ? 360 : undefined;
     }
   },
   watch: {
@@ -76,6 +79,9 @@ export default {
             scaleLabel :{
               display: true,
               labelString: that.unit
+            },
+            ticks:{
+              max: this.scaleMax
             }
           }]
         }
