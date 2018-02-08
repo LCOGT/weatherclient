@@ -221,13 +221,13 @@ export default {
         'Boltwood Sky Minus Ambient Temperature': {
           data: [],
           limit: {
-            default: 30
+            default: null
           }
         },
         'Boltwood Transparency Average': {
           data: [],
           limit: {
-            default: null
+            default: 25
           }
         },
         'Weather Ok To Open': {

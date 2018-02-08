@@ -20,7 +20,14 @@ export default {
       return this.$store.getters.end;
     },
     scaleMax(){
-      return this.unit === 'deg' ? 360 : undefined;
+      switch(this.unit){
+      case 'deg':
+        return 360;
+      case '%':
+        return 100;
+      default:
+        return undefined;
+      }
     }
   },
   watch: {
