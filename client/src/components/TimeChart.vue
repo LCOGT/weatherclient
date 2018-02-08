@@ -34,6 +34,9 @@ export default {
     chartMin(){
       this.chart.options.scales.xAxes[0].time.min = this.chartMin;
       this.chart.options.scales.xAxes[0].time.max = this.chartMax;
+    },
+    limit(){
+      this.chart.options.annotation.annotations[0].value = this.limit;
     }
   },
   mounted(){

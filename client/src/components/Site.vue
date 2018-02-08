@@ -293,7 +293,7 @@ export default {
       if(this.datums[datumName].limit.hasOwnProperty(this.site.code)){
         return this.datums[datumName].limit[this.site.code];
       }else{
-        return this.datums[datumName].default;
+        return this.datums[datumName].limit.default;
       }
     }
   },
