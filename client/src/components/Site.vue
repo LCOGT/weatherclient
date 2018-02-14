@@ -4,7 +4,10 @@
       <h2 class="is-size-2">{{ site.name }} ({{ site.code | uppercase }})</h2>
       <h4 class="is-size-4" v-if="site.code === 'tfn'">Weather data from SONG site.</h4>
       <p class="subtitle">
-        <span class="heading">Elevation: {{ site.elevation }}m Location: {{ site.lat }}N {{ site.lng }}E</span>
+        <span class="heading">
+          Elevation: {{ site.elevation }}m
+          Location: {{ site.lat | ns}} {{ site.lng | ew }}
+        </span>
         <span title="sunset">sunset: {{ sunset }}</span>
         <small>UTC</small>
         &nbsp;&nbsp;
@@ -35,8 +38,14 @@
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Wind meters per sec / &deg;E of N</p>
-            <p class="title">{{ datums['Weather Wind Speed Value'].data | latestVal }} / <small>{{ datums['Weather Wind Direction Value'].data | latestVal }}&deg;</small></p>
+            <p class="heading">Wind meters per sec</p>
+            <p class="title">{{ datums['Weather Wind Speed Value'].data | latestVal }}</p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Wind &deg;E of N</p>
+            <p class="title">{{ datums['Weather Wind Direction Value'].data | latestVal }}&deg;</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
@@ -151,7 +160,7 @@
 
      <section class="section section-xsmall ">
       <h4 class="is-size-4">Transparency
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">The transparency of the sky.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">τ =[Offset-(Tsky - Tamb)]*100/Scale , where the scale and offset are empirically determined for each Boltwood sensor.</span>
       </h4>
       <figure class="image">
           <TimeChart datumid="transparency" datumname="Boltwood Transparency Average" unit="%"
@@ -215,7 +224,7 @@ export default {
         'Weather Sky Brightness Value': {
           data: [],
           limit: {
-            default: null
+            default: 30
           }
         },
         'Boltwood Sky Minus Ambient Temperature': {
@@ -330,6 +339,21 @@ export default {
       const num = Math.floor((val / 22.5) + 0.5);
       const compass = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
       return compass[num % 16];
+    },
+    ns(val){
+      if(val > 0){
+        return val + 'N'
+      } else {
+        return Math.abs(val) + 'S'
+      }
+    },
+    ew(val){
+      if(val > 0){
+        return val + 'E'
+      }
+      else{
+        return Math.abs(val) + 'W'
+      }
     },
     uppercase(str){
       return str.toUpperCase();

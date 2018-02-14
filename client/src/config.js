@@ -17,7 +17,7 @@ export const sites = [
     'elevation': 1804
   },{
     'code': 'tfn',
-    'name': 'Tenerife',
+    'name': 'Teide',
     'country': 'ESP',
     'tz': 1,
     'lat': 20.30,
