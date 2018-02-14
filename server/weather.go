@@ -36,7 +36,7 @@ type Aggregation struct {
 }
 
 type Aggregations struct {
-	Aggregation Aggregation `json:"date(timestampmeasured30m)"`
+	Aggregation Aggregation `json:"date(timestampmeasured15m)"`
 }
 
 type EsAggResponse struct {
@@ -120,7 +120,8 @@ func EsSearch(SearchString []byte, agg bool) (EsResponse, error) {
 	var esr EsResponse
 	// Golang doesn't like commas in keys
 	newbody := string(body)
-	replaced := strings.Replace(newbody, ",30m", "30m", -1)
+        log.Println(newbody)
+	replaced := strings.Replace(newbody, ",15m", "15m", -1)
 	if agg {
 		esr = new(EsAggResponse)
 	} else {
