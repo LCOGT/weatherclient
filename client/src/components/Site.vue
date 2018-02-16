@@ -224,7 +224,7 @@ export default {
         'Weather Sky Brightness Value': {
           data: [],
           limit: {
-            default: 30
+            default: 23
           }
         },
         'Boltwood Sky Minus Ambient Temperature': {
