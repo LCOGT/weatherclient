@@ -157,18 +157,6 @@
           </TimeChart>
       </figure>
     </section>
-
-     <section class="section section-xsmall ">
-      <h4 class="is-size-4">Transparency
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">τ =[Offset-(Tsky - Tamb)]*100/Scale , where the scale and offset are empirically determined for each Boltwood sensor.</span>
-      </h4>
-      <figure class="image">
-          <TimeChart datumid="transparency" datumname="Boltwood Transparency Average" unit="%"
-                     :cdata="datums['Boltwood Transparency Average'].data"
-                     :limit="limit('Boltwood Transparency Average')">
-          </TimeChart>
-      </figure>
-    </section>
   </div>
 </template>
 <script>
@@ -231,12 +219,6 @@ export default {
           data: [],
           limit: {
             default: null
-          }
-        },
-        'Boltwood Transparency Average': {
-          data: [],
-          limit: {
-            default: 25
           }
         },
         'Weather Ok To Open': {
