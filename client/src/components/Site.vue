@@ -153,7 +153,7 @@
       <figure class="image">
           <TimeChart datumid="brightness" datumname="Weather Sky Brightness Value" unit="mag/arcsec^2"
                      :cdata="datums['Weather Sky Brightness Value'].data"
-                     :limit="limit('Weather Sky Brightness Value')">
+                     :max="23">
           </TimeChart>
       </figure>
     </section>
@@ -212,7 +212,7 @@ export default {
         'Weather Sky Brightness Value': {
           data: [],
           limit: {
-            default: 23
+            default: null
           }
         },
         'Boltwood Sky Minus Ambient Temperature': {

@@ -7,7 +7,7 @@ import 'chartjs-plugin-annotation';
 import moment from 'moment';
 export default {
   name: 'Timechart',
-  props: ['cdata', 'datumid', 'datumname', 'unit', 'limit'],
+  props: ['cdata', 'datumid', 'datumname', 'unit', 'limit', 'max'],
   computed: {
     chartData(){
       if(!this.cdata) return [];
@@ -26,7 +26,7 @@ export default {
       case '%':
         return 100;
       default:
-        return undefined;
+        return this.max;
       }
     }
   },
