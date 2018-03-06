@@ -413,6 +413,7 @@ Chart.defaults.timeline = {
         }]
     },
     tooltips: {
+        enabled: false,
         callbacks: {
             title: function(tooltipItems, data) {
                 var d = data.labels[tooltipItems[0].datasetIndex]
