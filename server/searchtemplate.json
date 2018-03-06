@@ -3,7 +3,7 @@
     "excludes": [],
     "includes": [
       "site",
-      "timestampmeasured",
+      "timestamp",
       "value_string",
       "value_float"
     ]
@@ -12,7 +12,7 @@
   "size" : 10000,
   "sort": [
     {
-      "timestampmeasured": {
+      "timestamp": {
         "order": "asc"
       }
     }
@@ -24,14 +24,14 @@
           "must": [
             {
               "range": {
-                "timestampmeasured": {
+                "timestamp": {
                   "gt": "{{.Start}}"
                 }
               }
             },
             {
               "range": {
-                "timestampmeasured": {
+                "timestamp": {
                   "lte": "{{.End}}"
                 }
               }

@@ -3,11 +3,11 @@
     "excludes": [],
     "includes": [
       "site",
-      "timestampmeasured"
+      "timestamp"
     ]
   },
   "aggregations": {
-    "date(timestampmeasured,15m)": {
+    "date(timestamp,15m)": {
       "aggregations": {
         "avg(value_float)": {
           "avg": {
@@ -16,7 +16,7 @@
         }
       },
       "date_histogram": {
-        "field": "timestampmeasured",
+        "field": "timestamp",
         "format": "yyyy/MM/dd HH:mm:ss",
         "interval": "15m",
         "min_doc_count": 1
@@ -42,14 +42,14 @@
           "must": [
             {
               "range": {
-                "timestampmeasured": {
+                "timestamp": {
                   "gt": "{{.Start}}"
                 }
               }
             },
             {
               "range": {
-                "timestampmeasured": {
+                "timestamp": {
                   "lte": "{{.End}}"
                 }
               }

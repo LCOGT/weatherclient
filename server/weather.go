@@ -36,7 +36,7 @@ type Aggregation struct {
 }
 
 type Aggregations struct {
-	Aggregation Aggregation `json:"date(timestampmeasured15m)"`
+	Aggregation Aggregation `json:"date(timestamp15m)"`
 }
 
 type EsAggResponse struct {
@@ -44,7 +44,7 @@ type EsAggResponse struct {
 }
 
 type Source struct {
-	TimeStampMeasured string  `json:"timestampmeasured"`
+	TimeStamp string  `json:"timestamp"`
 	ValueFloat        float32 `json:"value_float"`
 	ValueString       string  `json:"value_string"`
 }
@@ -73,7 +73,7 @@ type Datum struct {
 func (esStdResponse *EsStdResponse) toDatums() []Datum {
 	var datums []Datum
 	for _, subhit := range esStdResponse.Hit.SubHits {
-		datums = append(datums, Datum{subhit.Source.TimeStampMeasured, subhit.Source.ValueFloat, subhit.Source.ValueString})
+		datums = append(datums, Datum{subhit.Source.TimeStamp, subhit.Source.ValueFloat, subhit.Source.ValueString})
 	}
 	return datums
 }
