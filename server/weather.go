@@ -111,7 +111,7 @@ func ParamsToEsQuery(site string, datumName string, start string, end string, ag
 }
 
 func EsSearch(SearchString []byte, agg bool) (EsResponse, error) {
-	esUrl := "http://elasticsearch.lco.gtn:9200/_search?pretty"
+	esUrl := "http://elasticsearch.lco.gtn:9200/mysql-telemetry-*/_search?pretty"
 	res, err := http.Post(esUrl, "application/json", bytes.NewBuffer(SearchString))
 	if err != nil {
 		panic(err)
@@ -120,7 +120,6 @@ func EsSearch(SearchString []byte, agg bool) (EsResponse, error) {
 	var esr EsResponse
 	// Golang doesn't like commas in keys
 	newbody := string(body)
-        log.Println(newbody)
 	replaced := strings.Replace(newbody, ",15m", "15m", -1)
 	if agg {
 		esr = new(EsAggResponse)
@@ -136,6 +135,7 @@ func EsSearch(SearchString []byte, agg bool) (EsResponse, error) {
 }
 
 func Query(w http.ResponseWriter, r *http.Request) {
+        log.Println(r.RequestURI)
 	queryValues := r.URL.Query()
 	site := queryValues.Get("site")
 	datumName := queryValues.Get("datumname")
@@ -146,13 +146,11 @@ func Query(w http.ResponseWriter, r *http.Request) {
 		start_time = start_time.Add(-time.Duration(3600*24) * time.Second)
 		start = start_time.Format("2006-01-02T15:04:05Z")
 	}
-	log.Println(start)
 
 	end := queryValues.Get("end")
 	if end == "" {
 		end = time.Now().UTC().Format("2006-01-02T15:04:05Z")
 	}
-	log.Println(end)
 
 	agg := queryValues.Get("agg")
 	aggBool := false
