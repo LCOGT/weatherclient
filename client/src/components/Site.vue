@@ -20,7 +20,7 @@
       <nav class="level">
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Air Temp &deg;C</i></p>
+            <p class="heading">Air Temp &deg;C</p>
             <p class="title">{{ datums['Weather Air Temperature Value'].data | latestVal }}</p>
           </div>
         </div>
@@ -183,9 +183,11 @@ export default {
         },
         'Weather Barometric Pressure Value': {
           data: [],
-          limit: {
-            default: null
-          }
+          limit:
+            {
+              // leave line below commented so that the pressure plot y axes auto-scales
+              //default: null
+            }
         },
         'Weather Humidity Value': {
           data: [],

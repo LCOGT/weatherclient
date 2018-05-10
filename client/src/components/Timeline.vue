@@ -69,6 +69,10 @@ export default {
           display: false
         },
         scales: {
+          yAxes: [{
+            beginAtZero: false
+          }],
+
           xAxes:[{
             time: {
               min: this.chartMin,
