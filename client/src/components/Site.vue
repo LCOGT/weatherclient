@@ -72,8 +72,8 @@
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Sky Temp &deg;C</p>
-            <p class="title">{{ datums['Boltwood Sky Minus Ambient Temperature'].data | latestVal }}</p>
+            <p class="heading">Sky Transparency </p>
+            <p class="title">{{ datums['Boltwood Transparency Measure'].data | latestVal }}</p>
           </div>
         </div>
       </nav>
@@ -102,13 +102,13 @@
     </section>
 
     <section class="section section-xsmall ">
-      <h4 class="is-size-4">Sky - Ambient Temp
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Temperature is inferred from 8-14µm irradiance measure by a Boltwood II cloud sensor at the site's weather station.</span>
+      <h4 class="is-size-4">Sky Transparency*
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Transparency is a calculated value and is not measured directly.</span>
       </h4>
       <figure class="image">
-          <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" unit="C"
-                    :cdata="datums['Boltwood Sky Minus Ambient Temperature'].data"
-                    :limit="limit('Boltwood Sky Minus Ambient Temperature')">
+          <TimeChart datumid="transparency" datumname="Boltwood Transparency Measure" unit="%"
+                    :cdata="datums['Boltwood Transparency Measure'].data"
+                    :limit="limit('Boltwood Transparency Measure')">
           </TimeChart>
       </figure>
     </section>
@@ -258,7 +258,7 @@ export default {
             default: null
           }
         },
-        'Boltwood Sky Minus Ambient Temperature': {
+        'Boltwood Transparency Measure': {
           data: [],
           limit: {
             default: null
