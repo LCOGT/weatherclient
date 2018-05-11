@@ -16,6 +16,16 @@
       </p>
     </div>
     <div>
+      <p class="level-heading heading"> Latest Closure Information </p>
+      <nav class="level">
+        <div class="level-item has-text-centered">
+          <div>
+          <p class="heading"> Reason </p>
+          <p class="title"> {{ datums['Weather Failure Reason'].data | latestMsg }} </p>
+        </div>
+        </div>
+      </nav>
+
       <p class="level-heading heading">Current Values</p>
       <nav class="level">
         <div class="level-item has-text-centered">
@@ -191,6 +201,13 @@ export default {
     return {
       site: {},
       datums: {
+        'Weather Failure Reason': {
+          data: [],
+          limit: {
+
+          }
+        },
+
         'Weather Air Temperature Value': {
           data: [],
           limit: {
@@ -287,7 +304,7 @@ export default {
     fetchDatum(datumName, cb){
       let request = new XMLHttpRequest();
       let url = 'https://weather-api.lco.global/query?site=' + this.site.code + '&datumname=' + datumName;
-      if(datumName === 'Weather Ok To Open'){
+      if(datumName === 'Weather Ok To Open' || datumName === 'Weather Failure Reason'){
         url += '&agg=False';
       }
       url += '&start=' + this.start.format() + '&end=' + this.end.format();
@@ -343,6 +360,22 @@ export default {
       let val = values[values.length - 1].Value;
       return val.toFixed(1);
     },
+    // needed for string values?
+    latestMsg(messages)
+    {
+      console.log(messages);
+      console.log("messages length:");
+      console.log(messages.length);
+      if (!messages || messages.length < 1)
+      {
+        return '';
+      }
+
+      else{
+        return messages[messages.length - 1].ValueString;
+      }
+    },
+
     cardinal(val){
       const num = Math.floor((val / 22.5) + 0.5);
       const compass = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
