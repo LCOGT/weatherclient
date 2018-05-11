@@ -30,7 +30,13 @@
             <p class="title">{{ datums['Weather Barometric Pressure Value'].data | latestVal }}</p>
           </div>
         </div>
-        <div class="level-item has-text-centered">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Dewpoint &deg;C</p>
+          <p class="title">{{ datums['Weather Dew Point Value'].data | latestVal }}</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
           <div>
             <p class="heading">Humidity %</p>
             <p class="title">{{ datums['Weather Humidity Value'].data | latestVal }}</p>
@@ -121,6 +127,18 @@
       </figure>
     </section>
 
+    <section class="section section-xsmall">
+      <h4 class="is-size-4">Dew Point
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Dew Point measured by device telemetry.</span>
+      </h4>
+      <figure class="image">
+        <TimeChart datumid="dewpoint" datumname="Weather Dew Point Value" unit="C"
+                   :cdata="datums['Weather Dew Point Value'].data"
+                   :limit="limit('Weather Dew Point Value')">
+        </TimeChart>
+      </figure>
+    </section>
+
     <section class="section section-xsmall ">
       <h4 class="is-size-4">Wind Speed
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Wind speed measured by Windsonic1-L wind sensor at the site's weather station.</span>
@@ -185,8 +203,14 @@ export default {
           data: [],
           limit:
             {
-              // leave line below commented so that the pressure plot y axes auto-scales
-              //default: null
+
+            }
+        },
+        'Weather Dew Point Value': {
+          data: [],
+          limit :
+            {
+
             }
         },
         'Weather Humidity Value': {

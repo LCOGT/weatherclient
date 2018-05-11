@@ -28,6 +28,12 @@ export default {
       default:
         return this.max;
       }
+    },
+    scaleMin(){
+      switch(this.unit){
+        case ('%' || 'm/s' || 'deg' || 'mag/arcsec^2'):
+          return 0;
+      }
     }
   },
   watch: {
@@ -56,6 +62,7 @@ export default {
           backgroundColor: '#009ec367',
           label: that.datumname,
           data: that.chartData,
+          cubicInterpolationMode: 'monotone'
         }]
       },
       options: {
@@ -91,7 +98,8 @@ export default {
               labelString: that.unit
             },
             ticks:{
-              max: this.scaleMax
+              max: this.scaleMax,
+              min: this.scaleMin
             }
           }]
         }
