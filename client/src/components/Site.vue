@@ -82,10 +82,10 @@
     <section class="section section-xsmall">
       <p class="heading">Last {{ this.$store.state.range }}</p>
       <h4 class="is-size-4 helptoggle">OK to Open
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">All weather conditions are within acceptable range to allow observing.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">All weather conditions are within acceptable range to allow observing. Sunset {{sunset}}</span>
       </h4>
       <figure class="image">
-        <Timeline datumid="oktoopen" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data"></Timeline>
+        <Timeline datumid="oktoopen" :suntimes="suntTimes" :sunup="sunrise" :sundown="sunset" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data"></Timeline>
       </figure>
     </section>
 
