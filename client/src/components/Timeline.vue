@@ -58,11 +58,11 @@ export default {
     const ctx = document.getElementById(this.datumid);
     console.log('sunrise time:');
     //console.log(moment.utc().subtract(1, 'day').format('YYYY/MM/DD ') + this.sunup.valueOf() + ':00');
-    //console.log((moment.utc((this.suntimes.sunrise)).format('YYYY/MM/DD HH:mm:ss')).valueOf());
+    console.log((moment.utc((this.suntimes.sunrise)).format('YYYY/MM/DD HH:mm:ss')).valueOf());
 
     console.log('sundown time');
     //console.log(moment.utc().subtract(1, 'day').format('YYYY/MM/DD ') + this.sundown.valueOf() + ':00');
-    //console.log((moment.utc((this.suntimes.sundown)).format('YYYY/MM/DD HH:mm:ss')).valueOf());
+    console.log((moment.utc((this.suntimes.sunset)).format('YYYY/MM/DD HH:mm:ss')).valueOf());
     this.chart = new Chart(ctx, {
       type: 'timeline',
       data:{
@@ -80,9 +80,9 @@ export default {
             type: "line",
             mode: "vertical",
             scaleID: "x-axis-0",
-           //value: (moment.utc((that.suntimes.sunrise)).format('YYYY/MM/DD HH:mm:ss')).valueOf(),
+           value: moment.utc(that.suntimes.sunrise).format('YYYY/MM/DD HH:mm:ss').valueOf(),
             //value: '2018/05/12 11:20:00',
-            value: moment.utc().subtract(1, 'day').format('YYYY/MM/DD ') + this.sunup.valueOf() + ':00',
+            //value: moment.utc().subtract(1, 'day').format('YYYY/MM/DD ') + this.sunup.valueOf() + ':00',
             borderWidth: 5,
             borderColor: "yellow",
             label: {
@@ -95,8 +95,8 @@ export default {
               type:'line',
               mode:'vertical',
               scaleID: 'x-axis-0',
-              //value: (moment.utc((that.suntimes.sunset)).format('YYYY/MM/DD HH:mm:ss')).valueOf(),
-              value: moment.utc().subtract(1, 'day').format('YYYY/MM/DD ') + this.sundown.valueOf() + ':00',
+              value: moment.utc(that.suntimes.sunset).format('YYYY/MM/DD HH:mm:ss').valueOf(),
+              //value: moment.utc().subtract(1, 'day').format('YYYY/MM/DD ') + this.sundown.valueOf() + ':00',
               borderColor: 'green',
               borderWidth: 5,
               label: {

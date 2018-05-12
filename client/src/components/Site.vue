@@ -363,9 +363,6 @@ export default {
     // needed for string values?
     latestMsg(messages)
     {
-      console.log(messages);
-      console.log("messages length:");
-      console.log(messages.length);
       if (!messages || messages.length < 1)
       {
         return '';
