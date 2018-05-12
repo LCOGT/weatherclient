@@ -76,6 +76,12 @@
             <p class="title">{{ datums['Boltwood Transparency Measure'].data | latestVal }}</p>
           </div>
         </div>
+        <div class="level-item has-text-centered">
+          <div>
+            <p class="heading">Sky Temp &deg;C</p>
+            <p class="title">{{ datums['Boltwood Sky Minus Ambient Temperature'].data | latestVal }}</p>
+          </div>
+        </div>
       </nav>
     </div>
 
@@ -185,6 +191,19 @@
           </TimeChart>
       </figure>
     </section>
+
+    <section class="section section-xsmall ">
+      <h4 class="is-size-4">Sky Temp
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Temperature is inferred from 8-14µm irradiance measure by a Boltwood II cloud sensor at the site's weather station.</span>
+
+      </h4>
+      <figure class="image">
+        <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" unit="C"
+                   :cdata="datums['Boltwood Sky Minus Ambient Temperature'].data">
+        </TimeChart>
+      </figure>
+    </section>
+
   </div>
 </template>
 <script>
@@ -264,6 +283,14 @@ export default {
             default: null
           }
         },
+
+        'Boltwood Sky Minus Ambient Temperature': {
+          data: [],
+          limit: {
+            default: null
+          }
+        },
+
         'Weather Ok To Open': {
           data: [],
           limit: {
