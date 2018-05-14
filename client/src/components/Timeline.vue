@@ -7,7 +7,7 @@ import moment from 'moment';
 import '../timeline.js';
 export default {
   name: 'Timeline',
-  props: ['cdata', 'datumid', 'datumname','suntimes', 'sundown', 'sunup'],
+  props: ['cdata', 'datumid', 'datumname','suntimes', 'sundown', 'sunup', 'timezone'],
   computed: {
     chartData(){
       const open = this.cdata.filter(item => item.ValueString === 'true').map(
@@ -31,6 +31,7 @@ export default {
         }
         intervals.push([start, end]);
       }
+
       return intervals;
     },
     chartMin(){
@@ -56,13 +57,22 @@ export default {
   mounted(){
     var that = this;
     const ctx = document.getElementById(this.datumid);
-    console.log('sunrise time:');
-    //console.log(moment.utc().subtract(1, 'day').format('YYYY/MM/DD ') + this.sunup.valueOf() + ':00');
-    console.log((moment.utc((this.suntimes.sunrise)).format('YYYY/MM/DD HH:mm:ss')).valueOf());
 
-    console.log('sundown time');
-    //console.log(moment.utc().subtract(1, 'day').format('YYYY/MM/DD ') + this.sundown.valueOf() + ':00');
-    console.log((moment.utc((this.suntimes.sunset)).format('YYYY/MM/DD HH:mm:ss')).valueOf());
+    console.log("sunrise time in UTC");
+    // the 'X' here tells moment that its parsing a UNIX timestamp, since according to the documentation you're
+    // supposed to do that for non-ISO 8601 timestamps
+    console.log(moment(that.suntimes.sunrise, 'X').utc().format('YYYY/MM/DD HH:mm:ss'));
+
+    console.log('sunrise time with the offset of: ' + that.timezone.valueOf());
+
+    console.log(moment(that.suntimes.sunrise, 'X').utcOffset(that.timezone).format('YYYY/MM/DD HH:mm:ss'));
+
+    console.log('sunset time in UTC, with yesterdays day');
+    console.log(moment(that.suntimes.sunset, 'X').subtract(1, 'days').utc().format('YYYY/MM/DD HH:mm:ss'));
+
+    console.log('sunset time with the offset of: ' + that.timezone.valueOf() + ' (and day -1)');
+    console.log(moment(that.suntimes.sunset, 'X').subtract(1, 'days').utcOffset(that.timezone).format('YYYY/MM/DD HH:mm:ss'));
+
     this.chart = new Chart(ctx, {
       type: 'timeline',
       data:{
@@ -80,9 +90,11 @@ export default {
             type: "line",
             mode: "vertical",
             scaleID: "x-axis-0",
-           value: moment.utc(that.suntimes.sunrise).format('YYYY/MM/DD HH:mm:ss').valueOf(),
-            //value: '2018/05/12 11:20:00',
-            //value: moment.utc().subtract(1, 'day').format('YYYY/MM/DD ') + this.sunup.valueOf() + ':00',
+            // value below doesnt work for SB sites, seems roughly 8 hours off?
+            value: moment(that.suntimes.sunrise, 'X').utc().format('YYYY/MM/DD HH:mm:ss'),
+
+            //value: moment(that.suntimes.sunrise, 'X').utcOffset(that.timezone).format('YYYY/MM/DD HH:mm:ss'),
+
             borderWidth: 5,
             borderColor: "yellow",
             label: {
@@ -95,14 +107,17 @@ export default {
               type:'line',
               mode:'vertical',
               scaleID: 'x-axis-0',
-              value: moment.utc(that.suntimes.sunset).format('YYYY/MM/DD HH:mm:ss').valueOf(),
-              //value: moment.utc().subtract(1, 'day').format('YYYY/MM/DD ') + this.sundown.valueOf() + ':00',
-              borderColor: 'green',
+              // value below doesnt work for SB site, seems roughly 8 hours off?
+              value: moment(that.suntimes.sunset, 'X').subtract(1, 'days').utc().format('YYYY/MM/DD HH:mm:ss'),
+
+              // value below seems to work for SB sites, but is horribly wrong for every other site
+              //value: moment(that.suntimes.sunset, 'X').subtract(1, 'days').utcOffset(that.timezone).format('YYYY/MM/DD HH:mm:ss'),
               borderWidth: 5,
+              borderColor: 'yellow',
               label: {
                 content: "SUNSET",
                 enabled: true,
-                position: "bottom"
+                position: "top"
               }
             }]
         },

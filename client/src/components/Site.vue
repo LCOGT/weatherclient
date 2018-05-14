@@ -16,15 +16,7 @@
       </p>
     </div>
     <div>
-      <p class="level-heading heading"> Latest Closure Information </p>
-      <nav class="level">
-        <div class="level-item has-text-centered">
-          <div>
-          <p class="heading"> Reason </p>
-          <p class="title"> {{ datums['Weather Failure Reason'].data | latestMsg }} </p>
-        </div>
-        </div>
-      </nav>
+
 
       <p class="level-heading heading">Current Values</p>
       <nav class="level">
@@ -87,11 +79,16 @@
 
     <section class="section section-xsmall">
       <p class="heading">Last {{ this.$store.state.range }}</p>
-      <h4 class="is-size-4 helptoggle">OK to Open
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">All weather conditions are within acceptable range to allow observing. Sunset {{sunset}}</span>
+      <h4 class="is-size-4 helptoggle">  OK to Open
+        <a class="helptoggle is-pulled-right "><sup>?</sup>
+
+        </a><span class="help is-pulled-right">All weather conditions are within acceptable range to allow observing.</span>
       </h4>
+
+      <p align="center"> <button type="button" id="status-button"> {{ datums['Weather Failure Reason'].data | latestMsg | parseMsg }}  </button> </p>
+
       <figure class="image">
-        <Timeline datumid="oktoopen" :suntimes="suntTimes" :sunup="sunrise" :sundown="sunset" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data"></Timeline>
+        <Timeline datumid="oktoopen" :suntimes="suntTimes" :sunup="sunrise" :sundown="sunset" :timezone="site.tz" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data"></Timeline>
       </figure>
     </section>
 
@@ -371,6 +368,7 @@ export default {
     sunset(){
       return moment.utc((this.suntTimes.sunset)).format('HH:mm');
     },
+
     start(){
       // Make sure we get a little data leading up to the time range to avoid gaps
       let start = this.$store.getters.start.clone();
@@ -379,7 +377,7 @@ export default {
     },
     end(){
       return this.$store.getters.end;
-    }
+    },
   },
   filters: {
     latestVal(values){
@@ -397,6 +395,18 @@ export default {
 
       else{
         return messages[messages.length - 1].ValueString;
+      }
+    },
+    parseMsg(msg)
+    {
+      if (msg === "None" || msg === 'Unknown')
+      {
+        //document.getElementById('status-button').className = "button is-success";
+        return 'Open';
+      }
+      else {
+        //document.getElementById('status-button').className = 'button is-warning';
+        return msg;
       }
     },
 
@@ -425,6 +435,21 @@ export default {
     }
   }
 };
+
+document.addEventListener("DOMContentLoaded", function(event) {
+  let button = document.getElementById("status-button");
+  let button_text = button.innerText;
+  if (button_text === "Open")
+  {
+    console.log('open');
+    button.className = 'button is-success';
+  }
+  else {
+    button.className = 'button is-danger';
+  }
+});
+
+
 </script>
 <style lang="scss">
   .help {
