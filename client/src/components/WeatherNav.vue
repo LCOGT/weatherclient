@@ -52,8 +52,6 @@
     },
     computed:{
       num(){
-        console.log("num()");
-        console.log(this.timeRange.split(':'));
         return Number(this.timeRange.split(':')[0])
       },
       unit(){

@@ -5,6 +5,8 @@
 import Chart from 'chart.js';
 import moment from 'moment';
 import '../timeline.js';
+// TODO: Use proper method documentation format for JS
+// TODO: Remove unneeded props from this component
 export default {
   name: 'Timeline',
   props: ['cdata', 'datumid', 'datumname','suntimes', 'sundown', 'sunup', 'timezone'],
@@ -35,10 +37,44 @@ export default {
       return intervals;
     },
     sunrise(){
-      return moment(this.suntimes.sunrise.valueOf()).utc();
+      // return the last sunrise time, but if todays sunrise time has yet to occur,return yesterdays
+
+      // TODO: Fix code reuse here
+      let last_sunrise_obj = moment(this.suntimes.slice(-1)[0].sunrise.valueOf()).utc();
+      //console.log(last_sunrise_obj);
+
+      if (last_sunrise_obj.isAfter(moment().utc()))
+      {
+        console.log("sunrise has yet to happen here");
+        let next_last_sunrise_obj = moment(this.suntimes.slice(-2)[0].sunrise.valueOf()).utc();
+        return next_last_sunrise_obj;
+      }
+
+      else
+      {
+        return last_sunrise_obj;
+      }
+
+      return last_sunrise_obj;
     },
-    sunset() {
-      return moment(this.suntimes.sunset.valueOf()).utc()
+    sunset() { // return the last sunrise time, but if todays sunrise time has yet to occur,return yesterdays
+      //let last_suntime_obj = this.suntimes.slice(-1)[0];
+      let last_sunset_obj = moment(this.suntimes.slice(-1)[0].sunset.valueOf()).utc();
+
+      if (last_sunset_obj.isAfter(moment().utc()))
+      {
+        console.log("sunset has yet to happen here");
+        //return last_sunset_obj.subtract(1, 'day');
+        let next_last_sunset_obj = moment(this.suntimes.slice(-2)[0].sunset.valueOf()).utc();
+        return next_last_sunset_obj;
+      }
+
+      else
+      {
+        return last_sunset_obj;
+      }
+
+      return last_sunset_obj;
     },
     chartMin(){
       return this.$store.getters.start;
@@ -60,15 +96,58 @@ export default {
       this.chart.options.scales.xAxes[0].time.max = this.chartMax;
     },
     suntimes()
-    {
+    { // create a new annotation object for every entry in the suntimes object
+      /*
       this.chart.options.annotation.annotations[0].value = this.sunrise;
       this.chart.options.annotation.annotations[1].value = this.sunset;
+      */
+
+      let suntimes_annotations = [];
+      //console.log("Creating annotations for " + this.suntimes.length + " days");
+      for (let suntime_index = 0; suntime_index < this.suntimes.length; suntime_index++)
+      {
+        // TODO: Fix code duplication in object creation, maybe use Object.assign()?
+
+
+        // only show the annotation label if its the '24 hour option' since they take up too much space
+        let sunrise_annotation = {
+          type: "line",
+          mode: "vertical",
+          scaleID: "x-axis-0",
+          value: (this.suntimes[suntime_index])['sunrise'],
+          borderWidth: 5,
+          borderColor: "yellow",
+          label: {
+            enabled: true,
+            position: "top",
+            content: (this.suntimes.length > 2) ? ("") : ("sunrise")
+          }
+        };
+
+       let sunset_annotation = {
+         type: "line",
+         mode: "vertical",
+         scaleID: "x-axis-0",
+         value: (this.suntimes[suntime_index])['sunset'],
+         borderWidth: 5,
+         borderColor: "green",
+         label: {
+           enabled: true,
+           position: "top",
+           content: (this.suntimes.length > 2) ? (""): ("sunset")
+         }
+       };
+
+        suntimes_annotations.push(sunrise_annotation, sunset_annotation);
+      }
+
+      this.chart.options.annotation.annotations = suntimes_annotations;
     }
   },
   mounted(){
     var that = this;
     const ctx = document.getElementById(this.datumid);
-
+  /*
     console.log("suncalc time");
     console.log(typeof(that.suntimes.sunrise));
 
@@ -87,6 +166,7 @@ export default {
     console.log('sunset time with the offset of: ' + that.timezone.valueOf() + ' (and day -1)');
     console.log(moment(that.suntimes.sunset.valueOf()).subtract(1, 'days').utcOffset(that.timezone).format('YYYY/MM/DD HH:mm:ss'));
 
+*/
     this.chart = new Chart(ctx, {
       type: 'timeline',
       data:{
@@ -112,7 +192,7 @@ export default {
             borderWidth: 5,
             borderColor: "yellow",
             label: {
-              content: "SUNRISE",
+              content: "sunrise",
               enabled: true,
               position: "top"
             }
@@ -128,9 +208,9 @@ export default {
               //value: moment(that.suntimes.sunset.valueOf()).subtract(1, 'days').utcOffset(that.timezone).format('YYYY/MM/DD HH:mm:ss'),
               value: that.sunset,
               borderWidth: 5,
-              borderColor: 'yellow',
+              borderColor: 'green',
               label: {
-                content: "SUNSET",
+                content: "sunset",
                 enabled: true,
                 position: "top"
               }
