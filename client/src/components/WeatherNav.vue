@@ -31,7 +31,7 @@
     </li>
     <li v-for="site in sites">
       <router-link :to="`/${site.code}`" active-class="is-active">
-        <NavItem :site="site"/>
+        <NavItem :site="site" @handleStatus="onHandleStatus" />
       </router-link>
     </li>
   </ul>
@@ -44,6 +44,7 @@
   export default {
     name: 'WeatherNav',
     components: {NavItem},
+    props: ['sitestatus'],
     data: function(){
       return {
         sites: sites,
@@ -66,7 +67,15 @@
         this.$store.commit('setStart', this.start);
         this.$store.commit('setRange', '' + this.num + ' ' + this.unit);
       }
-    }
+    },
+    methods:
+      {
+        onHandleStatus(status)
+          {
+            console.log(status); // should print the status emitted by the site?
+            return status;
+          }
+      }
   };
 </script>
 <style lang="scss">

@@ -12,24 +12,33 @@ export default {
   props: ['cdata', 'datumid', 'datumname','suntimes', 'sundown', 'sunup', 'timezone', 'fdata'],
   computed: {
     chartData(){
+
       const open = this.cdata.filter(item => item.ValueString === 'true').map(
-        point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
+        point => ({
+          time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+        reason: ""})
       );
       const closed = this.cdata.filter(item => item.ValueString === 'false').map(
-        point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
+        point => ({ time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+                    reason: "" })
       );
+
       let intervals = [];
       for (let i = 0; i < open.length; i++) {
         const start = open[i];
         let end = null;
         for (let j = 0; j < closed.length; j++) {
-          if(closed[j].isAfter(start)){
+          if(closed[j].time.isAfter(start.time)){
             end = closed[j];
             break;
           }
         }
         if(!end){
-          end = moment.utc();
+         // end = moment.utc();
+          end = ({
+            time: moment.utc(),
+            reason: ""
+          });
         }
         intervals.push([start, end]);
       }
@@ -70,10 +79,10 @@ export default {
           }
         }
         if (!end) {
-          end = {
+          end = ({
             time: moment.utc(),
             reason: ""
-          }
+          });
         }
         intervals.push([start, end]);
       }
@@ -118,6 +127,7 @@ export default {
     },
     chartMin(){
       return this.$store.getters.start;
+
     },
     chartMax(){
       return this.$store.getters.end;

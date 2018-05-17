@@ -1,7 +1,7 @@
 <template>
 <div class="navitem">
   <div class="columns level mini-info">
-    <div class="column status is-one-fifth"> Y </div>
+    <div class="column status is-one-fifth"> {{ handleStatus }} </div>
     <div class="column place is-two-thirds">
       {{site.name}} {{ site.country }}
     </div>

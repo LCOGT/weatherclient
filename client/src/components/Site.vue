@@ -211,7 +211,7 @@ import TimeChart from './TimeChart';
 import Timeline from './Timeline';
 export default {
   name: 'Site',
-  props: ['sitecode'],
+  props: ['sitecode', 'status'],
   components: {TimeChart, Timeline},
   data(){
     return {
@@ -353,6 +353,11 @@ export default {
       }else{
         return this.datums[datumName].limit.default;
       }
+    },
+    getStatus()
+    {
+      var status = (Math.random() > 0.5) ? "Y" : "N";
+      this.$emit('handleStatus', status);
     }
   },
   created(){
@@ -403,6 +408,7 @@ export default {
     end(){
       return this.$store.getters.end;
     },
+
   },
 
   filters: {

@@ -47,6 +47,9 @@ var TimelineConfig = {
  * @see http://momentjs.com/docs/#/parsing/
  */
 function momentify(value, options) {
+  console.log("momentify() recieved value = ");
+  console.log(value);
+
     var parser = options.parser;
     var format = options.parser || options.format;
 
@@ -76,6 +79,10 @@ function momentify(value, options) {
 }
 
 function parse(input, scale) {
+
+  console.log("parse() received input= " );
+  console.log(input);
+
     if (helpers.isNullOrUndef(input)) {
         return null;
     }
@@ -136,9 +143,16 @@ var TimelineScale = Chart.scaleService.getScaleConstructor('time').extend({
                 data = chart.data.datasets[i].data;
                 datasets[i] = [];
 
+
                 for (j = 0, jlen = data.length; j < jlen; ++j) {
-                    timestamp0 = parse(data[j][0], me);
-                    timestamp1 = parse(data[j][1], me);
+                  console.log("data[j][0]");
+                  console.log(data[j][0]);
+                    timestamp0 = parse(data[j][0].time, me);
+                    timestamp1 = parse(data[j][1].time, me);
+                  console.log("i = " + i);
+                 //timestamp0 = (i == 0) ? parse(data[j][0], me) : parse(data[j][0].time, me);
+                 //timestamp1 = (i == 0) ? parse(data[j][1], me) : parse(data[j][0].time, me);
+
                     if (timestamp0 > timestamp1) {
                         [timestamp0, timestamp1] = [timestamp1, timestamp0];
                     }
