@@ -50,11 +50,13 @@ export default {
       }
 
       const open = this.fdata.filter(retrieve_desired_values).map(
-        point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+                   reason: point.ValueString})
       );
 
       const closed = this.fdata.filter(remove_undesired_values).map(
-        point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+                   reason: point.ValueString})
       );
 
       let intervals = [];
@@ -62,13 +64,16 @@ export default {
         const start = open[i];
         let end = null;
         for (let j = 0; j < closed.length; j++) {
-          if (closed[j].isAfter(start)) {
+          if (closed[j].time.isAfter(start.time)) {
             end = closed[j];
             break;
           }
         }
         if (!end) {
-          end = moment.utc();
+          end = {
+            time: moment.utc(),
+            reason: ""
+          }
         }
         intervals.push([start, end]);
       }
