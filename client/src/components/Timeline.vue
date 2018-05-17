@@ -33,12 +33,11 @@ export default {
         }
         intervals.push([start, end]);
       }
-
+      console.log("open data intervals length: " + intervals.length);
       return intervals;
     },
     failureData() {
-      // Same as chartData(), but with weather failure data
-      // TODO: Fix function duplication
+      // TODO: Fix filter function duplication below
       // example on cool tricks for the filter function: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
       function retrieve_desired_values(error_object)
       {
@@ -73,16 +72,13 @@ export default {
         }
         intervals.push([start, end]);
       }
-
+    console.log("failure data intervals length: " + intervals.length);
       return intervals;
 
     },
     sunrise(){
-      // return the last sunrise time, but if todays sunrise time has yet to occur,return yesterdays
-
       // TODO: Fix code reuse here
       let last_sunrise_obj = moment(this.suntimes.slice(-1)[0].sunrise.valueOf()).utc();
-      //console.log(last_sunrise_obj);
 
       if (last_sunrise_obj.isAfter(moment().utc()))
       {
@@ -99,13 +95,11 @@ export default {
       return last_sunrise_obj;
     },
     sunset() { // return the last sunrise time, but if todays sunrise time has yet to occur,return yesterdays
-      //let last_suntime_obj = this.suntimes.slice(-1)[0];
       let last_sunset_obj = moment(this.suntimes.slice(-1)[0].sunset.valueOf()).utc();
 
       if (last_sunset_obj.isAfter(moment().utc()))
       {
         console.log("sunset has yet to happen here");
-        //return last_sunset_obj.subtract(1, 'day');
         let next_last_sunset_obj = moment(this.suntimes.slice(-2)[0].sunset.valueOf()).utc();
         return next_last_sunset_obj;
       }
@@ -141,14 +135,9 @@ export default {
       this.chart.options.scales.xAxes[0].time.max = this.chartMax;
     },
     suntimes()
-    { // create a new annotation object for every entry in the suntimes object
-      /*
-      this.chart.options.annotation.annotations[0].value = this.sunrise;
-      this.chart.options.annotation.annotations[1].value = this.sunset;
-      */
+    {
 
       let suntimes_annotations = [];
-      //console.log("Creating annotations for " + this.suntimes.length + " days");
       for (let suntime_index = 0; suntime_index < this.suntimes.length; suntime_index++)
       {
         // TODO: Fix code duplication in object creation, maybe use Object.assign()?
@@ -191,46 +180,26 @@ export default {
   mounted(){
     var that = this;
     const ctx = document.getElementById(this.datumid);
-  /*
-    console.log("suncalc time");
-    console.log(typeof(that.suntimes.sunrise));
-
-    console.log("sunrise time in UTC");
-    // the 'X' here tells moment that its parsing a UNIX timestamp, since according to the documentation you're
-    // supposed to do that for non-ISO 8601 timestamps
-    console.log(moment(that.suntimes.sunrise.valueOf()).utc().format('YYYY/MM/DD HH:mm:ss'));
-
-    console.log('sunrise time with the offset of: ' + that.timezone.valueOf());
-
-    console.log(moment(that.suntimes.sunrise.valueOf()).utcOffset(that.timezone).format('YYYY/MM/DD HH:mm:ss'));
-
-    console.log('sunset time in UTC, with yesterdays day');
-    console.log(moment(that.suntimes.sunset.valueOf()).subtract(1, 'days').utc().format('YYYY/MM/DD HH:mm:ss'));
-
-    console.log('sunset time with the offset of: ' + that.timezone.valueOf() + ' (and day -1)');
-    console.log(moment(that.suntimes.sunset.valueOf()).subtract(1, 'days').utcOffset(that.timezone).format('YYYY/MM/DD HH:mm:ss'));
-
-*/
     this.chart = new Chart(ctx, {
       type: 'timeline',
       data:{
-        labels: [''],
         // from this example: view-source:http://www.chartjs.org/samples/latest/scales/time/line.html it seems like you
-        // can just assign a background color to each dataset object
+        // can just assign a background color to each dataset object?
+        labels: ['1', '2'],
         datasets:[{
           data: that.chartData,
           backgroundColor: '#009ec366', // blue
-          label: "open"
+          label: "open",
         },
           {
             data: that.failureData,
             backgroundColor: '#ff0000',
-            label: "closed"
+            label: "closed",
           }]
       },
       options: {
+        responsive: true,
         legend: {
-         // display: false ,
           display: true
         },
         annotation: {
@@ -238,10 +207,6 @@ export default {
             type: "line",
             mode: "vertical",
             scaleID: "x-axis-0",
-            // value below doesnt work for SB sites, seems roughly 8 hours off?
-            //value: moment(that.suntimes.sunrise, 'X').utc().format('YYYY/MM/DD HH:mm:ss'),
-
-            //value: moment(that.suntimes.sunrise.valueOf()).utcOffset(that.timezone).format('YYYY/MM/DD HH:mm:ss'),
             value: that.sunrise,
             borderWidth: 5,
             borderColor: "yellow",
@@ -255,11 +220,6 @@ export default {
               type:'line',
               mode:'vertical',
               scaleID: 'x-axis-0',
-              // value below doesnt work for SB site, seems roughly 8 hours off?
-              //value: moment(that.suntimes.sunset, 'X').subtract(1, 'days').utc().format('YYYY/MM/DD HH:mm:ss'),
-
-              // value below seems to work for SB sites, but is horribly wrong for every other site
-              //value: moment(that.suntimes.sunset.valueOf()).subtract(1, 'days').utcOffset(that.timezone).format('YYYY/MM/DD HH:mm:ss'),
               value: that.sunset,
               borderWidth: 5,
               borderColor: 'green',
@@ -272,10 +232,19 @@ export default {
         },
         scales: {
           yAxes: [{
-            beginAtZero: false
-          }],
+            //beginAtZero: false,
+            display: true,
+
+            ticks:
+              {
+                min: 0,
+                max: 0
+              }
+          }
+          ],
 
           xAxes:[{
+            display: true,
             time: {
               min: this.chartMin,
               max: this.chartMax

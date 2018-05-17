@@ -258,7 +258,6 @@ Chart.controllers.timeline = Chart.controllers.bar.extend({
             width: width,
             height: height,
             base: x + width,
-            //backgroundColor: '#009ec366',
           backgroundColor: me.chart.data.datasets[rectangle._datasetIndex].backgroundColor,
             borderSkipped: custom.borderSkipped ? custom.borderSkipped : rectangleElementOptions.borderSkipped,
             borderColor: custom.borderColor ? custom.borderColor : helpers.getValueAtIndexOrDefault(dataset.borderColor, index, rectangleElementOptions.borderColor),
@@ -387,8 +386,10 @@ Chart.defaults.timeline = {
             type: 'timeline',
             position: 'bottom',
             distribution: 'linear',
-            categoryPercentage: 0.8,
-            barPercentage: 0.9,
+            //categoryPercentage: 0.8,
+          categoryPercentage: 0,
+            //barPercentage: 0.9,
+          barPercentage: 0,
 
             gridLines: {
                 display: true,
@@ -405,15 +406,18 @@ Chart.defaults.timeline = {
             type: 'category',
             position: 'left',
             barThickness : 20,
-            categoryPercentage: 0.8,
-            barPercentage: 0.9,
-            offset: true,
+            //categoryPercentage: 0.8,
+            //barPercentage: 0.9,
+          categoryPercentage: 0,
+          barPercentage: 0,
+            //offset: true,
+          offset: false,
             gridLines: {
-                display: true,
-                offsetGridLines: true,
+                //display: true,
+                //offsetGridLines: true,
                 drawBorder: true,
                 drawTicks: true
-            }
+            },
         }]
     },
     tooltips: {
