@@ -421,15 +421,33 @@ Chart.defaults.timeline = {
         }]
     },
     tooltips: {
-        enabled: false,
+        //enabled: false,
+      enabled: true,
         callbacks: {
             title: function(tooltipItems, data) {
+              /*
+              console.log("data: ");
+              console.log(data);
+
+              console.log("tooltip items: ");
+              console.log(tooltipItems);
+              */
+
                 var d = data.labels[tooltipItems[0].datasetIndex]
                 return d;
             },
             label: function(tooltipItem, data) {
+
+              console.log("tooltip item ");
+              console.log(tooltipItem);
+
+              console.log("data");
+              console.log(data);
+
                 var d = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                return [d[2], moment(d[0]).format('L LTS'), moment(d[1]).format('L LTS')];
+                // the first element in the array below is always undefined
+                //return [d[2], moment(d[0]).format('L LTS'), moment(d[1]).format('L LTS')];
+              return [moment(d[0]).format('L LTS'), moment(d[1]).format('L LTS')];
             }
         }
     }

@@ -193,12 +193,12 @@ export default {
         },
           {
             data: that.failureData,
-            backgroundColor: '#ff0000',
+            backgroundColor: '#ff0000', // red
             label: "closed",
           }]
       },
       options: {
-        responsive: true,
+        responsive: true, // resize chart when container element does
         legend: {
           display: true
         },
@@ -232,14 +232,8 @@ export default {
         },
         scales: {
           yAxes: [{
-            //beginAtZero: false,
+            beginAtZero: false,
             display: true,
-
-            ticks:
-              {
-                min: 0,
-                max: 0
-              }
           }
           ],
 
