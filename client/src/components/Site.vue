@@ -88,7 +88,7 @@
       <p align="center"> <button type="button" id="status-button"> {{ datums['Weather Failure Reason'].data | latestMsg | parseMsg }}  </button> </p>
 
       <figure class="image">
-        <Timeline datumid="oktoopen" :suntimes="suntTimes" :sunup="sunrise" :sundown="sunset" :timezone="site.tz" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data"></Timeline>
+        <Timeline datumid="oktoopen" :suntimes="suntTimes" :sunup="sunrise" :sundown="sunset" :timezone="site.tz" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data" :fdata="datums['Weather Failure Reason'].data"></Timeline>
       </figure>
     </section>
 
@@ -220,7 +220,7 @@ export default {
         'Weather Failure Reason': {
           data: [],
           limit: {
-
+            default: null
           }
         },
 

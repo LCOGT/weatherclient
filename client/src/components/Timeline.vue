@@ -2,14 +2,14 @@
     <canvas :id="datumid" height="50"></canvas>
 </template>
 <script>
-import Chart from 'chart.js';
-import moment from 'moment';
-import '../timeline.js';
-// TODO: Use proper method documentation format for JS
+  import Chart from 'chart.js';
+  import moment from 'moment';
+  import '../timeline.js';
+  // TODO: Use proper method documentation format for JS
 // TODO: Remove unneeded props from this component
 export default {
   name: 'Timeline',
-  props: ['cdata', 'datumid', 'datumname','suntimes', 'sundown', 'sunup', 'timezone'],
+  props: ['cdata', 'datumid', 'datumname','suntimes', 'sundown', 'sunup', 'timezone', 'fdata'],
   computed: {
     chartData(){
       const open = this.cdata.filter(item => item.ValueString === 'true').map(
@@ -35,6 +35,47 @@ export default {
       }
 
       return intervals;
+    },
+    failureData() {
+      // Same as chartData(), but with weather failure data
+      // TODO: Fix function duplication
+      // example on cool tricks for the filter function: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+      function retrieve_desired_values(error_object)
+      {
+        return ((error_object.ValueString !== 'None') && (error_object.ValueString !== 'Unknown'));
+      }
+
+      function remove_undesired_values(error_object)
+      {
+        return ((error_object.ValueString === 'None') || (error_object.ValueString === 'Unknown'));
+      }
+
+      const open = this.fdata.filter(retrieve_desired_values).map(
+        point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
+      );
+
+      const closed = this.fdata.filter(remove_undesired_values).map(
+        point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
+      );
+
+      let intervals = [];
+      for (let i = 0; i < open.length; i++) {
+        const start = open[i];
+        let end = null;
+        for (let j = 0; j < closed.length; j++) {
+          if (closed[j].isAfter(start)) {
+            end = closed[j];
+            break;
+          }
+        }
+        if (!end) {
+          end = moment.utc();
+        }
+        intervals.push([start, end]);
+      }
+
+      return intervals;
+
     },
     sunrise(){
       // return the last sunrise time, but if todays sunrise time has yet to occur,return yesterdays
@@ -88,6 +129,10 @@ export default {
       this.chart.data.datasets[0].data = this.chartData;
       this.chart.update();
     },
+    fdata: function(){
+      this.chart.data.datasets[1].data = this.failureData;
+      this.chart.update();
+    },
     '$route' (){
       this.chart.update();
     },
@@ -107,7 +152,6 @@ export default {
       for (let suntime_index = 0; suntime_index < this.suntimes.length; suntime_index++)
       {
         // TODO: Fix code duplication in object creation, maybe use Object.assign()?
-
 
         // only show the annotation label if its the '24 hour option' since they take up too much space
         let sunrise_annotation = {
@@ -171,13 +215,23 @@ export default {
       type: 'timeline',
       data:{
         labels: [''],
+        // from this example: view-source:http://www.chartjs.org/samples/latest/scales/time/line.html it seems like you
+        // can just assign a background color to each dataset object
         datasets:[{
           data: that.chartData,
-        }]
+          backgroundColor: '#009ec366', // blue
+          label: "open"
+        },
+          {
+            data: that.failureData,
+            backgroundColor: '#ff0000',
+            label: "closed"
+          }]
       },
       options: {
         legend: {
-          display: false
+         // display: false ,
+          display: true
         },
         annotation: {
           annotations: [{

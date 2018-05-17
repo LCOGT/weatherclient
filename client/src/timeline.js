@@ -233,6 +233,7 @@ Chart.controllers.timeline = Chart.controllers.bar.extend({
         rectangle._xScale = xScale;
         rectangle._yScale = yScale;
         rectangle._datasetIndex = me.index;
+
         rectangle._index = index;
 
         var ruler = me.getRuler(index);
@@ -257,7 +258,8 @@ Chart.controllers.timeline = Chart.controllers.bar.extend({
             width: width,
             height: height,
             base: x + width,
-            backgroundColor: '#009ec366',
+            //backgroundColor: '#009ec366',
+          backgroundColor: me.chart.data.datasets[rectangle._datasetIndex].backgroundColor,
             borderSkipped: custom.borderSkipped ? custom.borderSkipped : rectangleElementOptions.borderSkipped,
             borderColor: custom.borderColor ? custom.borderColor : helpers.getValueAtIndexOrDefault(dataset.borderColor, index, rectangleElementOptions.borderColor),
             borderWidth: custom.borderWidth ? custom.borderWidth : helpers.getValueAtIndexOrDefault(dataset.borderWidth, index, rectangleElementOptions.borderWidth),
@@ -265,6 +267,8 @@ Chart.controllers.timeline = Chart.controllers.bar.extend({
             label: me.chart.data.labels[index],
             datasetLabel: dataset.label
         };
+
+      console.log("current dataset index is: " + rectangle._datasetIndex);
 
         rectangle.draw = function() {
             var ctx = this._chart.ctx;
