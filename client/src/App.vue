@@ -2,8 +2,8 @@
   <div id="app">
     <section class="section">
       <div class="container">
-        <div class="columns">
-          <div class="column is-one-quarter">
+        <div class="columns is-gapless">
+          <div class="column is-one-third">
             <div class="fixed">
               <WeatherNav/>
             </div>

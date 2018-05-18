@@ -21,7 +21,16 @@
             </select>
           </div>
         </div>
+        <div class="columns is-centered">
+          <div class="column is-narrow">
+            <button class="button is-success"> X open </button>
+          </div>
+          <div class="column is-narrow">
+            <button class="button is-warning"> Y closed </button>
+          </div>
+        </div>
         <div class="columns level-left mini-info">
+          <div class="column status is-one-fifth heading">Status</div>
           <div class="column place is-two-thirds heading">Location</div>
           <div class="column time is-one-fifth heading">UTC</div>
           <div class="column mini-weather heading">Night</div>
@@ -30,7 +39,7 @@
     </li>
     <li v-for="site in sites">
       <router-link :to="`/${site.code}`" active-class="is-active">
-        <NavItem :site="site" @handleStatus="onHandleStatus" />
+        <NavItem :site="site"/>
       </router-link>
     </li>
   </ul>

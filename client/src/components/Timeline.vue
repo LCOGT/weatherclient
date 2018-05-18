@@ -210,7 +210,7 @@ export default {
         },
           {
             data: that.failureData,
-            backgroundColor: '#ff0000',
+            backgroundColor: '#A9A9A9', // gray
             yAxisID: 'y-axis-0',
             label: 'closed'
           }]

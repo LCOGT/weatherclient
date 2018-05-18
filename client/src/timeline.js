@@ -138,18 +138,8 @@ var TimelineScale = Chart.scaleService.getScaleConstructor('time').extend({
 
 
                 for (j = 0, jlen = data.length; j < jlen; ++j) {
-
-                  console.log('data[j][0]');
-                  console.log(data[j][0]);
-
                     timestamp0 = parse((data[j][0]).time, me);
                     timestamp1 = parse((data[j][1]).time, me);
-
-                    console.log("timestamp0");
-                    console.log(timestamp0);
-
-                    console.log("timestamp1");
-                    console.log(timestamp1);
 
                     if (timestamp0 > timestamp1) {
                         [timestamp0, timestamp1] = [timestamp1, timestamp0];
@@ -181,8 +171,6 @@ var TimelineScale = Chart.scaleService.getScaleConstructor('time').extend({
             timestamps.sort(sorter);
         }
 
-        console.log("timeopts");
-        console.log(timeOpts);
         min = parse(timeOpts.min, me) || min;
         max = parse(timeOpts.max, me) || max;
 
@@ -242,8 +230,6 @@ Chart.controllers.timeline = Chart.controllers.bar.extend({
         var dataset = me.getDataset();
 
         var data = dataset.data[index];
-        console.log("data in updateElement"); // this prints  Array of objects: {time: , reason: }
-        console.log(data);
 
 
         var custom = rectangle.custom || {};
@@ -256,7 +242,6 @@ Chart.controllers.timeline = Chart.controllers.bar.extend({
 
         rectangle._index = index;
 
-        console.log("index in updateElement() is: " + index);
         var ruler = me.getRuler(index);
 
         //var x = xScale.getPixelForValue(data[0]);
@@ -431,10 +416,7 @@ Chart.defaults.timeline = {
             barPercentage: 1.0,
             offset: true,
           autoskip: false,
-          //offset: false,
             gridLines: {
-                //display: true,
-                //offsetGridLines: true,
                 drawBorder: true,
                 drawTicks: true
             },
@@ -445,29 +427,13 @@ Chart.defaults.timeline = {
         callbacks: {
             title: function(tooltipItems, data) {
 
-              console.log("tooltip items");
-              console.log(tooltipItems);
-
-              console.log("data");
-              console.log(data);
-
                 var d = data.labels[tooltipItems[0].datasetIndex];
                 return d;
             },
             label: function(tooltipItem, data) {
-                console.log("tooltip item");
-                console.log(tooltipItem);
 
-                console.log("data");
-                console.log(data);
                 var d = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                // the first element in the array below is always undefined
-                //return [d[2], moment(d[0]).format('L LTS'), moment(d[1]).format('L LTS')];
-              console.log("d");
-              console.log(d);
-
-              //return [moment(d[0]).format('L LTS'), moment(d[1]).format('L LTS')];
-              return [d[0].time.format('L LTS') + ': ' + d[0].reason]
+              return [d[0].time.format('L LTS') + ' ' + (d[0].reason === '' ? 'Open' : d[0].reason) ]
             }
         }
     }
