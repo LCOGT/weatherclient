@@ -19,7 +19,7 @@
   import moment from 'moment';
   export default {
     name: 'NavItem',
-    props: ['site', 'sitestatus'],
+    props: ['site'],
     data: function() {
 
       return {site_code: this.site.code, site_status: '??'}

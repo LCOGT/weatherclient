@@ -8,10 +8,10 @@
           Elevation: {{ site.elevation }}m
           Location: {{ site.lat | ns}} {{ site.lng | ew }}
         </span>
-        <span title="sunset">sunset: {{ sunset }}</span>
+        <span title="sunset">sunset: {{ sunset.format('HH:mm') }}</span>
         <small>UTC</small>
         &nbsp;&nbsp;
-        <span title="sunrise">sunrise: {{ sunrise }}</span>
+        <span title="sunrise">sunrise: {{ sunrise.format('HH:mm') }}</span>
         <small>UTC</small>
       </p>
     </div>
@@ -365,24 +365,20 @@ export default {
 
       for (let days_difference = chart_end.diff(chart_start, 'days'); days_difference > -1; days_difference--)
       {
-        //console.log("days_difference: " + days_difference);
-        // get suntimes starting X amount of days ago, keep going until you get today's suntimes
         let suntime_for_day = suncalc.getTimes(moment.utc().subtract(days_difference, 'days'), this.site.lat, this.site.lng);
         suntimes_array.push(suntime_for_day);
       }
-
-      //console.log("suntimes array size: " + suntimes_array.length);
       return suntimes_array;
 
 
     }, // TODO: Rename these to last_sunrise/sunset
     sunrise(){
       // get last sunrise
-      return moment.utc((this.suntTimes.slice(-1)[0].sunrise)).format('HH:mm');
+      return moment.utc((this.suntTimes.slice(-1)[0].sunrise));
     },
     sunset(){
       // get last sunset
-      return moment.utc((this.suntTimes.slice(-1)[0].sunset)).format('HH:mm');
+      return moment.utc((this.suntTimes.slice(-1)[0].sunset));
     },
 
     start(){
@@ -417,15 +413,7 @@ export default {
     },
     parseMsg(msg)
     {
-      if (msg === "None" || msg === 'Unknown')
-      {
-        //document.getElementById('status-button').className = "button is-success";
-        return 'Open';
-      }
-      else {
-        //document.getElementById('status-button').className = 'button is-warning';
-        return msg;
-      }
+      return ((msg === "None" || msg === "Unknown") ? "Open" : msg);
     },
 
     cardinal(val){

@@ -409,10 +409,7 @@ Chart.defaults.timeline = {
             categoryPercentage: 0.8,
             barPercentage: 0.9,
             offset: true,
-          //offset: false,
             gridLines: {
-                //display: true,
-                //offsetGridLines: true,
                 drawBorder: true,
                 drawTicks: true
             },

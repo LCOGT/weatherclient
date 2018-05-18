@@ -30,7 +30,7 @@
     </li>
     <li v-for="site in sites">
       <router-link :to="`/${site.code}`" active-class="is-active">
-        <NavItem :site="site" @handleStatus="onHandleStatus" />
+        <NavItem :site="site"/>
       </router-link>
     </li>
   </ul>

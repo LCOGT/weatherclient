@@ -9,15 +9,15 @@
 // TODO: Remove unneeded props from this component
 export default {
   name: 'Timeline',
-  props: ['cdata', 'datumid', 'datumname','suntimes', 'timezone'],
+  props: ['cdata', 'datumid', 'datumname','suntimes'],
   computed: {
     chartData(){
 
       const open = this.cdata.filter(item => item.ValueString === 'true').map(
-        point => (moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'))
+        point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
       );
       const closed = this.cdata.filter(item => item.ValueString === 'false').map(
-        point => (moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'))
+        point => moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss')
       );
 
       let intervals = [];
@@ -102,7 +102,7 @@ export default {
           label: {
             enabled: true,
             position: "top",
-            content: (this.suntimes.length > 2) ? ("") : ("sunrise")
+            content: (this.suntimes.length > 2) ? "" : "sunrise"
           }
         };
 
@@ -116,7 +116,7 @@ export default {
          label: {
            enabled: true,
            position: "top",
-           content: (this.suntimes.length > 2) ? (""): ("sunset")
+           content: (this.suntimes.length > 2) ? "": "sunset"
          }
        };
 
