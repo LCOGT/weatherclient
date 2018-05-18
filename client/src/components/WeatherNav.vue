@@ -67,15 +67,7 @@
         this.$store.commit('setStart', this.start);
         this.$store.commit('setRange', '' + this.num + ' ' + this.unit);
       }
-    },
-    methods:
-      {
-        onHandleStatus(status)
-          {
-            console.log(status); // should print the status emitted by the site?
-            return status;
-          }
-      }
+    }
   };
 </script>
 <style lang="scss">
