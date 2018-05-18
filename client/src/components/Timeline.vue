@@ -9,18 +9,15 @@
 // TODO: Remove unneeded props from this component
 export default {
   name: 'Timeline',
-  props: ['cdata', 'datumid', 'datumname','suntimes', 'sundown', 'sunup', 'timezone', 'fdata'],
+  props: ['cdata', 'datumid', 'datumname','suntimes', 'timezone'],
   computed: {
     chartData(){
 
       const open = this.cdata.filter(item => item.ValueString === 'true').map(
-        point => ({
-          time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-        reason: ""})
+        point => (moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'))
       );
       const closed = this.cdata.filter(item => item.ValueString === 'false').map(
-        point => ({ time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-                    reason: "" })
+        point => (moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'))
       );
 
       let intervals = [];
@@ -28,67 +25,17 @@ export default {
         const start = open[i];
         let end = null;
         for (let j = 0; j < closed.length; j++) {
-          if(closed[j].time.isAfter(start.time)){
+          if(closed[j].isAfter(start)){
             end = closed[j];
             break;
           }
         }
         if(!end){
-         // end = moment.utc();
-          end = ({
-            time: moment.utc(),
-            reason: ""
-          });
+         end = moment.utc();
         }
         intervals.push([start, end]);
       }
-      console.log("open data intervals length: " + intervals.length);
       return intervals;
-    },
-    failureData() {
-      // TODO: Fix filter function duplication below
-      // example on cool tricks for the filter function: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
-      function retrieve_desired_values(error_object)
-      {
-        return ((error_object.ValueString !== 'None') && (error_object.ValueString !== 'Unknown'));
-      }
-
-      function remove_undesired_values(error_object)
-      {
-        return ((error_object.ValueString === 'None') || (error_object.ValueString === 'Unknown'));
-      }
-
-      const open = this.fdata.filter(retrieve_desired_values).map(
-        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-                   reason: point.ValueString})
-      );
-
-      const closed = this.fdata.filter(remove_undesired_values).map(
-        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-                   reason: point.ValueString})
-      );
-
-      let intervals = [];
-      for (let i = 0; i < open.length; i++) {
-        const start = open[i];
-        let end = null;
-        for (let j = 0; j < closed.length; j++) {
-          if (closed[j].time.isAfter(start.time)) {
-            end = closed[j];
-            break;
-          }
-        }
-        if (!end) {
-          end = ({
-            time: moment.utc(),
-            reason: ""
-          });
-        }
-        intervals.push([start, end]);
-      }
-    console.log("failure data intervals length: " + intervals.length);
-      return intervals;
-
     },
     sunrise(){
       // TODO: Fix code reuse here
@@ -96,14 +43,8 @@ export default {
 
       if (last_sunrise_obj.isAfter(moment().utc()))
       {
-        console.log("sunrise has yet to happen here");
         let next_last_sunrise_obj = moment(this.suntimes.slice(-2)[0].sunrise.valueOf()).utc();
         return next_last_sunrise_obj;
-      }
-
-      else
-      {
-        return last_sunrise_obj;
       }
 
       return last_sunrise_obj;
@@ -113,14 +54,8 @@ export default {
 
       if (last_sunset_obj.isAfter(moment().utc()))
       {
-        console.log("sunset has yet to happen here");
         let next_last_sunset_obj = moment(this.suntimes.slice(-2)[0].sunset.valueOf()).utc();
         return next_last_sunset_obj;
-      }
-
-      else
-      {
-        return last_sunset_obj;
       }
 
       return last_sunset_obj;
@@ -156,7 +91,6 @@ export default {
       for (let suntime_index = 0; suntime_index < this.suntimes.length; suntime_index++)
       {
         // TODO: Fix code duplication in object creation, maybe use Object.assign()?
-
         // only show the annotation label if its the '24 hour option' since they take up too much space
         let sunrise_annotation = {
           type: "line",
@@ -200,22 +134,16 @@ export default {
       data:{
         // from this example: view-source:http://www.chartjs.org/samples/latest/scales/time/line.html it seems like you
         // can just assign a background color to each dataset object?
-        labels: ['1', '2'],
+        labels: [''],
         datasets:[{
           data: that.chartData,
           backgroundColor: '#009ec366', // blue
-          label: "open",
-        },
-          {
-            data: that.failureData,
-            backgroundColor: '#ff0000', // red
-            label: "closed",
-          }]
+        }]
       },
       options: {
-        responsive: true, // resize chart when container element does
+        responsive: true, // resize chart when container element gets resized
         legend: {
-          display: true
+          display: false
         },
         annotation: {
           annotations: [{

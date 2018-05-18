@@ -3,7 +3,7 @@
     <section class="section">
       <div class="container">
         <div class="columns">
-          <div class="column is-one-third">
+          <div class="column is-one-quarter">
             <div class="fixed">
               <WeatherNav/>
             </div>

@@ -22,7 +22,6 @@
           </div>
         </div>
         <div class="columns level-left mini-info">
-          <div class="column status is-one-fifth heading">Open</div>
           <div class="column place is-two-thirds heading">Location</div>
           <div class="column time is-one-fifth heading">UTC</div>
           <div class="column mini-weather heading">Night</div>
@@ -41,7 +40,6 @@
   import moment from 'moment';
   import {sites} from '../config.js';
   import NavItem from './NavItem';
-  import {EventBus} from "../event-bus";
 
   export default {
     name: 'WeatherNav',

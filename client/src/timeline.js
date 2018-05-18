@@ -47,9 +47,6 @@ var TimelineConfig = {
  * @see http://momentjs.com/docs/#/parsing/
  */
 function momentify(value, options) {
-  console.log("momentify() recieved value = ");
-  console.log(value);
-
     var parser = options.parser;
     var format = options.parser || options.format;
 
@@ -79,10 +76,6 @@ function momentify(value, options) {
 }
 
 function parse(input, scale) {
-
-  console.log("parse() received input= " );
-  console.log(input);
-
     if (helpers.isNullOrUndef(input)) {
         return null;
     }
@@ -145,13 +138,9 @@ var TimelineScale = Chart.scaleService.getScaleConstructor('time').extend({
 
 
                 for (j = 0, jlen = data.length; j < jlen; ++j) {
-                  console.log("data[j][0]");
-                  console.log(data[j][0]);
+
                     timestamp0 = parse(data[j][0].time, me);
                     timestamp1 = parse(data[j][1].time, me);
-                  console.log("i = " + i);
-                 //timestamp0 = (i == 0) ? parse(data[j][0], me) : parse(data[j][0].time, me);
-                 //timestamp1 = (i == 0) ? parse(data[j][1], me) : parse(data[j][0].time, me);
 
                     if (timestamp0 > timestamp1) {
                         [timestamp0, timestamp1] = [timestamp1, timestamp0];
@@ -281,8 +270,6 @@ Chart.controllers.timeline = Chart.controllers.bar.extend({
             datasetLabel: dataset.label
         };
 
-      console.log("current dataset index is: " + rectangle._datasetIndex);
-
         rectangle.draw = function() {
             var ctx = this._chart.ctx;
             var vm = this._view;
@@ -400,10 +387,9 @@ Chart.defaults.timeline = {
             type: 'timeline',
             position: 'bottom',
             distribution: 'linear',
-            //categoryPercentage: 0.8,
-          categoryPercentage: 0,
-            //barPercentage: 0.9,
-          barPercentage: 0,
+            categoryPercentage: 0.8,
+
+            barPercentage: 0.9,
 
             gridLines: {
                 display: true,
@@ -420,12 +406,10 @@ Chart.defaults.timeline = {
             type: 'category',
             position: 'left',
             barThickness : 20,
-            //categoryPercentage: 0.8,
-            //barPercentage: 0.9,
-          categoryPercentage: 0,
-          barPercentage: 0,
-            //offset: true,
-          offset: false,
+            categoryPercentage: 0.8,
+            barPercentage: 0.9,
+            offset: true,
+          //offset: false,
             gridLines: {
                 //display: true,
                 //offsetGridLines: true,
@@ -435,28 +419,13 @@ Chart.defaults.timeline = {
         }]
     },
     tooltips: {
-        //enabled: false,
-      enabled: true,
+      enabled: false,
         callbacks: {
             title: function(tooltipItems, data) {
-              /*
-              console.log("data: ");
-              console.log(data);
-
-              console.log("tooltip items: ");
-              console.log(tooltipItems);
-              */
-
                 var d = data.labels[tooltipItems[0].datasetIndex]
                 return d;
             },
             label: function(tooltipItem, data) {
-
-              console.log("tooltip item ");
-              console.log(tooltipItem);
-
-              console.log("data");
-              console.log(data);
 
                 var d = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                 // the first element in the array below is always undefined

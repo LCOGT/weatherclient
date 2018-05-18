@@ -15,9 +15,8 @@
         <small>UTC</small>
       </p>
     </div>
+
     <div>
-
-
       <p class="level-heading heading">Current Values</p>
       <nav class="level">
         <div class="level-item has-text-centered">
@@ -64,7 +63,7 @@
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Sky Transparency </p>
+            <p class="heading">Sky Transparency %</p>
             <p class="title">{{ datums['Boltwood Transparency Measure'].data | latestVal }}</p>
           </div>
         </div>
@@ -85,10 +84,8 @@
         </a><span class="help is-pulled-right">All weather conditions are within acceptable range to allow observing.</span>
       </h4>
 
-      <p align="center"> <button type="button" id="status-button"> {{ datums['Weather Failure Reason'].data | latestMsg | parseMsg }}  </button> </p>
-
       <figure class="image">
-        <Timeline datumid="oktoopen" :suntimes="suntTimes" :sunup="sunrise" :sundown="sunset" :timezone="site.tz" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data" :fdata="datums['Weather Failure Reason'].data"></Timeline>
+        <Timeline datumid="oktoopen" :suntimes="suntTimes" :timezone="site.tz" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data"></Timeline>
       </figure>
     </section>
 
@@ -105,7 +102,7 @@
     </section>
 
     <section class="section section-xsmall ">
-      <h4 class="is-size-4">Sky Transparency*
+      <h4 class="is-size-4">Sky Transparency (computed)
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Transparency is a calculated value and is not measured directly.</span>
       </h4>
       <figure class="image">
@@ -209,11 +206,10 @@ import moment from 'moment';
 import {sites} from '../config';
 import TimeChart from './TimeChart';
 import Timeline from './Timeline';
-import {EventBus} from "../event-bus";
 
 export default {
   name: 'Site',
-  props: ['sitecode', 'status'],
+  props: ['sitecode'],
   components: {TimeChart, Timeline},
   data(){
     return {
@@ -319,7 +315,6 @@ export default {
         }
       }
       this.fetchDatums();
-      this.getStatus();
     },
     fetchDatums(){
       Object.keys(this.datums).forEach((key) => {
@@ -356,16 +351,6 @@ export default {
       }else{
         return this.datums[datumName].limit.default;
       }
-    },
-    getStatus()
-    {
-      /*
-        Trying to test the EventBus using a simple random value
-       */
-      var status = (Math.random() > 0.5) ? "Y" : "N";
-      console.log("status inside of getStatus() is " + status); // this works obviously
-      EventBus.$emit(this.site.code, status);
-      this.site.status = status;
     }
   },
   created(){
@@ -468,20 +453,6 @@ export default {
     }
   }
 };
-
-document.addEventListener("DOMContentLoaded", function(event) {
-  let button = document.getElementById("status-button");
-  let button_text = button.innerText;
-  if (button_text === "Open")
-  {
-    console.log('open');
-    button.className = 'button is-success';
-  }
-  else {
-    button.className = 'button is-danger';
-  }
-});
-
 
 </script>
 <style lang="scss">
