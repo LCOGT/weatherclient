@@ -425,8 +425,6 @@ Chart.defaults.timeline = {
             label: function(tooltipItem, data) {
 
                 var d = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                // the first element in the array below is always undefined
-                //return [d[2], moment(d[0]).format('L LTS'), moment(d[1]).format('L LTS')];
               return [moment(d[0]).format('L LTS'), moment(d[1]).format('L LTS')];
             }
         }
