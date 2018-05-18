@@ -41,6 +41,8 @@
   import moment from 'moment';
   import {sites} from '../config.js';
   import NavItem from './NavItem';
+  import {EventBus} from "../event-bus";
+
   export default {
     name: 'WeatherNav',
     components: {NavItem},

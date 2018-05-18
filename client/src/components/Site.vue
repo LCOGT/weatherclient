@@ -209,6 +209,8 @@ import moment from 'moment';
 import {sites} from '../config';
 import TimeChart from './TimeChart';
 import Timeline from './Timeline';
+import {EventBus} from "../event-bus";
+
 export default {
   name: 'Site',
   props: ['sitecode', 'status'],
@@ -317,6 +319,7 @@ export default {
         }
       }
       this.fetchDatums();
+      this.getStatus();
     },
     fetchDatums(){
       Object.keys(this.datums).forEach((key) => {
@@ -356,8 +359,13 @@ export default {
     },
     getStatus()
     {
+      /*
+        Trying to test the EventBus using a simple random value
+       */
       var status = (Math.random() > 0.5) ? "Y" : "N";
-      this.$emit('handleStatus', status);
+      console.log("status inside of getStatus() is " + status); // this works obviously
+      EventBus.$emit(this.site.code, status);
+      this.site.status = status;
     }
   },
   created(){
@@ -370,22 +378,15 @@ export default {
       let chart_start = this.start;
       let chart_end = this.end;
 
-      //console.log("chartstart: " + chart_start);
-      //console.log("chartend: " + chart_end);
-
-      //console.log("moment.utc().valueOf(): " + moment.utc().valueOf());
-
       for (let days_difference = chart_end.diff(chart_start, 'days'); days_difference > -1; days_difference--)
       {
-        console.log("days_difference: " + days_difference);
+        //console.log("days_difference: " + days_difference);
         // get suntimes starting X amount of days ago, keep going until you get today's suntimes
         let suntime_for_day = suncalc.getTimes(moment.utc().subtract(days_difference, 'days'), this.site.lat, this.site.lng);
         suntimes_array.push(suntime_for_day);
       }
 
-      console.log("suntimes array size: " + suntimes_array.length);
-
-      //return suncalc.getTimes(moment.utc().valueOf(), this.site.lat, this.site.lng);
+      //console.log("suntimes array size: " + suntimes_array.length);
       return suntimes_array;
 
 

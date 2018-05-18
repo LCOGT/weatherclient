@@ -1,7 +1,7 @@
 <template>
 <div class="navitem">
   <div class="columns level mini-info">
-    <div class="column status is-one-fifth"> {{ handleStatus }} </div>
+    <div class="column status is-one-fifth"> {{ site.status }} {{getSiteStatus }} </div>
     <div class="column place is-two-thirds">
       {{site.name}} {{ site.country }}
     </div>
@@ -19,9 +19,10 @@
 <script>
   import suncalc from 'suncalc';
   import moment from 'moment';
+  import {EventBus} from "../event-bus";
   export default {
     name: 'NavItem',
-    props: ['site'],
+    props: ['site', 'sitestatus'],
     computed: {
       mapimg(){
         return require(`../assets/maps/${this.site.code}.png`); // eslint-disable-line no-undef
@@ -32,6 +33,21 @@
       },
       offsetSign(){
         return this.site.tz >= 0 ? '+' : '';
+      },
+      getSiteStatus()
+      {
+        /*
+        Can't figure out how to retrieve the value from inside the async(?) callback, I can't figure out how to use
+        Promises here
+         */
+        var status_letter;
+        var that = this;
+        EventBus.$on(this.site.code, function(payLoad) {
+          console.log("payload is: " + payLoad); // this prints out the correct value, meaning it was received
+          status_letter = payLoad;
+          that.site.status = payLoad;
+        });
+        return this.site.status; /* this returns undefined because the earlier callback hasn't finished running yet? */
       }
     }
   };
