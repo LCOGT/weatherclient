@@ -93,7 +93,7 @@ function parse(input, scale) {
     return value.valueOf();
 }
 
-function arrayUnique(items) {
+function arrayUnique(items) { // TODO: Remove this function since it's not used?
     var hash = {};
     var out = [];
     var i, ilen, item;
@@ -139,8 +139,17 @@ var TimelineScale = Chart.scaleService.getScaleConstructor('time').extend({
 
                 for (j = 0, jlen = data.length; j < jlen; ++j) {
 
-                    timestamp0 = parse(data[j][0].time, me);
-                    timestamp1 = parse(data[j][1].time, me);
+                  console.log('data[j][0]');
+                  console.log(data[j][0]);
+
+                    timestamp0 = parse((data[j][0]).time, me);
+                    timestamp1 = parse((data[j][1]).time, me);
+
+                    console.log("timestamp0");
+                    console.log(timestamp0);
+
+                    console.log("timestamp1");
+                    console.log(timestamp1);
 
                     if (timestamp0 > timestamp1) {
                         [timestamp0, timestamp1] = [timestamp1, timestamp0];
@@ -151,6 +160,8 @@ var TimelineScale = Chart.scaleService.getScaleConstructor('time').extend({
                     if (max < timestamp1 && timestamp1) {
                         max = timestamp1;
                     }
+
+                    // this data[j][2] object is always undefined
                     datasets[i][j] = [timestamp0, timestamp1, data[j][2]];
                     if (timestampobj.hasOwnProperty(timestamp0)) {
                         timestampobj[timestamp0] = true;
@@ -170,6 +181,8 @@ var TimelineScale = Chart.scaleService.getScaleConstructor('time').extend({
             timestamps.sort(sorter);
         }
 
+        console.log("timeopts");
+        console.log(timeOpts);
         min = parse(timeOpts.min, me) || min;
         max = parse(timeOpts.max, me) || max;
 
@@ -204,7 +217,6 @@ Chart.controllers.timeline = Chart.controllers.bar.extend({
         x2 = vm.x + vm.width;
         y1 = vm.y;
         y2 = vm.y + vm.height;
-
         return {
             left : x1,
             top: y1,
@@ -228,7 +240,12 @@ Chart.controllers.timeline = Chart.controllers.bar.extend({
         var xScale = me.getScaleForId(meta.xAxisID);
         var yScale = me.getScaleForId(meta.yAxisID);
         var dataset = me.getDataset();
+
         var data = dataset.data[index];
+        console.log("data in updateElement"); // this prints  Array of objects: {time: , reason: }
+        console.log(data);
+
+
         var custom = rectangle.custom || {};
         var datasetIndex = me.index;
         var rectangleElementOptions = me.chart.options.elements.rectangle;
@@ -239,10 +256,13 @@ Chart.controllers.timeline = Chart.controllers.bar.extend({
 
         rectangle._index = index;
 
+        console.log("index in updateElement() is: " + index);
         var ruler = me.getRuler(index);
 
-        var x = xScale.getPixelForValue(data[0]);
-        var end = xScale.getPixelForValue(data[1]);
+        //var x = xScale.getPixelForValue(data[0]);
+        //var end = xScale.getPixelForValue(data[1]);
+      var x = xScale.getPixelForValue(data[0].time);
+      var end = xScale.getPixelForValue(data[1].time);
 
         var y = yScale.getPixelForValue(data, datasetIndex, datasetIndex);
         var width = end - x;
@@ -363,6 +383,7 @@ Chart.controllers.timeline = Chart.controllers.bar.extend({
 });
 
 
+
 Chart.defaults.timeline = {
 
     colorFunction: function() {
@@ -379,7 +400,7 @@ Chart.defaults.timeline = {
     },
 
     legend: {
-        display: false
+        display: true
     },
 
     scales: {
@@ -387,9 +408,8 @@ Chart.defaults.timeline = {
             type: 'timeline',
             position: 'bottom',
             distribution: 'linear',
-            categoryPercentage: 0.8,
-
-            barPercentage: 0.9,
+            categoryPercentage: 1.0,
+            barPercentage: 1.0,
 
             gridLines: {
                 display: true,
@@ -404,11 +424,13 @@ Chart.defaults.timeline = {
         }],
         yAxes: [{
             type: 'category',
+            id: 'y-axis-0',
             position: 'left',
             barThickness : 20,
-            categoryPercentage: 0.8,
-            barPercentage: 0.9,
+            categoryPercentage: 1.0,
+            barPercentage: 1.0,
             offset: true,
+          autoskip: false,
           //offset: false,
             gridLines: {
                 //display: true,
@@ -419,18 +441,33 @@ Chart.defaults.timeline = {
         }]
     },
     tooltips: {
-      enabled: false,
+      enabled: true,
         callbacks: {
             title: function(tooltipItems, data) {
-                var d = data.labels[tooltipItems[0].datasetIndex]
+
+              console.log("tooltip items");
+              console.log(tooltipItems);
+
+              console.log("data");
+              console.log(data);
+
+                var d = data.labels[tooltipItems[0].datasetIndex];
                 return d;
             },
             label: function(tooltipItem, data) {
+                console.log("tooltip item");
+                console.log(tooltipItem);
 
+                console.log("data");
+                console.log(data);
                 var d = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                 // the first element in the array below is always undefined
                 //return [d[2], moment(d[0]).format('L LTS'), moment(d[1]).format('L LTS')];
-              return [moment(d[0]).format('L LTS'), moment(d[1]).format('L LTS')];
+              console.log("d");
+              console.log(d);
+
+              //return [moment(d[0]).format('L LTS'), moment(d[1]).format('L LTS')];
+              return [d[0].time.format('L LTS') + ': ' + d[0].reason]
             }
         }
     }

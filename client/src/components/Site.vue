@@ -85,7 +85,7 @@
       </h4>
 
       <figure class="image">
-        <Timeline datumid="oktoopen" :suntimes="suntTimes" :timezone="site.tz" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data"></Timeline>
+        <Timeline datumid="oktoopen" :suntimes="suntTimes" :timezone="site.tz" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data" :fdata="datums['Weather Failure Reason'].data"></Timeline>
       </figure>
     </section>
 

@@ -9,15 +9,26 @@
 // TODO: Remove unneeded props from this component
 export default {
   name: 'Timeline',
-  props: ['cdata', 'datumid', 'datumname','suntimes', 'timezone'],
+  props: ['cdata', 'datumid', 'datumname','suntimes', 'timezone', 'fdata'],
   computed: {
     chartData(){
-
+      /*
       const open = this.cdata.filter(item => item.ValueString === 'true').map(
         point => (moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'))
       );
       const closed = this.cdata.filter(item => item.ValueString === 'false').map(
         point => (moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'))
+      );
+      */
+
+      const open = this.cdata.filter(item => item.ValueString === 'true').map(
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+                  reason: ''})
+      );
+
+      const closed = this.cdata.filter(item => item.ValueString === 'false').map(
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+                   reason: ''})
       );
 
       let intervals = [];
@@ -25,17 +36,74 @@ export default {
         const start = open[i];
         let end = null;
         for (let j = 0; j < closed.length; j++) {
-          if(closed[j].isAfter(start)){
+          //if(closed[j].isAfter(start))
+          if ((closed[j].time).isAfter(start.time))
+          {
             end = closed[j];
             break;
           }
         }
         if(!end){
-         end = moment.utc();
+         //end = moment.utc();
+          end = ({
+            time: moment.utc(),
+            reason: ''
+          });
         }
         intervals.push([start, end]);
       }
+      console.log("intervals from chartData(): ");
+      console.log(intervals);
       return intervals;
+    },
+    failureData()
+    { // TODO: Fix code duplication? Merge this function with chartData()
+
+      // TODO: There shouldnt be a need for two functions here since one is the inverse of the other
+      function failure_data_desired(error_json)
+      {
+        return ((error_json.ValueString !== 'Unknown') && (error_json.ValueString !== 'None'));
+      }
+
+      function failure_data_undesired(error_json)
+      {
+          return ((error_json.ValueString === 'Unknown') || (error_json.ValueString === 'None'));
+      }
+
+      const open = this.fdata.filter(failure_data_desired).map(
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+                  reason: point.ValueString })
+      );
+      const closed = this.fdata.filter(failure_data_undesired).map(
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+                  reason: point.ValueString })
+      );
+
+      let intervals = [];
+      for (let i = 0; i < open.length; i++) {
+        const start = open[i];
+        let end = null;
+        for (let j = 0; j < closed.length; j++) {
+          //if(closed[j].isAfter(start))
+          if ((closed[j].time).isAfter(start.time))
+          {
+            end = closed[j];
+            break;
+          }
+        }
+        if(!end){
+          //end = moment.utc();
+          end = ({
+            time: moment.utc(),
+            reason: 'End object'
+          });
+        }
+        intervals.push([start, end]);
+      }
+      console.log("intervals from failureData(): ");
+      console.log(intervals);
+      return intervals;
+
     },
     sunrise(){
       // TODO: Fix code reuse here
@@ -86,7 +154,6 @@ export default {
     },
     suntimes()
     {
-
       let suntimes_annotations = [];
       for (let suntime_index = 0; suntime_index < this.suntimes.length; suntime_index++)
       {
@@ -134,16 +201,24 @@ export default {
       data:{
         // from this example: view-source:http://www.chartjs.org/samples/latest/scales/time/line.html it seems like you
         // can just assign a background color to each dataset object?
-        labels: [''],
+        labels: ['',''],
         datasets:[{
           data: that.chartData,
           backgroundColor: '#009ec366', // blue
-        }]
+          yAxisID: 'y-axis-0',
+          label: 'open'
+        },
+          {
+            data: that.failureData,
+            backgroundColor: '#ff0000',
+            yAxisID: 'y-axis-0',
+            label: 'closed'
+          }]
       },
       options: {
         responsive: true, // resize chart when container element gets resized
         legend: {
-          display: false
+          display: true,
         },
         annotation: {
           annotations: [{
