@@ -315,6 +315,18 @@ export default {
         }
       }
       this.fetchDatums();
+      this.setStatus();
+    },
+    setStatus()
+    {
+      // Use mutations to store the state of each site.
+      // The datums are generated in the initialize method, so then you can just use the already-defined filter
+      // on them to parse, and from there use the Commit() pattern to mutate the store
+      var latest_status = this.$options.filters.latestMsg(this.datums['Weather Ok To Open'].data);
+
+      var status_letter = (latest_status === 'Open') ? 'Y': 'N';
+      // Example: this.$store.commit('setStart', this.start);
+      this.$store.commit('setSiteStatus', this.sitecode, status_letter);
     },
     fetchDatums(){
       Object.keys(this.datums).forEach((key) => {

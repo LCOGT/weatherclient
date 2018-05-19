@@ -27,6 +27,10 @@ export default new Vuex.Store({
     },
     setRange(state, text){
       state.range = text;
+    },
+    setSiteStatus(state, site_code, status)
+    {
+      state.site_code.status = status;
     }
   }
 });
