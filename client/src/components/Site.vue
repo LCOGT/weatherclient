@@ -102,6 +102,18 @@
     </section>
 
     <section class="section section-xsmall ">
+      <h4 class="is-size-4">Sky Temp
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Temperature is inferred from 8-14µm irradiance measure by a Boltwood II cloud sensor at the site's weather station.</span>
+
+      </h4>
+      <figure class="image">
+        <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" unit="C"
+                   :cdata="datums['Boltwood Sky Minus Ambient Temperature'].data">
+        </TimeChart>
+      </figure>
+    </section>
+
+    <section class="section section-xsmall ">
       <h4 class="is-size-4">Sky Transparency (computed)
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Transparency is a calculated value and is not measured directly.</span>
       </h4>
@@ -186,17 +198,7 @@
       </figure>
     </section>
 
-    <section class="section section-xsmall ">
-      <h4 class="is-size-4">Sky Temp
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Temperature is inferred from 8-14µm irradiance measure by a Boltwood II cloud sensor at the site's weather station.</span>
 
-      </h4>
-      <figure class="image">
-        <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" unit="C"
-                   :cdata="datums['Boltwood Sky Minus Ambient Temperature'].data">
-        </TimeChart>
-      </figure>
-    </section>
 
   </div>
 </template>
@@ -240,8 +242,10 @@ export default {
         'Weather Dew Point Value': {
           data: [],
           limit :
-            {
-
+            { // 2 degrees below the air temperature thresholds
+                default: -22,
+                coj: -6,
+                ogg: -2
             }
         },
         'Weather Humidity Value': {
@@ -275,7 +279,7 @@ export default {
         'Boltwood Transparency Measure': {
           data: [],
           limit: {
-            default: null
+            default: 75 //temporary, change later
           }
         },
 

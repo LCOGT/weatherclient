@@ -405,7 +405,7 @@ Chart.defaults.timeline = {
         yAxes: [{
             type: 'category',
             position: 'left',
-            barThickness : 20,
+            barThickness : 40,
             categoryPercentage: 0.8,
             barPercentage: 0.9,
             offset: true,

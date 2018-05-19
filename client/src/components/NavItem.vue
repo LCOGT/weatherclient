@@ -20,12 +20,6 @@
   export default {
     name: 'NavItem',
     props: ['site'],
-    data: function() {
-
-      return {site_code: this.site.code, site_status: '??'}
-
-    },
-
     computed: {
       mapimg(){
         return require(`../assets/maps/${this.site.code}.png`); // eslint-disable-line no-undef
