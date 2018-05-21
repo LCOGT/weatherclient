@@ -326,6 +326,7 @@ export default {
 
       var status_letter = (latest_status === 'Open') ? 'Y': 'N';
       // Example: this.$store.commit('setStart', this.start);
+      //sthis.site.status = status_letter;
       this.$store.commit('setSiteStatus', this.sitecode, status_letter);
     },
     fetchDatums(){
