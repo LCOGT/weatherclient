@@ -18,6 +18,7 @@
               <option value="24:hours">24 Hours</option>
               <option value="2:days">2 Days</option>
               <option value="7:days">7 Days</option>
+              <option value="28:days">28 days</option>
             </select>
           </div>
         </div>
