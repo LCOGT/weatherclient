@@ -8,7 +8,7 @@
               <WeatherNav/>
             </div>
           </div>
-          <div class="column">
+          <div class="column is-pulled-right">
             <router-view/>
           </div>
         </div>

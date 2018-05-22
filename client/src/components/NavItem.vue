@@ -41,5 +41,6 @@
   }
   .mini-info {
     margin-right: 0rem;
+    padding-right: 3rem;
   }
 </style>
