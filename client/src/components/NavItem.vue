@@ -1,7 +1,7 @@
 <template>
 <div class="navitem">
   <div class="columns level mini-info">
-    <div class="column status is-one-fifth">{{site_status}}</div>
+    <div class="column status is-one-fifth"> {{site_status}} </div>
     <div class="column place is-two-thirds">
       {{site.name}} {{ site.country }}
     </div>
@@ -20,7 +20,7 @@
   import moment from 'moment';
   export default {
     name: 'NavItem',
-    props: ['site', 'site_status', 'sitestatus2'],
+    props: ['site', 'site_status'],
     computed: {
       mapimg(){
         return require(`../assets/maps/${this.site.code}.png`); // eslint-disable-line no-undef

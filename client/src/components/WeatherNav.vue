@@ -24,7 +24,7 @@
         </div>
 
         <div class="columns level-left mini-info">
-          <div class="column status is-one-fifth heading">Status</div>
+          <div class="column status is-one-fifth heading">Open?</div>
           <div class="column place is-two-thirds heading">Location</div>
           <div class="column time is-one-fifth heading">UTC</div>
           <div class="column mini-weather heading">Night</div>
@@ -62,18 +62,6 @@
         sites: sites,
         timeRange: '24:hours',
         site_statuses: {}
-        /*
-        site_statuses: {
-          'coj': '?',
-          'cpt': '?',
-          'tfn': '?',
-          'lsc': '?',
-          'elp': '?',
-          'bpl': '?',
-          'sqa': '?',
-          'ogg': '?'
-        }
-        */
       };
     },
     methods:
@@ -81,28 +69,28 @@
         fetch_site_status(site_code, start, end, callback)
         { // will return a status letter?
           let request = new XMLHttpRequest();
-          console.log("fetch_site_status called");
-          console.log("site_code: " + site_code);
+          //console.log("fetch_site_status called");
+          //console.log("site_code: " + site_code);
           let url = 'https://weather-api.lco.global/query?site=' + site_code + '&datumname=' + 'Weather Ok To Open' + '&agg=False' + '&start=' + start.format() + '&end=' + end.format();
-          console.log("making request to URL:" + url);
+          //console.log("making request to URL:" + url);
           request.open('GET', url, false);
           request.onload = () => {
-            console.log("on load event starting");
+           // console.log("on load event starting");
             if (request.status >= 200 && request.status < 400)
             {
-              console.log("retrieved response from fetch_site_status");
+              //console.log("retrieved response from fetch_site_status");
               callback(JSON.parse(request.responseText));
 
             }
             else
             {
-              console.log("error, couldn't receive response");
+              //console.log("error, couldn't receive response");
             }
           };
 
           request.onerror = function()
           {
-            console.log("A connection error occurred.");
+            //console.log("A connection error occurred.");
           };
 
           request.send();
@@ -110,33 +98,34 @@
 
         status(site_code)
         {
-          console.log("in status() of methods");
-          console.log("site_code: " + site_code);
-          console.log(this.start);
-          console.log(this.$store.getters.end);
+          //console.log("in status() of methods");
+          //console.log("site_code: " + site_code);
+          //console.log(this.start);
+          //console.log(this.$store.getters.end);
 
           var my_status;
           this.fetch_site_status(site_code, this.start, this.$store.getters.end, (resp) =>
           {
-             console.log("callback beginning");
-             console.log("response: " );
-             console.log(resp);
+             //console.log("callback beginning");
+             //console.log("response: " );
+            // console.log(resp);
             if (resp.length < 1)
             {
               return '?';
             }
             else {
               var last_val = resp[resp.length - 1].ValueString;
-              console.log("last value was: " + last_val);
+              //console.log("last value was: " + last_val);
+              // TODO: Refactor this into a global filter? We use this logic a lot in different places
               var last_letter = (last_val === 'true' || last_val === "Unknown") ? 'Y' : 'N';
-              console.log("last_letter = " + last_letter);
+             // console.log("last_letter = " + last_letter);
               this.site_statuses[site_code] = last_letter;
               my_status = last_letter;
-              return last_letter;
+              return last_letter; // this line probably isnt needed since returning from a callback here is useless
             }
           });
-          console.log("returning from status() of methods");
-          console.log("my status = " + my_status);
+          //console.log("returning from status() of methods");
+         // console.log("my status = " + my_status);
           return my_status;
         }
       }
