@@ -150,13 +150,13 @@
     </section>
 
     <section class="section section-xsmall">
-      <h4 class="is-size-4">Dew Point
+      <h4 class="is-size-4">Air temperature minus dewpoint
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Dew Point measured by device telemetry.</span>
       </h4>
       <figure class="image">
-        <TimeChart datumid="dewpoint" datumname="Weather Dew Point Value" unit="C"
-                   :cdata="datums['Weather Dew Point Value'].data"
-                   :limit="limit('Weather Dew Point Value')">
+        <TimeChart datumid="ATminusDP" datumname="Air Temperature minus Dewpoint" unit="C"
+                   :cdata="datumDifference(datums['Weather Air Temperature Value'].data, datums['Weather Dew Point Value'].data)"
+                   :limit="2">
         </TimeChart>
       </figure>
     </section>
@@ -357,6 +357,12 @@ export default {
     },
     limit(datumName){
 
+      if (datumName == 'Weather Air Temperature Value')
+      {
+        console.log("WAT");
+        console.log(this.datums[datumName].data);
+      }
+
       if (datumName == 'Boltwood Transparency Measure')
       { // this datum has a dynamically changing threshold
           let latest_value = this.$options.filters.latestVal(this.datums['Boltwood Transparency Close Threshold'].data);
@@ -369,6 +375,30 @@ export default {
       }else{
         return this.datums[datumName].limit.default;
       }
+    },
+    datumDifference(datum1, datum2)
+    {
+      // Given two datum names, create a new datum object where each Value is their difference
+      // Each packet looks like: {Timestamp, Value, ValueString}
+      console.log("datum1");
+      console.log(datum1);
+
+      console.log("datum2");
+      console.log(datum2);
+      let datum_difference = [];
+      for (let packet_number = 0; packet_number < Math.min(datum1.length, datum2.length) ; packet_number++)
+      {
+        console.log("packet_number: " + packet_number);
+        let packet = {};
+          packet['TimeStamp'] = datum1[packet_number].TimeStamp;
+          packet['Value'] = Math.abs(datum1[packet_number].Value - datum2[packet_number].Value);
+          console.log("current packet object: " + packet);
+          datum_difference.push(packet);
+
+      }
+      console.log("datum difference");
+      console.log(datum_difference);
+      return datum_difference;
     }
   },
   created(){
