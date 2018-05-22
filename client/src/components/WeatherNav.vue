@@ -21,14 +21,7 @@
             </select>
           </div>
         </div>
-        <div class="columns is-centered">
-          <div class="column is-narrow">
-            <button class="button is-success"> X open </button>
-          </div>
-          <div class="column is-narrow">
-            <button class="button is-warning"> Y closed </button>
-          </div>
-        </div>
+
         <div class="columns level-left mini-info">
           <div class="column status is-one-fifth heading">Status</div>
           <div class="column place is-two-thirds heading">Location</div>
@@ -43,6 +36,16 @@
       </router-link>
     </li>
   </ul>
+
+  <div class="columns is-centered">
+    <div class="column is-narrow">
+      <button class="button is-success"> {{numOpened}}  open </button>
+    </div>
+    <div class="column is-narrow">
+      <button class="button is-warning"> {{numClosed}} closed </button>
+    </div>
+  </div>
+
 </aside>
 </template>
 <script>
@@ -126,7 +129,7 @@
               console.log("last value was: " + last_val);
               var last_letter = (last_val === 'true' || last_val === "Unknown") ? 'Y' : 'N';
               console.log("last_letter = " + last_letter);
-              //this.site_statuses[site_code] = last_letter;
+              this.site_statuses[site_code] = last_letter;
               my_status = last_letter;
               return last_letter;
             }
@@ -146,6 +149,31 @@
       },
       start() {
         return moment.utc().subtract(this.num, this.unit);
+      },
+      // TODO: Refactor these two methods
+      numOpened()
+      {
+        var opened = 0;
+        for (var prop in this.site_statuses)
+        {
+          if (this.site_statuses[prop] === 'Y')
+          {
+            opened++;
+          }
+        }
+        return opened;
+      },
+      numClosed()
+      {
+        var closed = 0;
+        for (var prop in this.site_statuses)
+        {
+          if (this.site_statuses[prop] === 'N')
+          {
+            closed++;
+          }
+        }
+        return closed;
       }
     },
     watch:{
