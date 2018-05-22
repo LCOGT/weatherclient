@@ -295,6 +295,12 @@ export default {
           limit: {
             default: null
           }
+        },
+        'Boltwood Transparency Close Threshold': {
+          data: [],
+          limit: {
+            default: null
+          }
         }
       }
     };
@@ -350,6 +356,14 @@ export default {
       request.send();
     },
     limit(datumName){
+
+      if (datumName == 'Boltwood Transparency Measure')
+      { // this datum has a dynamically changing threshold
+          let latest_value = this.$options.filters.latestVal(this.datums['Boltwood Transparency Close Threshold'].data);
+          console.log("latest value = " + latest_value);
+          return latest_value;
+      }
+
       if(this.datums[datumName].limit.hasOwnProperty(this.site.code)){
         return this.datums[datumName].limit[this.site.code];
       }else{
@@ -398,6 +412,7 @@ export default {
   },
 
   filters: {
+    // TODO: Refactor all of the LATEST filters
     latestVal(values){
       if (!values || values.length < 1) return 0;
       let val = values[values.length - 1].Value;
