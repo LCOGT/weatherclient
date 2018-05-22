@@ -1,7 +1,7 @@
 <template>
 <div class="navitem">
   <div class="columns level mini-info">
-    <div class="column status is-one-fifth"> {{ site_status }} {{ siteStatus}}</div>
+    <div class="column status is-one-fifth">{{site_status}}</div>
     <div class="column place is-two-thirds">
       {{site.name}} {{ site.country }}
     </div>
@@ -20,15 +20,7 @@
   import moment from 'moment';
   export default {
     name: 'NavItem',
-    props: ['site', 'sitestatus'],
-    data: function() {
-
-      console.log("in data()");
-      console.log("site code: " + this.site.code);
-    return {
-      site_status: this.$store.getters.site_status[this.site.code]
-    }
-    },
+    props: ['site', 'site_status', 'sitestatus2'],
     computed: {
       mapimg(){
         return require(`../assets/maps/${this.site.code}.png`); // eslint-disable-line no-undef
@@ -39,13 +31,6 @@
       },
       offsetSign(){
         return this.site.tz >= 0 ? '+' : '';
-      },
-      siteStatus()
-      {
-        // this is the same as the function in data but either one should work?
-        console.log("in siteStatus() computed");
-        console.log("site code = " + this.site.code);
-        return this.$store.getters.site_status(this.site.code);
       }
     }
   };

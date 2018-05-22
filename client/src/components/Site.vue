@@ -347,6 +347,8 @@ export default {
       request.onload = () => {
         if (request.status >=200 && request.status < 400) {
           cb(JSON.parse(request.responseText));
+          if (datumName == 'Weather Ok To Open')
+          {console.log(JSON.parse(request.responseText));}
         } else {
           console.log('error:' + request.responseText);
         }

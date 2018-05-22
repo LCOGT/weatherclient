@@ -39,7 +39,7 @@
     </li>
     <li v-for="site in sites">
       <router-link :to="`/${site.code}`" active-class="is-active">
-        <NavItem :site="site"/>
+        <NavItem :site_status="status(site.code)" :site="site"/>
       </router-link>
     </li>
   </ul>
@@ -53,21 +53,98 @@
   export default {
     name: 'WeatherNav',
     components: {NavItem},
-    props: ['sitestatus'],
     data: function(){
       return {
         sites: sites,
-        timeRange: '24:hours'
+        timeRange: '24:hours',
+        site_statuses: {}
+        /*
+        site_statuses: {
+          'coj': '?',
+          'cpt': '?',
+          'tfn': '?',
+          'lsc': '?',
+          'elp': '?',
+          'bpl': '?',
+          'sqa': '?',
+          'ogg': '?'
+        }
+        */
       };
     },
-    computed:{
-      num(){
+    methods:
+      {
+        fetch_site_status(site_code, start, end, callback)
+        { // will return a status letter?
+          let request = new XMLHttpRequest();
+          console.log("fetch_site_status called");
+          console.log("site_code: " + site_code);
+          let url = 'https://weather-api.lco.global/query?site=' + site_code + '&datumname=' + 'Weather Ok To Open' + '&agg=False' + '&start=' + start.format() + '&end=' + end.format();
+          console.log("making request to URL:" + url);
+          request.open('GET', url, false);
+          request.onload = () => {
+            console.log("on load event starting");
+            if (request.status >= 200 && request.status < 400)
+            {
+              console.log("retrieved response from fetch_site_status");
+              callback(JSON.parse(request.responseText));
+
+            }
+            else
+            {
+              console.log("error, couldn't receive response");
+            }
+          };
+
+          request.onerror = function()
+          {
+            console.log("A connection error occurred.");
+          };
+
+          request.send();
+        },
+
+        status(site_code)
+        {
+          console.log("in status() of methods");
+          console.log("site_code: " + site_code);
+          console.log(this.start);
+          console.log(this.$store.getters.end);
+
+          var my_status;
+          this.fetch_site_status(site_code, this.start, this.$store.getters.end, (resp) =>
+          {
+             console.log("callback beginning");
+             console.log("response: " );
+             console.log(resp);
+            if (resp.length < 1)
+            {
+              return '?';
+            }
+            else {
+              var last_val = resp[resp.length - 1].ValueString;
+              console.log("last value was: " + last_val);
+              var last_letter = (last_val === 'true' || last_val === "Unknown") ? 'Y' : 'N';
+              console.log("last_letter = " + last_letter);
+              //this.site_statuses[site_code] = last_letter;
+              my_status = last_letter;
+              return last_letter;
+            }
+          });
+          console.log("returning from status() of methods");
+          console.log("my status = " + my_status);
+          return my_status;
+        }
+      }
+  ,
+    computed: {
+      num() {
         return Number(this.timeRange.split(':')[0])
       },
-      unit(){
+      unit() {
         return this.timeRange.split(':')[1]
       },
-      start(){
+      start() {
         return moment.utc().subtract(this.num, this.unit);
       }
     },
@@ -76,15 +153,7 @@
         this.$store.commit('setStart', this.start);
         this.$store.commit('setRange', '' + this.num + ' ' + this.unit);
       }
-    },
-    methods:
-      {
-        onHandleStatus(status)
-          {
-            console.log(status); // should print the status emitted by the site?
-            return status;
-          }
-      }
+    }
   };
 </script>
 <style lang="scss">
