@@ -22,7 +22,6 @@
             </select>
           </div>
         </div>
-
         <div class="columns level-left mini-info">
           <div class="column status is-one-fifth heading">Open?</div>
           <div class="column place is-two-thirds heading">Location</div>
@@ -40,10 +39,13 @@
 
   <div class="columns is-centered">
     <div class="column is-narrow">
-      <button class="button is-success"> {{numOpened}}  open </button>
+      <button class="button is-success"> {{numOpenedandClosed[0]}}  open </button>
     </div>
     <div class="column is-narrow">
-      <button class="button is-warning"> {{numClosed}} closed </button>
+      <button class="button is-warning"> {{numOpenedandClosed[1]}} closed </button>
+    </div>
+    <div class="column is-narrow">
+      <button class="button is-danger"> {{numOpenedandClosed[2] }} unknown</button>
     </div>
   </div>
 
@@ -67,30 +69,35 @@
     methods:
       {
         fetch_site_status(site_code, start, end, callback)
-        { // will return a status letter?
+        /**
+         * Returns a letter (Y or N or ?) corresponding to the site status.
+         * @param site_code : The 3-letter side code.
+         * @param start: Query start, determined by start property
+         * @param end: query end, determined by end property
+         * @param callback: Handles the response received from Weather API
+         */
+        {
           let request = new XMLHttpRequest();
           //console.log("fetch_site_status called");
           //console.log("site_code: " + site_code);
-          let url = 'https://weather-api.lco.global/query?site=' + site_code + '&datumname=' + 'Weather Ok To Open' + '&agg=False' + '&start=' + start.format() + '&end=' + end.format();
-          //console.log("making request to URL:" + url);
+          let url = 'https://weather-api.lco.global/query?site=' + site_code + '&datumname=' + 'Weather Ok To Open' +
+            '&agg=False' + '&start=' + start.format() + '&end=' + end.format();
           request.open('GET', url, false);
           request.onload = () => {
-           // console.log("on load event starting");
             if (request.status >= 200 && request.status < 400)
             {
-              //console.log("retrieved response from fetch_site_status");
               callback(JSON.parse(request.responseText));
 
             }
             else
             {
-              //console.log("error, couldn't receive response");
+              console.log("error, couldn't receive response");
             }
           };
 
           request.onerror = function()
           {
-            //console.log("A connection error occurred.");
+            console.log("A connection error occurred.");
           };
 
           request.send();
@@ -98,34 +105,25 @@
 
         status(site_code)
         {
-          //console.log("in status() of methods");
-          //console.log("site_code: " + site_code);
-          //console.log(this.start);
-          //console.log(this.$store.getters.end);
-
+          /**
+           * Calls the internal fetch_site_status function.
+           */
           var my_status;
           this.fetch_site_status(site_code, this.start, this.$store.getters.end, (resp) =>
           {
-             //console.log("callback beginning");
-             //console.log("response: " );
-            // console.log(resp);
-            if (resp.length < 1)
+            if (!resp || resp.length < 1)
             {
-              return '?';
+              this.site_statuses[site_code] = '?';
+              my_status = '?';
             }
             else {
               var last_val = resp[resp.length - 1].ValueString;
-              //console.log("last value was: " + last_val);
-              // TODO: Refactor this into a global filter? We use this logic a lot in different places
-              var last_letter = (last_val === 'true' || last_val === "Unknown") ? 'Y' : 'N';
-             // console.log("last_letter = " + last_letter);
+              var last_letter = this.$options.filters.statusMsgToLetter(last_val);
+
               this.site_statuses[site_code] = last_letter;
               my_status = last_letter;
-              return last_letter; // this line probably isnt needed since returning from a callback here is useless
             }
           });
-          //console.log("returning from status() of methods");
-         // console.log("my status = " + my_status);
           return my_status;
         }
       }
@@ -140,30 +138,29 @@
       start() {
         return moment.utc().subtract(this.num, this.unit);
       },
-      // TODO: Refactor these two methods
-      numOpened()
+      numOpenedandClosed()
       {
-        var opened = 0;
-        for (var prop in this.site_statuses)
+        let opened = 0;
+        let closed = 0;
+        let unknown = 0;
+        for (var property in this.site_statuses)
         {
-          if (this.site_statuses[prop] === 'Y')
+          if (this.site_statuses[property] === 'Y')
           {
             opened++;
           }
-        }
-        return opened;
-      },
-      numClosed()
-      {
-        var closed = 0;
-        for (var prop in this.site_statuses)
-        {
-          if (this.site_statuses[prop] === 'N')
+          else if (this.site_statuses[property] === 'N')
           {
             closed++;
           }
+          else if (this.site_statuses[property] === '?')
+          {
+            unknown++;
+          }
         }
-        return closed;
+
+        return ([opened, closed, unknown]);
+
       }
     },
     watch:{

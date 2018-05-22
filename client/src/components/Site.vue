@@ -8,10 +8,10 @@
           Elevation: {{ site.elevation }}m
           Location: {{ site.lat | ns}} {{ site.lng | ew }}
         </span>
-        <span title="sunset">sunset: {{ sunset }}</span>
+        <span title="sunset">sunset: {{ last_sunset }}</span>
         <small>UTC</small>
         &nbsp;&nbsp;
-        <span title="sunrise">sunrise: {{ sunrise }}</span>
+        <span title="sunrise">sunrise: {{ last_sunrise }}</span>
         <small>UTC</small>
       </p>
     </div>
@@ -22,55 +22,55 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Air Temp &deg;C</p>
-            <p class="title">{{ datums['Weather Air Temperature Value'].data | latestVal }}</p>
+            <p class="title">{{ this.$options.filters.latestResult(datums['Weather Air Temperature Value'].data, 'Value')}}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Pressure mbar</p>
-            <p class="title">{{ datums['Weather Barometric Pressure Value'].data | latestVal }}</p>
+            <p class="title">{{ this.$options.filters.latestResult(datums['Weather Barometric Pressure Value'].data, 'Value') }}</p>
           </div>
         </div>
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">Dewpoint &deg;C</p>
-          <p class="title">{{ datums['Weather Dew Point Value'].data | latestVal }}</p>
+          <p class="title">{{ this.$options.filters.latestResult(datums['Weather Dew Point Value'].data, 'Value') }}</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
           <div>
             <p class="heading">Humidity %</p>
-            <p class="title">{{ datums['Weather Humidity Value'].data | latestVal }}</p>
+            <p class="title">{{ this.$options.filters.latestResult(datums['Weather Humidity Value'].data, 'Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Wind meters per sec</p>
-            <p class="title">{{ datums['Weather Wind Speed Value'].data | latestVal }}</p>
+            <p class="title">{{ this.$options.filters.latestResult(['Weather Wind Speed Value'].data, 'Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Wind &deg;E of N</p>
-            <p class="title">{{ datums['Weather Wind Direction Value'].data | latestVal }}&deg;</p>
+            <p class="title">{{ this.$options.filters.latestResult(['Weather Wind Direction Value'].data, 'Value') }}&deg;</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Brightness mag/arcsec<sup>^</sup>2</p>
-            <p class="title">{{ datums['Weather Sky Brightness Value'].data | latestVal }}</p>
+            <p class="title">{{ this.$options.filters.latestResult(['Weather Sky Brightness Value'].data, 'Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Sky Transparency %</p>
-            <p class="title">{{ datums['Boltwood Transparency Measure'].data | latestVal }}</p>
+            <p class="title">{{ this.$options.filters.latestResult(['Boltwood Transparency Measure'].data, 'Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Sky Temp &deg;C</p>
-            <p class="title">{{ datums['Boltwood Sky Minus Ambient Temperature'].data | latestVal }}</p>
+            <p class="title">{{ this.$options.filters.latestResult(['Boltwood Sky Minus Ambient Temperature'].data, 'Value') }}</p>
           </div>
         </div>
       </nav>
@@ -315,19 +315,6 @@ export default {
         }
       }
       this.fetchDatums();
-      this.setStatus();
-    },
-    setStatus()
-    {
-      // Use mutations to store the state of each site.
-      // The datums are generated in the initialize method, so then you can just use the already-defined filter
-      // on them to parse, and from there use the Commit() pattern to mutate the store
-      var latest_status = this.$options.filters.latestMsg(this.datums['Weather Ok To Open'].data);
-
-      var status_letter = (latest_status === 'Open') ? 'Y': 'N';
-      // Example: this.$store.commit('setStart', this.start);
-      //sthis.site.status = status_letter;
-      this.$store.commit('setSiteStatus', this.sitecode, status_letter);
     },
     fetchDatums(){
       Object.keys(this.datums).forEach((key) => {
@@ -380,23 +367,16 @@ export default {
 
       for (let days_difference = chart_end.diff(chart_start, 'days'); days_difference > -1; days_difference--)
       {
-        //console.log("days_difference: " + days_difference);
         // get suntimes starting X amount of days ago, keep going until you get today's suntimes
         let suntime_for_day = suncalc.getTimes(moment.utc().subtract(days_difference, 'days'), this.site.lat, this.site.lng);
         suntimes_array.push(suntime_for_day);
       }
-
-      //console.log("suntimes array size: " + suntimes_array.length);
       return suntimes_array;
-
-
-    }, // TODO: Rename these to last_sunrise/sunset
-    sunrise(){
-      // get last sunrise
+    },
+    last_sunrise(){
       return moment.utc((this.suntTimes.slice(-1)[0].sunrise)).format('HH:mm');
     },
-    sunset(){
-      // get last sunset
+    last_sunset(){
       return moment.utc((this.suntTimes.slice(-1)[0].sunset)).format('HH:mm');
     },
 
@@ -413,33 +393,25 @@ export default {
   },
 
   filters: {
-    latestVal(values){
-      if (!values || values.length < 1) return 0;
-      let val = values[values.length - 1].Value;
-      return val.toFixed(1);
-    },
-    // needed for string values?
-    latestMsg(messages)
+    latestResult(values, prop)
     {
-      if (!messages || messages.length < 1)
+      /**
+       * @param values: An array of objects, where each object
+       * has a Timestamp and either a Value or a ValueString
+       * @param property: The property you wish to check for -- either Value or ValueString
+       */
+
+      if (prop === 'Value')
       {
-        return '';
+        if (!values || values.length < 1) return 0;
+        let val = values[values.length - 1][prop];
+        return val.toFixed(1);
       }
 
-      else{
-        return messages[messages.length - 1].ValueString;
-      }
-    },
-    parseMsg(msg)
-    {
-      if (msg === "None" || msg === 'Unknown')
+      else if (prop === 'ValueString')
       {
-        //document.getElementById('status-button').className = "button is-success";
-        return 'Open';
-      }
-      else {
-        //document.getElementById('status-button').className = 'button is-warning';
-        return msg;
+        if (!values || values.length < 1) return '';
+        return values[values.length - 1][prop];
       }
     },
 

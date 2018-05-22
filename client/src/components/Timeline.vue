@@ -5,80 +5,15 @@
   import Chart from 'chart.js';
   import moment from 'moment';
   import '../timeline.js';
-  // TODO: Use proper method documentation format for JS
-// TODO: Remove unneeded props from this component
 export default {
   name: 'Timeline',
   props: ['cdata', 'datumid', 'datumname','suntimes', 'timezone', 'fdata'],
-  computed: {
-    chartData(){
-      /*
-      const open = this.cdata.filter(item => item.ValueString === 'true').map(
-        point => (moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'))
-      );
-      const closed = this.cdata.filter(item => item.ValueString === 'false').map(
-        point => (moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'))
-      );
-      */
-
-      const open = this.cdata.filter(item => item.ValueString === 'true').map(
-        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-                  reason: ''})
-      );
-
-      const closed = this.cdata.filter(item => item.ValueString === 'false').map(
-        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-                   reason: ''})
-      );
-
-      let intervals = [];
-      for (let i = 0; i < open.length; i++) {
-        const start = open[i];
-        let end = null;
-        for (let j = 0; j < closed.length; j++) {
-          //if(closed[j].isAfter(start))
-          if ((closed[j].time).isAfter(start.time))
-          {
-            end = closed[j];
-            break;
-          }
-        }
-        if(!end){
-         //end = moment.utc();
-          end = ({
-            time: moment.utc(),
-            reason: ''
-          });
-        }
-        intervals.push([start, end]);
-      }
-      console.log("intervals from chartData(): ");
-      console.log(intervals);
-      return intervals;
-    },
-    failureData()
-    { // TODO: Fix code duplication? Merge this function with chartData()
-
-      // TODO: There shouldnt be a need for two functions here since one is the inverse of the other
-      function failure_data_desired(error_json)
-      {
-        return ((error_json.ValueString !== 'Unknown') && (error_json.ValueString !== 'None'));
-      }
-
-      function failure_data_undesired(error_json)
-      {
-          return ((error_json.ValueString === 'Unknown') || (error_json.ValueString === 'None'));
-      }
-
-      const open = this.fdata.filter(failure_data_desired).map(
-        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-                  reason: point.ValueString })
-      );
-      const closed = this.fdata.filter(failure_data_undesired).map(
-        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-                  reason: point.ValueString })
-      );
-
+  methods: {
+    computeIntervals(open, closed)
+    { /**
+          * @param {open} open -- an Object that has two properties, time (a moment object), and reason (string)
+     * @param {closed} an Object that has two properties, time (a moment object), and reason (string)
+        */
       let intervals = [];
       for (let i = 0; i < open.length; i++) {
         const start = open[i];
@@ -100,13 +35,94 @@ export default {
         }
         intervals.push([start, end]);
       }
-      console.log("intervals from failureData(): ");
+      return intervals;
+    }
+  },
+  computed: {
+    chartData(){
+      const open = this.cdata.filter(item => item.ValueString === 'true').map(
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+                  reason: ''})
+      );
+
+      const closed = this.cdata.filter(item => item.ValueString === 'false').map(
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+                   reason: ''})
+      );
+
+      let intervals = this.computeIntervals(open, closed);
+      console.log("intervals from chartData(): ");
       console.log(intervals);
+      return intervals;
+    },
+    failureData()
+    {
+      function failure_data_desired(error_json)
+      {
+        return ((error_json.ValueString !== 'Unknown') && (error_json.ValueString !== 'None'));
+      }
+
+      function failure_data_undesired(error_json)
+      {
+          return ((error_json.ValueString === 'Unknown') || (error_json.ValueString === 'None'));
+      }
+
+      const open = this.fdata.filter(failure_data_desired).map(
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+                  reason: point.ValueString })
+      );
+      const closed = this.fdata.filter(failure_data_undesired).map(
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+                  reason: point.ValueString })
+      );
+
+      let intervals = this.computeIntervals(open, closed);
       return intervals;
 
     },
-    sunrise(){
-      // TODO: Fix code reuse here
+
+    statusData()
+    { /**
+      * @param {string} desired_status - Either "open" or "closed".
+     *
+    */
+
+    function failure_data_desired(error_json)
+    {
+      return ((error_json.ValueString !== 'Unknown') && (error_json.ValueString !== 'None'));
+    }
+
+      function failure_data_undesired(error_json)
+      {
+        return ((error_json.ValueString === 'Unknown') || (error_json.ValueString === 'None'));
+      }
+
+
+      const open_start = this.cdata.filter(item => item.ValueString === 'true').map(
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+          reason: ''})
+      );
+
+      const open_end = this.cdata.filter(item => item.ValueString === 'false').map(
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+          reason: ''})
+      );
+
+      const closed_start = this.fdata.filter(failure_data_desired).map(
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+          reason: point.ValueString }));
+
+      const closed_end = this.fdata.filter(failure_data_undesired).map(
+        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+          reason: point.ValueString }));
+
+    let open_intervals = this.computeIntervals(open_start, open_end);
+    let closed_intervals = this.computeIntervals(closed_start, closed_end);
+    return ([open_intervals, closed_intervals]);
+
+    },
+
+    last_sunrise(){
       let last_sunrise_obj = moment(this.suntimes.slice(-1)[0].sunrise.valueOf()).utc();
 
       if (last_sunrise_obj.isAfter(moment().utc()))
@@ -117,7 +133,7 @@ export default {
 
       return last_sunrise_obj;
     },
-    sunset() { // return the last sunrise time, but if todays sunrise time has yet to occur,return yesterdays
+    last_sunset() {
       let last_sunset_obj = moment(this.suntimes.slice(-1)[0].sunset.valueOf()).utc();
 
       if (last_sunset_obj.isAfter(moment().utc()))
@@ -128,6 +144,7 @@ export default {
 
       return last_sunset_obj;
     },
+
     chartMin(){
       return this.$store.getters.start;
 
@@ -138,11 +155,11 @@ export default {
   },
   watch: {
     cdata: function(){
-      this.chart.data.datasets[0].data = this.chartData;
+      this.chart.data.datasets[0].data = this.statusData[0];
       this.chart.update();
     },
     fdata: function(){
-      this.chart.data.datasets[1].data = this.failureData;
+      this.chart.data.datasets[1].data = this.statusData[1];
       this.chart.update();
     },
     '$route' (){
@@ -157,7 +174,6 @@ export default {
       let suntimes_annotations = [];
       for (let suntime_index = 0; suntime_index < this.suntimes.length; suntime_index++)
       {
-        // TODO: Fix code duplication in object creation, maybe use Object.assign()?
         // only show the annotation label if its the '24 hour option' since they take up too much space
         let sunrise_annotation = {
           type: "line",
@@ -203,13 +219,13 @@ export default {
         // can just assign a background color to each dataset object?
         labels: ['',''],
         datasets:[{
-          data: that.chartData,
+          data: that.statusData[0],
           backgroundColor: '#009ec366', // blue
           yAxisID: 'y-axis-0',
           label: 'open'
         },
           {
-            data: that.failureData,
+            data: that.statusData[1],
             backgroundColor: '#A9A9A9', // gray
             yAxisID: 'y-axis-0',
             label: 'closed'
@@ -225,7 +241,7 @@ export default {
             type: "line",
             mode: "vertical",
             scaleID: "x-axis-0",
-            value: that.sunrise,
+            value: that.last_sunrise,
             borderWidth: 5,
             borderColor: "yellow",
             label: {
@@ -238,7 +254,7 @@ export default {
               type:'line',
               mode:'vertical',
               scaleID: 'x-axis-0',
-              value: that.sunset,
+              value: that.last_sunset,
               borderWidth: 5,
               borderColor: 'green',
               label: {
