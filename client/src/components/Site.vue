@@ -8,10 +8,10 @@
           Elevation: {{ site.elevation }}m
           Location: {{ site.lat | ns}} {{ site.lng | ew }}
         </span>
-        <span title="sunset">sunset: {{ last_sunset }}</span>
+        <span title="sunset">sunset: {{ sunset.format('HH:mm') }}</span>
         <small>UTC</small>
         &nbsp;&nbsp;
-        <span title="sunrise">sunrise: {{ last_sunrise }}</span>
+        <span title="sunrise">sunrise: {{ sunrise.format('HH:mm') }}</span>
         <small>UTC</small>
       </p>
     </div>
@@ -22,55 +22,55 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Air Temp &deg;C</p>
-            <p class="title">{{ this.$options.filters.latestResult(datums['Weather Air Temperature Value'].data, 'Value')}}</p>
+            <p class="title">{{ datums['Weather Air Temperature Value'].data | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Pressure mbar</p>
-            <p class="title">{{ this.$options.filters.latestResult(datums['Weather Barometric Pressure Value'].data, 'Value') }}</p>
+            <p class="title">{{ datums['Weather Barometric Pressure Value'].data | latestVal }}</p>
           </div>
         </div>
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">Dewpoint &deg;C</p>
-          <p class="title">{{ this.$options.filters.latestResult(datums['Weather Dew Point Value'].data, 'Value') }}</p>
+          <p class="title">{{ datums['Weather Dew Point Value'].data | latestVal }}</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
           <div>
             <p class="heading">Humidity %</p>
-            <p class="title">{{ this.$options.filters.latestResult(datums['Weather Humidity Value'].data, 'Value') }}</p>
+            <p class="title">{{ datums['Weather Humidity Value'].data | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Wind meters per sec</p>
-            <p class="title">{{ this.$options.filters.latestResult(['Weather Wind Speed Value'].data, 'Value') }}</p>
+            <p class="title">{{ datums['Weather Wind Speed Value'].data | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Wind &deg;E of N</p>
-            <p class="title">{{ this.$options.filters.latestResult(['Weather Wind Direction Value'].data, 'Value') }}&deg;</p>
+            <p class="title">{{ datums['Weather Wind Direction Value'].data | latestVal }}&deg;</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Brightness mag/arcsec<sup>^</sup>2</p>
-            <p class="title">{{ this.$options.filters.latestResult(['Weather Sky Brightness Value'].data, 'Value') }}</p>
+            <p class="title">{{ datums['Weather Sky Brightness Value'].data | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Sky Transparency %</p>
-            <p class="title">{{ this.$options.filters.latestResult(['Boltwood Transparency Measure'].data, 'Value') }}</p>
+            <p class="title">{{ datums['Boltwood Transparency Measure'].data | latestVal }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Sky Temp &deg;C</p>
-            <p class="title">{{ this.$options.filters.latestResult(['Boltwood Sky Minus Ambient Temperature'].data, 'Value') }}</p>
+            <p class="title">{{ datums['Boltwood Sky Minus Ambient Temperature'].data | latestVal }}</p>
           </div>
         </div>
       </nav>
@@ -85,7 +85,7 @@
       </h4>
 
       <figure class="image">
-        <Timeline datumid="oktoopen" :suntimes="suntTimes" :timezone="site.tz" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data" :fdata="datums['Weather Failure Reason'].data"></Timeline>
+        <Timeline datumid="oktoopen" :suntimes="suntTimes" :timezone="site.tz" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data"></Timeline>
       </figure>
     </section>
 
@@ -98,6 +98,18 @@
                      :cdata="datums['Weather Air Temperature Value'].data"
                      :limit="limit('Weather Air Temperature Value')">
            </TimeChart>
+      </figure>
+    </section>
+
+    <section class="section section-xsmall ">
+      <h4 class="is-size-4">Sky Temp
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Temperature is inferred from 8-14µm irradiance measure by a Boltwood II cloud sensor at the site's weather station.</span>
+
+      </h4>
+      <figure class="image">
+        <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" unit="C"
+                   :cdata="datums['Boltwood Sky Minus Ambient Temperature'].data">
+        </TimeChart>
       </figure>
     </section>
 
@@ -138,13 +150,13 @@
     </section>
 
     <section class="section section-xsmall">
-      <h4 class="is-size-4">Dew Point
+      <h4 class="is-size-4">Air temperature minus dewpoint
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Dew Point measured by device telemetry.</span>
       </h4>
       <figure class="image">
-        <TimeChart datumid="dewpoint" datumname="Weather Dew Point Value" unit="C"
-                   :cdata="datums['Weather Dew Point Value'].data"
-                   :limit="limit('Weather Dew Point Value')">
+        <TimeChart datumid="ATminusDP" datumname="Air Temperature minus Dewpoint" unit="C"
+                   :cdata="datumDifference(datums['Weather Air Temperature Value'].data, datums['Weather Dew Point Value'].data)"
+                   :limit="2">
         </TimeChart>
       </figure>
     </section>
@@ -186,17 +198,7 @@
       </figure>
     </section>
 
-    <section class="section section-xsmall ">
-      <h4 class="is-size-4">Sky Temp
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Temperature is inferred from 8-14µm irradiance measure by a Boltwood II cloud sensor at the site's weather station.</span>
 
-      </h4>
-      <figure class="image">
-        <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" unit="C"
-                   :cdata="datums['Boltwood Sky Minus Ambient Temperature'].data">
-        </TimeChart>
-      </figure>
-    </section>
 
   </div>
 </template>
@@ -241,7 +243,7 @@ export default {
           data: [],
           limit :
             {
-
+              default: null
             }
         },
         'Weather Humidity Value': {
@@ -287,6 +289,12 @@ export default {
         },
 
         'Weather Ok To Open': {
+          data: [],
+          limit: {
+            default: null
+          }
+        },
+        'Boltwood Transparency Close Threshold': {
           data: [],
           limit: {
             default: null
@@ -346,11 +354,35 @@ export default {
       request.send();
     },
     limit(datumName){
+
+      if (datumName == 'Boltwood Transparency Measure')
+      { // this datum has a dynamically changing threshold
+          let latest_value = this.$options.filters.latestVal(this.datums['Boltwood Transparency Close Threshold'].data);
+          return latest_value;
+      }
+
       if(this.datums[datumName].limit.hasOwnProperty(this.site.code)){
         return this.datums[datumName].limit[this.site.code];
       }else{
         return this.datums[datumName].limit.default;
       }
+    },
+    datumDifference(datum1, datum2)
+    {
+      /** Given two datum names, create a new datum object where each Value is their difference
+       * Each packet looks like: {Timestamp, Value, ValueString}
+       */
+
+      let datum_difference = [];
+      for (let packet_number = 0; packet_number < Math.min(datum1.length, datum2.length) ; packet_number++)
+      {
+        let packet = {};
+          packet['TimeStamp'] = datum1[packet_number].TimeStamp;
+          packet['Value'] = Math.abs(datum1[packet_number].Value - datum2[packet_number].Value);
+          datum_difference.push(packet);
+
+      }
+      return datum_difference;
     }
   },
   created(){
@@ -365,17 +397,20 @@ export default {
 
       for (let days_difference = chart_end.diff(chart_start, 'days'); days_difference > -1; days_difference--)
       {
-        // get suntimes starting X amount of days ago, keep going until you get today's suntimes
         let suntime_for_day = suncalc.getTimes(moment.utc().subtract(days_difference, 'days'), this.site.lat, this.site.lng);
         suntimes_array.push(suntime_for_day);
       }
       return suntimes_array;
+
+
+    }, // TODO: Rename these to last_sunrise/sunset
+    sunrise(){
+      // get last sunrise
+      return moment.utc((this.suntTimes.slice(-1)[0].sunrise));
     },
-    last_sunrise(){
-      return moment.utc((this.suntTimes.slice(-1)[0].sunrise)).format('HH:mm');
-    },
-    last_sunset(){
-      return moment.utc((this.suntTimes.slice(-1)[0].sunset)).format('HH:mm');
+    sunset(){
+      // get last sunset
+      return moment.utc((this.suntTimes.slice(-1)[0].sunset));
     },
 
     start(){
@@ -391,25 +426,27 @@ export default {
   },
 
   filters: {
-    latestResult(values, prop)
+    // TODO: Refactor all of the LATEST filters
+    latestVal(values){
+      if (!values || values.length < 1) return 0;
+      let val = values[values.length - 1].Value;
+      return val.toFixed(1);
+    },
+    // needed for string values?
+    latestMsg(messages)
     {
-      /**
-       * @param values: An array of objects, where each object has a Timestamp and either a Value or a ValueString
-       * @param property: The property you wish to check for -- either Value or ValueString
-       */
-
-      if (prop === 'Value')
+      if (!messages || messages.length < 1)
       {
-        if (!values || values.length < 1) return 0;
-        let val = values[values.length - 1][prop];
-        return val.toFixed(1);
+        return '';
       }
 
-      else if (prop === 'ValueString')
-      {
-        if (!values || values.length < 1) return '';
-        return values[values.length - 1][prop];
+      else{
+        return messages[messages.length - 1].ValueString;
       }
+    },
+    parseMsg(msg)
+    {
+      return ((msg === "None" || msg === "Unknown") ? "Open" : msg);
     },
 
     cardinal(val){
