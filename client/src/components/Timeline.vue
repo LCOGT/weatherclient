@@ -11,15 +11,14 @@ export default {
   methods: {
     computeIntervals(open, closed)
     { /**
-          * @param {open} open -- an Object that has two properties, time (a moment object), and reason (string)
-     * @param {closed} an Object that has two properties, time (a moment object), and reason (string)
+     * @param open - an Object that has two properties, time (a moment object), and reason (string)
+     * @param closed - an Object that has two properties, time (a moment object), and reason (string)
         */
       let intervals = [];
       for (let i = 0; i < open.length; i++) {
         const start = open[i];
         let end = null;
         for (let j = 0; j < closed.length; j++) {
-          //if(closed[j].isAfter(start))
           if ((closed[j].time).isAfter(start.time))
           {
             end = closed[j];
@@ -27,7 +26,6 @@ export default {
           }
         }
         if(!end){
-          //end = moment.utc();
           end = ({
             time: moment.utc(),
             reason: 'End object'
@@ -51,8 +49,6 @@ export default {
       );
 
       let intervals = this.computeIntervals(open, closed);
-      console.log("intervals from chartData(): ");
-      console.log(intervals);
       return intervals;
     },
     failureData()

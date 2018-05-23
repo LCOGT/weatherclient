@@ -8,8 +8,7 @@ export default new Vuex.Store({
   state:{
     start: moment.utc().subtract(24, 'hours'),
     end: moment.utc(),
-    range: '24 hours',
-    site_code: 'coj'
+    range: '24 hours'
   },
   getters: {
     start: state => {

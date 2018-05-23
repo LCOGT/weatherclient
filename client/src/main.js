@@ -5,7 +5,6 @@ import store from './store';
 import './assets/main.scss';
 import './filters';
 
-
 new Vue({
   el: '#app',
   router,

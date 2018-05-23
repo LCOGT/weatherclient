@@ -45,7 +45,7 @@
       <button class="button is-warning"> {{numOpenedandClosed[1]}} closed </button>
     </div>
     <div class="column is-narrow">
-      <button class="button is-danger"> {{numOpenedandClosed[2] }} unknown</button>
+      <button class="button is-danger"> {{numOpenedandClosed[2]}} unknown</button>
     </div>
   </div>
 
@@ -78,8 +78,6 @@
          */
         {
           let request = new XMLHttpRequest();
-          //console.log("fetch_site_status called");
-          //console.log("site_code: " + site_code);
           let url = 'https://weather-api.lco.global/query?site=' + site_code + '&datumname=' + 'Weather Ok To Open' +
             '&agg=False' + '&start=' + start.format() + '&end=' + end.format();
           request.open('GET', url, false);

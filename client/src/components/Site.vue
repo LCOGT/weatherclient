@@ -334,8 +334,6 @@ export default {
       request.onload = () => {
         if (request.status >=200 && request.status < 400) {
           cb(JSON.parse(request.responseText));
-          if (datumName == 'Weather Ok To Open')
-          {console.log(JSON.parse(request.responseText));}
         } else {
           console.log('error:' + request.responseText);
         }
@@ -396,8 +394,7 @@ export default {
     latestResult(values, prop)
     {
       /**
-       * @param values: An array of objects, where each object
-       * has a Timestamp and either a Value or a ValueString
+       * @param values: An array of objects, where each object has a Timestamp and either a Value or a ValueString
        * @param property: The property you wish to check for -- either Value or ValueString
        */
 
