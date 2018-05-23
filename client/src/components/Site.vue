@@ -8,19 +8,20 @@
           Elevation: {{ site.elevation }}m
           Location: {{ site.lat | ns}} {{ site.lng | ew }}
         </span>
-        <span title="sunset">sunset: {{ sunset }}</span>
+        <span title="sunset">sunset: {{ sunset.format('HH:mm') }}</span>
         <small>UTC</small>
         &nbsp;&nbsp;
-        <span title="sunrise">sunrise: {{ sunrise }}</span>
+        <span title="sunrise">sunrise: {{ sunrise.format('HH:mm') }}</span>
         <small>UTC</small>
       </p>
     </div>
+
     <div>
       <p class="level-heading heading">Current Values</p>
       <nav class="level">
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Air Temp &deg;C</i></p>
+            <p class="heading">Air Temp &deg;C</p>
             <p class="title">{{ datums['Weather Air Temperature Value'].data | latestVal }}</p>
           </div>
         </div>
@@ -30,7 +31,13 @@
             <p class="title">{{ datums['Weather Barometric Pressure Value'].data | latestVal }}</p>
           </div>
         </div>
-        <div class="level-item has-text-centered">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Dewpoint &deg;C</p>
+          <p class="title">{{ datums['Weather Dew Point Value'].data | latestVal }}</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
           <div>
             <p class="heading">Humidity %</p>
             <p class="title">{{ datums['Weather Humidity Value'].data | latestVal }}</p>
@@ -56,6 +63,12 @@
         </div>
         <div class="level-item has-text-centered">
           <div>
+            <p class="heading">Sky Transparency %</p>
+            <p class="title">{{ datums['Boltwood Transparency Measure'].data | latestVal }}</p>
+          </div>
+        </div>
+        <div class="level-item has-text-centered">
+          <div>
             <p class="heading">Sky Temp &deg;C</p>
             <p class="title">{{ datums['Boltwood Sky Minus Ambient Temperature'].data | latestVal }}</p>
           </div>
@@ -65,11 +78,14 @@
 
     <section class="section section-xsmall">
       <p class="heading">Last {{ this.$store.state.range }}</p>
-      <h4 class="is-size-4 helptoggle">OK to Open
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">All weather conditions are within acceptable range to allow observing.</span>
+      <h4 class="is-size-4 helptoggle">  OK to Open
+        <a class="helptoggle is-pulled-right "><sup>?</sup>
+
+        </a><span class="help is-pulled-right">All weather conditions are within acceptable range to allow observing.</span>
       </h4>
+
       <figure class="image">
-        <Timeline datumid="oktoopen" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data"></Timeline>
+        <Timeline datumid="oktoopen" :suntimes="suntTimes" :timezone="site.tz" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data"></Timeline>
       </figure>
     </section>
 
@@ -86,13 +102,25 @@
     </section>
 
     <section class="section section-xsmall ">
-      <h4 class="is-size-4">Sky - Ambient Temp
+      <h4 class="is-size-4">Sky Temp
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Temperature is inferred from 8-14µm irradiance measure by a Boltwood II cloud sensor at the site's weather station.</span>
+
       </h4>
       <figure class="image">
-          <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" unit="C"
-                    :cdata="datums['Boltwood Sky Minus Ambient Temperature'].data"
-                    :limit="limit('Boltwood Sky Minus Ambient Temperature')">
+        <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" unit="C"
+                   :cdata="datums['Boltwood Sky Minus Ambient Temperature'].data">
+        </TimeChart>
+      </figure>
+    </section>
+
+    <section class="section section-xsmall ">
+      <h4 class="is-size-4">Sky Transparency (computed)
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Transparency is a calculated value and is not measured directly.</span>
+      </h4>
+      <figure class="image">
+          <TimeChart datumid="transparency" datumname="Boltwood Transparency Measure" unit="%"
+                    :cdata="datums['Boltwood Transparency Measure'].data"
+                    :limit="limit('Boltwood Transparency Measure')">
           </TimeChart>
       </figure>
     </section>
@@ -118,6 +146,18 @@
                      :cdata="datums['Weather Barometric Pressure Value'].data"
                      :limit="limit('Weather Barometric Pressure Value')">
           </TimeChart>
+      </figure>
+    </section>
+
+    <section class="section section-xsmall">
+      <h4 class="is-size-4">Air temperature minus dewpoint
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Dew Point measured by device telemetry.</span>
+      </h4>
+      <figure class="image">
+        <TimeChart datumid="ATminusDP" datumname="Air Temperature minus Dewpoint" unit="C"
+                   :cdata="datumDifference(datums['Weather Air Temperature Value'].data, datums['Weather Dew Point Value'].data)"
+                   :limit="2">
+        </TimeChart>
       </figure>
     </section>
 
@@ -157,6 +197,9 @@
           </TimeChart>
       </figure>
     </section>
+
+
+
   </div>
 </template>
 <script>
@@ -165,6 +208,7 @@ import moment from 'moment';
 import {sites} from '../config';
 import TimeChart from './TimeChart';
 import Timeline from './Timeline';
+
 export default {
   name: 'Site',
   props: ['sitecode'],
@@ -173,6 +217,13 @@ export default {
     return {
       site: {},
       datums: {
+        'Weather Failure Reason': {
+          data: [],
+          limit: {
+            default: null
+          }
+        },
+
         'Weather Air Temperature Value': {
           data: [],
           limit: {
@@ -183,9 +234,17 @@ export default {
         },
         'Weather Barometric Pressure Value': {
           data: [],
-          limit: {
-            default: null
-          }
+          limit:
+            {
+
+            }
+        },
+        'Weather Dew Point Value': {
+          data: [],
+          limit :
+            {
+              default: null
+            }
         },
         'Weather Humidity Value': {
           data: [],
@@ -215,13 +274,27 @@ export default {
             default: null
           }
         },
+        'Boltwood Transparency Measure': {
+          data: [],
+          limit: {
+            default: null
+          }
+        },
+
         'Boltwood Sky Minus Ambient Temperature': {
           data: [],
           limit: {
             default: null
           }
         },
+
         'Weather Ok To Open': {
+          data: [],
+          limit: {
+            default: null
+          }
+        },
+        'Boltwood Transparency Close Threshold': {
           data: [],
           limit: {
             default: null
@@ -261,7 +334,7 @@ export default {
     fetchDatum(datumName, cb){
       let request = new XMLHttpRequest();
       let url = 'https://weather-api.lco.global/query?site=' + this.site.code + '&datumname=' + datumName;
-      if(datumName === 'Weather Ok To Open'){
+      if(datumName === 'Weather Ok To Open' || datumName === 'Weather Failure Reason'){
         url += '&agg=False';
       }
       url += '&start=' + this.start.format() + '&end=' + this.end.format();
@@ -281,11 +354,35 @@ export default {
       request.send();
     },
     limit(datumName){
+
+      if (datumName == 'Boltwood Transparency Measure')
+      { // this datum has a dynamically changing threshold
+          let latest_value = this.$options.filters.latestVal(this.datums['Boltwood Transparency Close Threshold'].data);
+          return latest_value;
+      }
+
       if(this.datums[datumName].limit.hasOwnProperty(this.site.code)){
         return this.datums[datumName].limit[this.site.code];
       }else{
         return this.datums[datumName].limit.default;
       }
+    },
+    datumDifference(datum1, datum2)
+    {
+      /** Given two datum names, create a new datum object where each Value is their difference
+       * Each packet looks like: {Timestamp, Value, ValueString}
+       */
+
+      let datum_difference = [];
+      for (let packet_number = 0; packet_number < Math.min(datum1.length, datum2.length) ; packet_number++)
+      {
+        let packet = {};
+          packet['TimeStamp'] = datum1[packet_number].TimeStamp;
+          packet['Value'] = Math.abs(datum1[packet_number].Value - datum2[packet_number].Value);
+          datum_difference.push(packet);
+
+      }
+      return datum_difference;
     }
   },
   created(){
@@ -293,14 +390,29 @@ export default {
   },
   computed:{
     suntTimes(){
-      return suncalc.getTimes(moment.utc().valueOf(), this.site.lat, this.site.lng);
-    },
+
+      let suntimes_array = [];
+      let chart_start = this.start;
+      let chart_end = this.end;
+
+      for (let days_difference = chart_end.diff(chart_start, 'days'); days_difference > -1; days_difference--)
+      {
+        let suntime_for_day = suncalc.getTimes(moment.utc().subtract(days_difference, 'days'), this.site.lat, this.site.lng);
+        suntimes_array.push(suntime_for_day);
+      }
+      return suntimes_array;
+
+
+    }, // TODO: Rename these to last_sunrise/sunset
     sunrise(){
-      return moment.utc((this.suntTimes.sunrise)).format('HH:mm');
+      // get last sunrise
+      return moment.utc((this.suntTimes.slice(-1)[0].sunrise));
     },
     sunset(){
-      return moment.utc((this.suntTimes.sunset)).format('HH:mm');
+      // get last sunset
+      return moment.utc((this.suntTimes.slice(-1)[0].sunset));
     },
+
     start(){
       // Make sure we get a little data leading up to the time range to avoid gaps
       let start = this.$store.getters.start.clone();
@@ -309,14 +421,34 @@ export default {
     },
     end(){
       return this.$store.getters.end;
-    }
+    },
+
   },
+
   filters: {
+    // TODO: Refactor all of the LATEST filters
     latestVal(values){
       if (!values || values.length < 1) return 0;
       let val = values[values.length - 1].Value;
       return val.toFixed(1);
     },
+    // needed for string values?
+    latestMsg(messages)
+    {
+      if (!messages || messages.length < 1)
+      {
+        return '';
+      }
+
+      else{
+        return messages[messages.length - 1].ValueString;
+      }
+    },
+    parseMsg(msg)
+    {
+      return ((msg === "None" || msg === "Unknown") ? "Open" : msg);
+    },
+
     cardinal(val){
       const num = Math.floor((val / 22.5) + 0.5);
       const compass = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
@@ -342,6 +474,7 @@ export default {
     }
   }
 };
+
 </script>
 <style lang="scss">
   .help {

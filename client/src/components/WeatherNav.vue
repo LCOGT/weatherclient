@@ -21,7 +21,7 @@
             </select>
           </div>
         </div>
-        <div class="columns level mini-info">
+        <div class="columns level-left mini-info">
           <div class="column place is-two-thirds heading">Location</div>
           <div class="column time is-one-fifth heading">UTC</div>
           <div class="column mini-weather heading">Night</div>
@@ -40,9 +40,11 @@
   import moment from 'moment';
   import {sites} from '../config.js';
   import NavItem from './NavItem';
+
   export default {
     name: 'WeatherNav',
     components: {NavItem},
+    props: ['sitestatus'],
     data: function(){
       return {
         sites: sites,

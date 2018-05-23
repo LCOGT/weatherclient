@@ -136,9 +136,12 @@ var TimelineScale = Chart.scaleService.getScaleConstructor('time').extend({
                 data = chart.data.datasets[i].data;
                 datasets[i] = [];
 
+
                 for (j = 0, jlen = data.length; j < jlen; ++j) {
-                    timestamp0 = parse(data[j][0], me);
-                    timestamp1 = parse(data[j][1], me);
+
+                    timestamp0 = parse(data[j][0].time, me);
+                    timestamp1 = parse(data[j][1].time, me);
+
                     if (timestamp0 > timestamp1) {
                         [timestamp0, timestamp1] = [timestamp1, timestamp0];
                     }
@@ -233,6 +236,7 @@ Chart.controllers.timeline = Chart.controllers.bar.extend({
         rectangle._xScale = xScale;
         rectangle._yScale = yScale;
         rectangle._datasetIndex = me.index;
+
         rectangle._index = index;
 
         var ruler = me.getRuler(index);
@@ -257,7 +261,7 @@ Chart.controllers.timeline = Chart.controllers.bar.extend({
             width: width,
             height: height,
             base: x + width,
-            backgroundColor: '#009ec366',
+          backgroundColor: me.chart.data.datasets[rectangle._datasetIndex].backgroundColor,
             borderSkipped: custom.borderSkipped ? custom.borderSkipped : rectangleElementOptions.borderSkipped,
             borderColor: custom.borderColor ? custom.borderColor : helpers.getValueAtIndexOrDefault(dataset.borderColor, index, rectangleElementOptions.borderColor),
             borderWidth: custom.borderWidth ? custom.borderWidth : helpers.getValueAtIndexOrDefault(dataset.borderWidth, index, rectangleElementOptions.borderWidth),
@@ -384,6 +388,7 @@ Chart.defaults.timeline = {
             position: 'bottom',
             distribution: 'linear',
             categoryPercentage: 0.8,
+
             barPercentage: 0.9,
 
             gridLines: {
@@ -400,28 +405,27 @@ Chart.defaults.timeline = {
         yAxes: [{
             type: 'category',
             position: 'left',
-            barThickness : 20,
+            barThickness : 40,
             categoryPercentage: 0.8,
             barPercentage: 0.9,
             offset: true,
             gridLines: {
-                display: true,
-                offsetGridLines: true,
                 drawBorder: true,
                 drawTicks: true
-            }
+            },
         }]
     },
     tooltips: {
-        enabled: false,
+      enabled: false,
         callbacks: {
             title: function(tooltipItems, data) {
                 var d = data.labels[tooltipItems[0].datasetIndex]
                 return d;
             },
             label: function(tooltipItem, data) {
+
                 var d = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                return [d[2], moment(d[0]).format('L LTS'), moment(d[1]).format('L LTS')];
+              return [moment(d[0]).format('L LTS'), moment(d[1]).format('L LTS')];
             }
         }
     }
