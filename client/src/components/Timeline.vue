@@ -189,7 +189,7 @@ export default {
           }]
       },
       options: {
-        responsive: true, // resize chart when container element gets resized
+        responsive: true,
         legend: {
           display: true,
         },

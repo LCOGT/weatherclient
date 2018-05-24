@@ -99,7 +99,7 @@
       <figure class="image">
           <TimeChart datumid="airtemp" datumname="Air Temperature" unit="C"
                      :cdata="datums['Weather Air Temperature Value'].data"
-                     :limit="limit('Weather Air Temperature Value')">
+                     :limit="limit('Weather Air Temperature Value')" limit_direction="min">
            </TimeChart>
       </figure>
     </section>
@@ -479,7 +479,7 @@ export default {
 <style lang="scss">
   .help {
     display: none;
-    margin-right: 20px;
+    margin-right: 0px;
   }
   .helptoggle:hover + .help {
     display: inline;
