@@ -37,46 +37,6 @@ export default {
     }
   },
   computed: {
-    /*
-    chartData(){
-      const open = this.cdata.filter(item => item.ValueString === 'true').map(
-        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-                  reason: ''})
-      );
-
-      const closed = this.cdata.filter(item => item.ValueString === 'false').map(
-        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-                   reason: ''})
-      );
-
-      let intervals = this.computeIntervals(open, closed);
-      return intervals;
-    },
-    failureData()
-    {
-      function failure_data_desired(error_json)
-      {
-        return ((error_json.ValueString !== 'Unknown') && (error_json.ValueString !== 'None'));
-      }
-
-      function failure_data_undesired(error_json)
-      {
-          return ((error_json.ValueString === 'Unknown') || (error_json.ValueString === 'None'));
-      }
-
-      const open = this.fdata.filter(failure_data_desired).map(
-        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-                  reason: point.ValueString })
-      );
-      const closed = this.fdata.filter(failure_data_undesired).map(
-        point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-                  reason: point.ValueString })
-      );
-
-      let intervals = this.computeIntervals(open, closed);
-      return intervals;
-
-    },*/
 
     statusData()
     { /**
