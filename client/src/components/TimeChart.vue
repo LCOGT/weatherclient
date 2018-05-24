@@ -74,7 +74,8 @@ export default {
               {
                 enabled: true,
                 position: 'left',
-                content: (this.limit_direction === 'min') ? 'minimum' : ''
+                content: (this.limit_direction === 'min') ? 'minimum' : '',
+                yAdjust: -10,
               },
             type: 'line',
             mode: 'horizontal',
