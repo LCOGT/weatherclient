@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <section class="section">
-      <div class="container">
+      <div class="container is-fluid">
         <div class="columns">
           <div class="column is-one-quarter">
             <div class="fixed">
