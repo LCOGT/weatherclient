@@ -7,7 +7,7 @@ import 'chartjs-plugin-annotation';
 import moment from 'moment';
 export default {
   name: 'Timechart',
-  props: ['cdata', 'datumid', 'datumname', 'unit', 'limit', 'max'],
+  props: ['cdata', 'datumid', 'datumname', 'unit', 'limit', 'max', 'limit_direction'],
   computed: {
     chartData(){
       if(!this.cdata) return [];
@@ -62,17 +62,25 @@ export default {
           backgroundColor: '#009ec367',
           label: that.datumname,
           data: that.chartData,
-          cubicInterpolationMode: 'monotone'
+          cubicInterpolationMode: 'monotone',
+          spanGaps: true
         }]
       },
       options: {
+        responsive: true,
         annotation:{
           annotations:[{
+            label:
+              {
+                enabled: true,
+                position: 'left',
+                content: (this.limit_direction === 'min') ? 'minimum' : ''
+              },
             type: 'line',
             mode: 'horizontal',
             scaleID: 'y-axis-0',
             value: this.limit,
-            borderColor: 'red'
+            borderColor: (this.limit_direction === 'min') ? 'green': 'red'
           }]
         },
         legend: {

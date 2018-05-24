@@ -93,22 +93,6 @@ function parse(input, scale) {
     return value.valueOf();
 }
 
-function arrayUnique(items) { // TODO: Remove this function since it's not used?
-    var hash = {};
-    var out = [];
-    var i, ilen, item;
-
-    for (i = 0, ilen = items.length; i < ilen; ++i) {
-        item = items[i];
-        if (!hash[item]) {
-            hash[item] = true;
-            out.push(item);
-        }
-    }
-
-    return out;
-}
-
 function sorter(a, b) {
     return a - b;
 }
@@ -411,7 +395,7 @@ Chart.defaults.timeline = {
             type: 'category',
             id: 'y-axis-0',
             position: 'left',
-            barThickness : 20,
+            barThickness : 40,
             categoryPercentage: 1.0,
             barPercentage: 1.0,
             offset: true,

@@ -37,6 +37,7 @@ export default {
     }
   },
   computed: {
+    /*
     chartData(){
       const open = this.cdata.filter(item => item.ValueString === 'true').map(
         point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
@@ -75,7 +76,7 @@ export default {
       let intervals = this.computeIntervals(open, closed);
       return intervals;
 
-    },
+    },*/
 
     statusData()
     { /**
@@ -180,8 +181,8 @@ export default {
           borderColor: "yellow",
           label: {
             enabled: true,
-            position: "top",
-            content: (this.suntimes.length > 2) ? ("") : ("sunrise")
+            position: "bottom",
+            content: (this.suntimes.length > 2) ? '' : "sunrise"
           }
         };
 
@@ -194,8 +195,8 @@ export default {
          borderColor: "green",
          label: {
            enabled: true,
-           position: "top",
-           content: (this.suntimes.length > 2) ? (""): ("sunset")
+           position: "bottom",
+           content: (this.suntimes.length > 2) ? '': "sunset"
          }
        };
 
@@ -243,7 +244,7 @@ export default {
             label: {
               content: "sunrise",
               enabled: true,
-              position: "top"
+              position: "bottom"
             }
           },
             {
@@ -256,7 +257,7 @@ export default {
               label: {
                 content: "sunset",
                 enabled: true,
-                position: "top"
+                position: "bottom"
               }
             }]
         },
