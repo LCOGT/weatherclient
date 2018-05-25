@@ -40,7 +40,7 @@
     display: none;
   }
   .mini-info {
-    margin-right: 0rem;
+    margin-right: 3rem;
     padding-right: 3rem;
   }
 </style>

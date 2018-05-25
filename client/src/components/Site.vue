@@ -18,7 +18,7 @@
 
     <div>
       <p class="level-heading heading">Current Values</p>
-      <nav class="level">
+      <nav class="level is-mobile">
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Air Temp &deg;C</p>
@@ -49,8 +49,6 @@
             <p class="title">{{ this.$options.filters.latestResult(datums['Weather Wind Speed Value'].data, 'Value') }}</p>
           </div>
         </div>
-      </nav>
-      <nav class="level">
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Wind &deg;E of N</p>
