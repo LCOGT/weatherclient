@@ -44,9 +44,6 @@
     <div class="column is-narrow">
       <button class="button is-warning"> {{numOpenedandClosed[1]}} closed </button>
     </div>
-    <div class="column is-narrow">
-      <button class="button is-danger"> {{numOpenedandClosed[2]}} unknown</button>
-    </div>
   </div>
 
 </aside>
