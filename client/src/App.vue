@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <section class="section">
-      <div class="container is-fluid is-marginless">
+      <div class="container is-fluid">
         <div class="columns">
           <div class="column is-one-fifth-desktop is-one-half-tablet">
             <div class="fixed">

@@ -113,13 +113,22 @@
             }
             else {
               var last_val = resp[resp.length - 1].ValueString;
-              var last_letter = this.$options.filters.statusMsgToLetter(last_val);
+              var last_letter = this.statusMsgToLetter(last_val);
+              console.log("this: ");
+              console.log(this);
+              var last_letter = this.statusMsgToLetter(last_val);
 
               this.site_statuses[site_code] = last_letter;
               my_status = last_letter;
             }
           });
           return my_status;
+        },
+
+        statusMsgToLetter(last_val)
+        {
+          var letter =  (last_val === 'true' | last_val === 'Unknown') ? 'Y' : 'N';
+          return letter;
         }
       }
   ,

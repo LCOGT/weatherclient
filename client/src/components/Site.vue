@@ -22,55 +22,55 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Air Temp &deg;C</p>
-            <p class="title">{{ this.$options.filters.latestResult(datums['Weather Air Temperature Value'].data, 'Value') }}</p>
+            <p class="title">{{ datums['Weather Air Temperature Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Pressure mbar</p>
-            <p class="title">{{ this.$options.filters.latestResult(datums['Weather Barometric Pressure Value'].data, 'Value') }}</p>
+            <p class="title">{{ datums['Weather Barometric Pressure Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">Dewpoint &deg;C</p>
-          <p class="title">{{ this.$options.filters.latestResult(datums['Weather Dew Point Value'].data, 'Value') }}</p>
+          <p class="title">{{ datums['Weather Dew Point Value'].data | latestResult('Value') }}</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
           <div>
             <p class="heading">Humidity %</p>
-            <p class="title">{{ this.$options.filters.latestResult(datums['Weather Humidity Value'].data, 'Value') }}</p>
+            <p class="title">{{ datums['Weather Humidity Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Wind meters/second</p>
-            <p class="title">{{ this.$options.filters.latestResult(datums['Weather Wind Speed Value'].data, 'Value') }}</p>
+            <p class="title">{{ datums['Weather Wind Speed Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Wind &deg;E of N</p>
-            <p class="title">{{ this.$options.filters.latestResult(datums['Weather Wind Direction Value'].data, 'Value') }}&deg;</p>
+            <p class="title">{{ datums['Weather Wind Direction Value'].data | latestResult('Value') }}&deg;</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Brightness mag/arcsec<sup>^</sup>2</p>
-            <p class="title">{{ this.$options.filters.latestResult(datums['Weather Sky Brightness Value'].data, 'Value') }}</p>
+            <p class="title">{{ datums['Weather Sky Brightness Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Sky Transparency %</p>
-            <p class="title">{{ this.$options.filters.latestResult(datums['Boltwood Transparency Measure'].data, 'Value') }}</p>
+            <p class="title">{{ datums['Boltwood Transparency Measure'].data | latestResult('Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Sky Temp &deg;C</p>
-            <p class="title">{{ this.$options.filters.latestResult(datums['Boltwood Sky Minus Ambient Temperature'].data, 'Value') }}</p>
+            <p class="title">{{ datums['Boltwood Sky Minus Ambient Temperature'].data | latestResult('Value') }}</p>
           </div>
         </div>
       </nav>
