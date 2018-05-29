@@ -39,10 +39,7 @@ export default {
   computed: {
 
     statusData()
-    { /**
-      * @param {string} desired_status - Either "open" or "closed".
-     *
-    */
+    {
 
     function failure_data_desired(error_json)
     {
