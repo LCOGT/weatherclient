@@ -69,14 +69,13 @@ export default {
       options: {
         responsive: true,
         annotation:{
-          events:['mouseover', 'mouseout', 'mouseleave', 'mouseenter', 'click'],
+          events:['click'],
           annotations:[{
             label:
               {
                 enabled: false,
-                //position: 'left',
                 position: 'center',
-                content: (this.limit_direction === 'min') ? 'Minimum' : 'Maximum',
+                content: ((this.limit_direction === 'min') ? 'Minimum: ' : 'Maximum: ') + this.limit,
                 yAdjust: (this.limit_direction === 'min') ? -10: 10, // prevent labels from showing up off screen
               },
             type: 'line',

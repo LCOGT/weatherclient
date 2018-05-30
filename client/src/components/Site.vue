@@ -94,6 +94,7 @@
       <h4 class="is-size-4">Air Temperature
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right"> Ambient temperature measured by HMP45C-L temperature probe at the site's weather station.</span>
       </h4>
+      <p> Tip: Click on threshold line to show minimum or maximum.</p>
       <figure class="image">
           <TimeChart datumid="airtemp" datumname="Air Temperature" unit="C"
                      :cdata="datums['Weather Air Temperature Value'].data"
@@ -107,6 +108,7 @@
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Temperature is inferred from 8-14µm irradiance measure by a Boltwood II cloud sensor at the site's weather station.</span>
 
       </h4>
+
       <figure class="image">
         <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" unit="C"
                    :cdata="datums['Boltwood Sky Minus Ambient Temperature'].data">
