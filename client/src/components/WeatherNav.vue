@@ -114,8 +114,6 @@
             else {
               var last_val = resp[resp.length - 1].ValueString;
               var last_letter = this.statusMsgToLetter(last_val);
-              console.log("this: ");
-              console.log(this);
               var last_letter = this.statusMsgToLetter(last_val);
 
               this.site_statuses[site_code] = last_letter;

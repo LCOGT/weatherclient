@@ -69,19 +69,34 @@ export default {
       options: {
         responsive: true,
         annotation:{
+          events:['mouseover', 'mouseout', 'mouseleave', 'mouseenter', 'click'],
           annotations:[{
             label:
               {
-                enabled: true,
-                position: 'left',
-                content: (this.limit_direction === 'min') ? 'minimum' : '',
-                yAdjust: -10,
+                enabled: false,
+                //position: 'left',
+                position: 'center',
+                content: (this.limit_direction === 'min') ? 'Minimum' : 'Maximum',
+                yAdjust: (this.limit_direction === 'min') ? -10: 10, // prevent labels from showing up off screen
               },
             type: 'line',
+            borderWidth: 5,
             mode: 'horizontal',
             scaleID: 'y-axis-0',
             value: this.limit,
-            borderColor: (this.limit_direction === 'min') ? 'green': 'red'
+            borderColor: (this.limit_direction === 'min') ? 'green': 'red',
+            onClick: function(e) {
+              let chart_label = this.chartInstance.chart.options.annotation.annotations[0].label;
+              if (chart_label.enabled == true) {
+                chart_label.enabled = false;
+                that.chart.update();
+              }
+
+              else {
+                chart_label.enabled = true;
+                that.chart.update();
+              }
+            }
           }]
         },
         legend: {
