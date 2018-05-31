@@ -46,6 +46,16 @@
     </div>
   </div>
 
+  <div class="columns is-centered">
+    <div class="column is-narrow">
+      Minimum <div class="min-line"></div>
+    </div>
+    <div class="column is-narrow">
+      Maximum <div class="max-line"></div>
+    </div>
+    </div>
+
+
 </aside>
 </template>
 <script>
@@ -190,4 +200,23 @@
 .logo {
   max-width: 9rem;
 }
+
+.menu-list {
+  padding-bottom: 10px;
+}
+
+.min-line{
+  width: 60px;
+  height: 15px;
+  border-bottom: 4px solid green;
+  position: absolute;
+}
+
+.max-line{
+  width: 60px;
+  height: 15px;
+  border-bottom: 4px solid red;
+  position: absolute;
+}
+
 </style>
