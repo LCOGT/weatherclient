@@ -4,7 +4,6 @@ import router from './router';
 import store from './store';
 import './assets/main.scss';
 
-
 new Vue({
   el: '#app',
   router,

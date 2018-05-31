@@ -17,67 +17,69 @@
     </div>
 
     <div>
-      <p class="level-heading heading">Current Values</p>
-      <nav class="level">
+      <h3 class="level-heading heading title is-size-4 is-bold">Current Values</h3>
+      <nav class="level is-mobile">
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Air Temp &deg;C</p>
-            <p class="title">{{ datums['Weather Air Temperature Value'].data | latestVal }}</p>
+            <p class="title">{{ datums['Weather Air Temperature Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Pressure mbar</p>
-            <p class="title">{{ datums['Weather Barometric Pressure Value'].data | latestVal }}</p>
+            <p class="title">{{ datums['Weather Barometric Pressure Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">Dewpoint &deg;C</p>
-          <p class="title">{{ datums['Weather Dew Point Value'].data | latestVal }}</p>
+          <p class="title">{{ datums['Weather Dew Point Value'].data | latestResult('Value') }}</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
           <div>
             <p class="heading">Humidity %</p>
-            <p class="title">{{ datums['Weather Humidity Value'].data | latestVal }}</p>
+            <p class="title">{{ datums['Weather Humidity Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Wind meters per sec</p>
-            <p class="title">{{ datums['Weather Wind Speed Value'].data | latestVal }}</p>
+            <p class="heading">Wind meters/second</p>
+            <p class="title">{{ datums['Weather Wind Speed Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Wind &deg;E of N</p>
-            <p class="title">{{ datums['Weather Wind Direction Value'].data | latestVal }}&deg;</p>
+            <p class="title">{{ datums['Weather Wind Direction Value'].data | latestResult('Value') }}&deg;</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Brightness mag/arcsec<sup>^</sup>2</p>
-            <p class="title">{{ datums['Weather Sky Brightness Value'].data | latestVal }}</p>
+            <p class="title">{{ datums['Weather Sky Brightness Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Sky Transparency %</p>
-            <p class="title">{{ datums['Boltwood Transparency Measure'].data | latestVal }}</p>
+            <p class="title">{{ datums['Boltwood Transparency Measure'].data | latestResult('Value') }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Sky Temp &deg;C</p>
-            <p class="title">{{ datums['Boltwood Sky Minus Ambient Temperature'].data | latestVal }}</p>
+            <p class="title">{{ datums['Boltwood Sky Minus Ambient Temperature'].data | latestResult('Value') }}</p>
           </div>
         </div>
       </nav>
     </div>
 
-    <section class="section section-xsmall">
-      <p class="heading">Last {{ this.$store.state.range }}</p>
+
+
+    <section class="section section-medium">
+      <p class="heading is-size-3 has-text-centered">Last {{ this.$store.state.range }}</p>
       <h4 class="is-size-4 helptoggle">  OK to Open
         <a class="helptoggle is-pulled-right "><sup>?</sup>
 
@@ -85,7 +87,8 @@
       </h4>
 
       <figure class="image">
-        <Timeline datumid="oktoopen" :suntimes="suntTimes" :timezone="site.tz" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data"></Timeline>
+        <Timeline datumid="oktoopen" :suntimes="suntTimes" :timezone="site.tz" datumname="Weather Ok To Open" :cdata="datums['Weather Ok To Open'].data"
+                  :fdata="datums['Weather Failure Reason'].data"></Timeline>
       </figure>
     </section>
 
@@ -96,7 +99,7 @@
       <figure class="image">
           <TimeChart datumid="airtemp" datumname="Air Temperature" unit="C"
                      :cdata="datums['Weather Air Temperature Value'].data"
-                     :limit="limit('Weather Air Temperature Value')">
+                     :limit="limit('Weather Air Temperature Value')" limit_direction="min">
            </TimeChart>
       </figure>
     </section>
@@ -106,6 +109,7 @@
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Temperature is inferred from 8-14µm irradiance measure by a Boltwood II cloud sensor at the site's weather station.</span>
 
       </h4>
+
       <figure class="image">
         <TimeChart datumid="skytemp" datumname="Boltwood Sky Minus Ambient Temperature" unit="C"
                    :cdata="datums['Boltwood Sky Minus Ambient Temperature'].data">
@@ -120,7 +124,7 @@
       <figure class="image">
           <TimeChart datumid="transparency" datumname="Boltwood Transparency Measure" unit="%"
                     :cdata="datums['Boltwood Transparency Measure'].data"
-                    :limit="limit('Boltwood Transparency Measure')">
+                    :limit="limit('Boltwood Transparency Measure')" limit_direction="min">
           </TimeChart>
       </figure>
     </section>
@@ -151,12 +155,12 @@
 
     <section class="section section-xsmall">
       <h4 class="is-size-4">Air temperature minus dewpoint
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Dew Point measured by device telemetry.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Absolute value of difference between Dew Point and Air Temperature.</span>
       </h4>
       <figure class="image">
         <TimeChart datumid="ATminusDP" datumname="Air Temperature minus Dewpoint" unit="C"
-                   :cdata="datumDifference(datums['Weather Air Temperature Value'].data, datums['Weather Dew Point Value'].data)"
-                   :limit="2">
+                   :cdata="datumDifference(datums['Weather Dew Point Value'].data, datums['Weather Air Temperature Value'].data)"
+                   :limit="2" limit_direction="min">
         </TimeChart>
       </figure>
     </section>
@@ -198,7 +202,16 @@
       </figure>
     </section>
 
-
+    <div class="box">
+    <div class="columns is-centered">
+      <div class="column is-narrow">
+        Minimum <div class="min-line"></div>
+      </div>
+      <div class="column is-narrow">
+        Maximum <div class="max-line"></div>
+      </div>
+    </div>
+    </div>
 
   </div>
 </template>
@@ -277,7 +290,7 @@ export default {
         'Boltwood Transparency Measure': {
           data: [],
           limit: {
-            default: null
+
           }
         },
 
@@ -297,7 +310,7 @@ export default {
         'Boltwood Transparency Close Threshold': {
           data: [],
           limit: {
-            default: null
+
           }
         }
       }
@@ -357,8 +370,8 @@ export default {
 
       if (datumName == 'Boltwood Transparency Measure')
       { // this datum has a dynamically changing threshold
-          let latest_value = this.$options.filters.latestVal(this.datums['Boltwood Transparency Close Threshold'].data);
-          return latest_value;
+        let latest_value = this.$options.filters.latestResult(this.datums['Boltwood Transparency Close Threshold'].data, 'Value');
+          return Number(latest_value);
       }
 
       if(this.datums[datumName].limit.hasOwnProperty(this.site.code)){
@@ -403,7 +416,7 @@ export default {
       return suntimes_array;
 
 
-    }, // TODO: Rename these to last_sunrise/sunset
+    },
     sunrise(){
       // get last sunrise
       return moment.utc((this.suntTimes.slice(-1)[0].sunrise));
@@ -426,27 +439,26 @@ export default {
   },
 
   filters: {
-    // TODO: Refactor all of the LATEST filters
-    latestVal(values){
-      if (!values || values.length < 1) return 0;
-      let val = values[values.length - 1].Value;
-      return val.toFixed(1);
-    },
-    // needed for string values?
-    latestMsg(messages)
+    latestResult(values, property)
     {
-      if (!messages || messages.length < 1)
+      /**
+       * @param values - an array of values to parse, must contain a property name that matches the property parameter
+       * @param property - the property you wish to extract, either 'Value' or 'ValueString'
+       */
+
+      if (property === 'Value')
       {
-        return '';
+         if (!values || values.length < 1) return 0;
+         let val = values[values.length - 1][property];
+         return val.toFixed(1);
       }
 
-      else{
-        return messages[messages.length - 1].ValueString;
+      else if (property === 'ValueString')
+      {
+        if (!values || values.length < 1 ) return '';
+        return values[values.length -1][property];
       }
-    },
-    parseMsg(msg)
-    {
-      return ((msg === "None" || msg === "Unknown") ? "Open" : msg);
+
     },
 
     cardinal(val){
@@ -479,7 +491,7 @@ export default {
 <style lang="scss">
   .help {
     display: none;
-    margin-right: 20px;
+    margin-right: 0px;
   }
   .helptoggle:hover + .help {
     display: inline;

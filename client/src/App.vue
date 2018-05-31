@@ -1,14 +1,14 @@
 <template>
   <div id="app">
     <section class="section">
-      <div class="container">
+      <div class="container is-fluid">
         <div class="columns">
-          <div class="column is-one-quarter">
+          <div class="column is-one-fifth-desktop is-one-half-tablet">
             <div class="fixed">
               <WeatherNav/>
             </div>
           </div>
-          <div class="column">
+          <div class="column is-three-fourths-desktop">
             <router-view/>
           </div>
         </div>
@@ -26,8 +26,10 @@
 <style lang="scss">
   @media screen and (min-width: 1224px){
   .fixed {
-      position: fixed;
-      width: 19rem;
+
+    width: 95%;
+    padding-right: 5px;
+    resize: both
     }
   }
 </style>

@@ -7,7 +7,7 @@ import 'chartjs-plugin-annotation';
 import moment from 'moment';
 export default {
   name: 'Timechart',
-  props: ['cdata', 'datumid', 'datumname', 'unit', 'limit', 'max'],
+  props: ['cdata', 'datumid', 'datumname', 'unit', 'limit', 'max', 'limit_direction'],
   computed: {
     chartData(){
       if(!this.cdata) return [];
@@ -62,21 +62,45 @@ export default {
           backgroundColor: '#009ec367',
           label: that.datumname,
           data: that.chartData,
-          cubicInterpolationMode: 'monotone'
+          cubicInterpolationMode: 'monotone',
+          spanGaps: true
         }]
       },
       options: {
+        responsive: true,
         annotation:{
+          drawTime: 'afterDraw',
+          events:['click'],
           annotations:[{
+            label:
+              {
+                enabled: false,
+                position: 'center',
+                content: ((this.limit_direction === 'min') ? 'Minimum ' : 'Maximum '),
+                yAdjust: (this.limit_direction === 'min') ? -10: 10, // prevent labels from showing up off screen
+              },
             type: 'line',
+            borderWidth: 5,
             mode: 'horizontal',
             scaleID: 'y-axis-0',
             value: this.limit,
-            borderColor: 'red'
+            borderColor: (this.limit_direction === 'min') ? 'green': 'red',
+            onClick: function(e) {
+              let chart_label = this.chartInstance.chart.options.annotation.annotations[0].label;
+              if (chart_label.enabled == true) {
+                chart_label.enabled = false;
+                that.chart.update();
+              }
+
+              else {
+                chart_label.enabled = true;
+                that.chart.update();
+              }
+            }
           }]
         },
         legend: {
-          display: false
+          display: false,
         },
         scales: {
           xAxes: [{
@@ -108,3 +132,19 @@ export default {
   }
 };
 </script>
+
+<style>
+.min-line{
+width: 60px;
+height: 15px;
+border-bottom: 4px solid green;
+position: relative;
+}
+
+.max-line{
+width: 60px;
+height: 15px;
+border-bottom: 4px solid red;
+position: relative;
+}
+</style>
