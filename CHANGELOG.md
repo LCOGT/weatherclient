@@ -1,3 +1,8 @@
+## 1.1.1
+2018-05-31
+
+* Fixed issue where left nav bar would not render correctly on low screen resolutions.
+
 ## 1.1
 
 2018-05-31
