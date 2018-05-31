@@ -23,10 +23,10 @@
           </div>
         </div>
         <div class="columns level-left mini-info">
-          <div class="column status is-narrow heading">Open?</div>
+          <div class="column status is-one-fifth heading">Open?</div>
           <div class="column place is-two-thirds heading">Location</div>
-          <div class="column time is-narrow heading">UTC</div>
-          <div class="column mini-weather is-narrow heading">Night</div>
+          <div class="column time is-one-fifth  heading">UTC</div>
+          <div class="column mini-weather is-pulled-right heading">Night</div>
         </div>
       </div>
     </li>
