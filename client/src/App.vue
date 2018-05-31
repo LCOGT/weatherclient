@@ -3,7 +3,7 @@
     <section class="section">
       <div class="container is-fluid">
         <div class="columns">
-          <div class="column is-one-fifth-desktop is-one-half-tablet">
+          <div class="column is-one-quarter-desktop">
             <div class="fixed">
               <WeatherNav/>
             </div>
