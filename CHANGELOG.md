@@ -1,3 +1,9 @@
+## 1.1.1
+2018-05-31
+
+* Fixed issue where leftmost column did not render at the correct size on low-resolution devices
+
+
 ## 1.1
 
 2018-05-31
