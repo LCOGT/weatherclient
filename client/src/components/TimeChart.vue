@@ -69,13 +69,14 @@ export default {
       options: {
         responsive: true,
         annotation:{
+          drawTime: 'afterDraw',
           events:['click'],
           annotations:[{
             label:
               {
                 enabled: false,
                 position: 'center',
-                content: ((this.limit_direction === 'min') ? 'Minimum: ' : 'Maximum: ') + this.limit,
+                content: ((this.limit_direction === 'min') ? 'Minimum ' : 'Maximum '),
                 yAdjust: (this.limit_direction === 'min') ? -10: 10, // prevent labels from showing up off screen
               },
             type: 'line',
@@ -131,3 +132,19 @@ export default {
   }
 };
 </script>
+
+<style>
+.min-line{
+width: 60px;
+height: 15px;
+border-bottom: 4px solid green;
+position: relative;
+}
+
+.max-line{
+width: 60px;
+height: 15px;
+border-bottom: 4px solid red;
+position: relative;
+}
+</style>

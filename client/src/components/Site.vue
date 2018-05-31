@@ -17,7 +17,7 @@
     </div>
 
     <div>
-      <p class="level-heading heading">Current Values</p>
+      <h3 class="level-heading heading title is-size-4 is-bold">Current Values</h3>
       <nav class="level is-mobile">
         <div class="level-item has-text-centered">
           <div>
@@ -76,8 +76,10 @@
       </nav>
     </div>
 
-    <section class="section section-xsmall">
-      <p class="heading">Last {{ this.$store.state.range }}</p>
+
+
+    <section class="section section-medium">
+      <p class="heading is-size-3 has-text-centered">Last {{ this.$store.state.range }}</p>
       <h4 class="is-size-4 helptoggle">  OK to Open
         <a class="helptoggle is-pulled-right "><sup>?</sup>
 
@@ -199,6 +201,17 @@
           </TimeChart>
       </figure>
     </section>
+
+    <div class="box">
+    <div class="columns is-centered">
+      <div class="column is-narrow">
+        Minimum <div class="min-line"></div>
+      </div>
+      <div class="column is-narrow">
+        Maximum <div class="max-line"></div>
+      </div>
+    </div>
+    </div>
 
   </div>
 </template>
@@ -358,7 +371,7 @@ export default {
       if (datumName == 'Boltwood Transparency Measure')
       { // this datum has a dynamically changing threshold
         let latest_value = this.$options.filters.latestResult(this.datums['Boltwood Transparency Close Threshold'].data, 'Value');
-          return latest_value;
+          return Number(latest_value);
       }
 
       if(this.datums[datumName].limit.hasOwnProperty(this.site.code)){

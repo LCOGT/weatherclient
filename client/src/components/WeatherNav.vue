@@ -39,21 +39,14 @@
 
   <div class="columns is-centered">
     <div class="column is-narrow">
-      <button class="button is-success"> {{numOpenedandClosed[0]}}  open </button>
+      <span class="tag is-success is-large"> {{numOpenedandClosed[0]}}  open </span>
     </div>
     <div class="column is-narrow">
-      <button class="button is-warning"> {{numOpenedandClosed[1]}} closed </button>
+      <span class="tag is-warning is-large"> {{numOpenedandClosed[1]}} closed </span>
     </div>
   </div>
 
-  <div class="columns is-centered">
-    <div class="column is-narrow">
-      Minimum <div class="min-line"></div>
-    </div>
-    <div class="column is-narrow">
-      Maximum <div class="max-line"></div>
-    </div>
-    </div>
+
 
 
 </aside>
@@ -205,18 +198,5 @@
   padding-bottom: 10px;
 }
 
-.min-line{
-  width: 60px;
-  height: 15px;
-  border-bottom: 4px solid green;
-  position: absolute;
-}
-
-.max-line{
-  width: 60px;
-  height: 15px;
-  border-bottom: 4px solid red;
-  position: absolute;
-}
 
 </style>
