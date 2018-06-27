@@ -143,7 +143,7 @@
 
     <section class="section section-xsmall ">
       <h4 class="is-size-4">Pressure
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Barometric pressure measured by Vaisala PTB110 barometer at the site's weather station.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Barometric pressure measured by Vaisala PTB110 barometer at the site's weather station. Data is interpolated between sensor readings.</span>
       </h4>
       <figure class="image">
           <TimeChart datumid="pressure" datumname="Weather Barometric Pressure Value" unit="mbar"
