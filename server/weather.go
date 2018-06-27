@@ -12,6 +12,8 @@ import (
 	"time"
 )
 
+//fake comment
+
 // Start, End format: 2017-04-01T00:00:00Z
 type DatumQuery struct {
 	Site      string
