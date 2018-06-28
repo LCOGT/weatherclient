@@ -143,8 +143,11 @@
 
     <section class="section section-xsmall ">
       <h4 class="is-size-4">Pressure
-        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Barometric pressure measured by Vaisala PTB110 barometer at the site's weather station. Data is interpolated between sensor readings.</span>
+        <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Barometric pressure measured by Vaisala PTB110 barometer at the site's weather station.</span>
       </h4>
+      <div class="notification is-warning">
+          <small>Data is interpolated between sensor readings.</small>
+      </div>
       <figure class="image">
           <TimeChart datumid="pressure" datumname="Weather Barometric Pressure Value" unit="mbar"
                      :cdata="datums['Weather Barometric Pressure Value'].data"
