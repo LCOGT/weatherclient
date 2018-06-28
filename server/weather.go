@@ -49,6 +49,7 @@ type Source struct {
 	TimeStamp string  `json:"timestamp"`
 	ValueFloat        float32 `json:"value_float"`
 	ValueString       string  `json:"value_string"`
+	TimeStampMeasured string `json:"timestampmeasured"`
 }
 
 type SubHit struct {
@@ -70,12 +71,13 @@ type Datum struct {
 	TimeStamp   string
 	Value       float32
 	ValueString string
+	TimeStampMeasured string
 }
 
 func (esStdResponse *EsStdResponse) toDatums() []Datum {
 	var datums []Datum
 	for _, subhit := range esStdResponse.Hit.SubHits {
-		datums = append(datums, Datum{subhit.Source.TimeStamp, subhit.Source.ValueFloat, subhit.Source.ValueString})
+		datums = append(datums, Datum{subhit.Source.TimeStamp, subhit.Source.ValueFloat, subhit.Source.ValueString, subhit.Source.TimeStampMeasured})
 	}
 	return datums
 }
@@ -83,7 +85,7 @@ func (esStdResponse *EsStdResponse) toDatums() []Datum {
 func (esAggResponse *EsAggResponse) toDatums() []Datum {
 	var datums []Datum
 	for _, bucket := range esAggResponse.Aggregations.Aggregation.Buckets {
-		datums = append(datums, Datum{bucket.KeyAsString, bucket.Value.Val, ""})
+		datums = append(datums, Datum{bucket.KeyAsString, bucket.Value.Val, "",""})
 	}
 	return datums
 }
