@@ -5,7 +5,9 @@
       <div class="navheader">
         <div class="columns">
           <div class="column">
-            <img src="https://cdn.lco.global/mainstyle/img/LCO-logo-web.jpg" alt="Las Cumbres Observatory Weather" class="image logo">
+            <a href="https://lco.global">
+              <img src="https://cdn.lco.global/mainstyle/img/LCO-logo-web.jpg" alt="Las Cumbres Observatory Weather" class="image logo">
+            </a>
           </div>
           <div class="column align-bottom">
             <h2 class="is-size-3-desktop is-size-4-mobile">Weather</h2>
