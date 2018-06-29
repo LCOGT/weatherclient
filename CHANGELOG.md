@@ -1,3 +1,9 @@
+## 1.1.2
+2018-6-29
+
+* Changed LCO logo to link to LCO homepage
+
+
 ## 1.1.1
 2018-05-31
 
