@@ -79,15 +79,19 @@ func (esStdResponse *EsStdResponse) toDatums() []Datum {
 	for _, subhit := range esStdResponse.Hit.SubHits {
 		datums = append(datums, Datum{subhit.Source.TimeStamp, subhit.Source.ValueFloat, subhit.Source.ValueString, subhit.Source.TimeStampMeasured})
 	}
+	log.Print("func esStdResponse: Checking timestamp measured..")
+	log.Print(datums[0].TimeStampMeasured)
 	return datums
 }
 
 func (esAggResponse *EsAggResponse) toDatums() []Datum {
 	var datums []Datum
 	for _, bucket := range esAggResponse.Aggregations.Aggregation.Buckets {
-		datums = append(datums, Datum{bucket.KeyAsString, bucket.Value.Val, "",""})
+		log.Print("printing bucket:")
+		log.Print(bucket)
+		datums = append(datums, Datum{bucket.KeyAsString, bucket.Value.Val, "", ""})
 	}
-	log.Print("Checking timestamp measured property?")
+	log.Print("func esAggResponse: Checking timestamp measured property..")
 	log.Print(datums[0].TimeStampMeasured)
 	return datums
 }
@@ -169,16 +173,12 @@ func Query(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
-	fmt.Print(parsed)
-
 	esr, err := EsSearch(parsed, aggBool)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	datums := esr.toDatums()
-
-	fmt.Print(datums)
 
 	b, err := json.Marshal(datums)
 	if err != nil {
@@ -194,7 +194,6 @@ func main() {
 	http.HandleFunc("/", Index)
 	http.HandleFunc("/query", Query)
 	log.Println("Starting server on http://127.0.0.1:80")
-	log.Println("Testing testing testing")
 	//log.Fatal(http.ListenAndServe(":80", nil))
 
 	// temporarily change port to like, 3005 so that it doesnt interfere with existing port 80 stuff

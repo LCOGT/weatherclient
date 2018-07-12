@@ -11,7 +11,14 @@ export default {
   computed: {
     chartData(){
       if(!this.cdata) return [];
-      return this.cdata.map(point => ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'), y: point.Value}));
+
+      console.log("this.cdata");
+      console.log(this.cdata);
+
+      return this.cdata.map(point =>
+        ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+          y: point.Value,
+        t_measured: moment.utc(point.TimeStampMeasured, 'YYYY/MM/DD HH:mm:ss')}));
     },
     chartMin(){
       return this.$store.getters.start;

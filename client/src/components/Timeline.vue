@@ -64,13 +64,11 @@ export default {
 
       const closed_start = this.fdata.filter(failure_data_desired).map(
         point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-          reason: point.ValueString,
-          t_measured: moment.utc(point.TimeStampMeasured, 'YYYY/MM/DD HH:mm:ss')}));
+          reason: point.ValueString}));
 
       const closed_end = this.fdata.filter(failure_data_undesired).map(
         point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-          reason: point.ValueString,
-          t_measured: moment.utc(point.TimeStampMeasured, 'YYYY/MM/DD HH:mm:ss')}));
+          reason: point.ValueString}));
 
       console.log("in Timeline.vue, closed_end:");
       console.log(closed_end);
