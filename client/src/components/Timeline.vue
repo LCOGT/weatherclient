@@ -64,16 +64,20 @@ export default {
 
       const closed_start = this.fdata.filter(failure_data_desired).map(
         point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-          reason: point.ValueString }));
+          reason: point.ValueString,
+          t_measured: moment.utc(point.TimeStampMeasured, 'YYYY/MM/DD HH:mm:ss')}));
 
       const closed_end = this.fdata.filter(failure_data_undesired).map(
         point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
-          reason: point.ValueString }));
+          reason: point.ValueString,
+          t_measured: moment.utc(point.TimeStampMeasured, 'YYYY/MM/DD HH:mm:ss')}));
+
+      console.log("in Timeline.vue, closed_end:");
+      console.log(closed_end);
 
     let open_intervals = this.computeIntervals(open_start, open_end);
     let closed_intervals = this.computeIntervals(closed_start, closed_end);
     return ([open_intervals, closed_intervals]);
-
     },
 
     last_sunrise(){

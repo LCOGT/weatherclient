@@ -349,7 +349,9 @@ export default {
     },
     fetchDatum(datumName, cb){
       let request = new XMLHttpRequest();
-      let url = 'https://weather-api.lco.global/query?site=' + this.site.code + '&datumname=' + datumName;
+      //let url = 'https://weather-api.lco.global/query?site=' + this.site.code + '&datumname=' + datumName;
+      // for debugging only, use local api
+      let url = 'http://localhost:3005/query?site=' + this.site.code + '&datumname=' + datumName;
       if(datumName === 'Weather Ok To Open' || datumName === 'Weather Failure Reason'){
         url += '&agg=False';
       }
@@ -394,6 +396,7 @@ export default {
       {
         let packet = {};
           packet['TimeStamp'] = datum1[packet_number].TimeStamp;
+          packet['TimeStampMeasured'] = datum1[packet_number].TimeStampMeasured;
           packet['Value'] = Math.abs(datum1[packet_number].Value - datum2[packet_number].Value);
           datum_difference.push(packet);
 
