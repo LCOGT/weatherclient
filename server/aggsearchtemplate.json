@@ -73,7 +73,7 @@
   "size": 0
 }
 
-USE THE QUERY BELOW!
+The query below works in dev tools and is the same as what is currently above.
 -------------------------------------------
 GET mysql-telemetry-*/_search
 {
@@ -144,6 +144,106 @@ GET mysql-telemetry-*/_search
             {
               "range": {
                 "timestamp": {
+                  "lte": "2018-07-12T07:57:48.035Z"
+                }
+              }
+            },
+            {
+              "term": {
+                "datumname": "Weather Dew Point Value"
+              }
+            },
+            {
+              "term": {
+                "site": "coj"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "size": 0
+}
+
+The second query below is for making sure timestampmeasured happens before end.
+--------------------------------------
+GET mysql-telemetry-*/_search
+{
+  "_source": {
+    "excludes": [],
+    "includes": [
+      "site",
+      "timestamp",
+      "timestampmeasured"
+    ]
+  },
+  "aggregations": {
+    "date(timestamp,15m)": {
+      "aggregations": {
+        "avg(value_float)": {
+          "avg": {
+            "field": "value_float"
+          }
+        }
+      },
+      "date_histogram": {
+        "field": "timestamp",
+        "format": "yyyy/MM/dd HH:mm:ss",
+        "interval": "15m",
+        "min_doc_count": 1
+      }
+    },
+    "date(timestampmeasured,15m)": {
+      "aggregations": {
+        "avg(value_float)": {
+          "avg": {
+            "field": "value_float"
+          }
+        }
+      },
+      "date_histogram": {
+        "field": "timestampmeasured",
+        "format": "yyyy/MM/dd HH:mm:ss",
+        "interval": "15m",
+        "min_doc_count": 1
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": {
+        "bool": {
+          "must_not": [
+            {
+              "term": {
+                "value_string": "NaN"
+              }
+            },
+            {
+              "term": {
+                "value_string": ""
+              }
+            }
+          ],
+          "must": [
+            {
+              "range": {
+                "timestamp": {
+                  "gt": "2018-07-11T07:57:48.035Z"
+                }
+              }
+            },
+            {
+              "range": {
+                "timestamp": {
+                  "lte": "2018-07-12T07:57:48.035Z"
+                }
+              }
+            },
+            {
+              "range": {
+                "timestampmeasured": {
                   "lte": "2018-07-12T07:57:48.035Z"
                 }
               }
