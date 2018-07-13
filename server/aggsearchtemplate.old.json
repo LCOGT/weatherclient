@@ -4,7 +4,7 @@
     "includes": [
       "site",
       "timestamp",
-      "timestampmeasured"
+      "timestamp_measured"
     ]
   },
   "aggregations": {
@@ -18,21 +18,6 @@
       },
       "date_histogram": {
         "field": "timestamp",
-        "format": "yyyy/MM/dd HH:mm:ss",
-        "interval": "15m",
-        "min_doc_count": 1
-      }
-    },
-    "date(timestampmeasured,15m)": {
-      "aggregations": {
-        "avg(value_float)": {
-          "avg": {
-            "field": "value_float"
-          }
-        }
-      },
-      "date_histogram": {
-        "field": "timestampmeasured",
         "format": "yyyy/MM/dd HH:mm:ss",
         "interval": "15m",
         "min_doc_count": 1
@@ -59,32 +44,25 @@
             {
               "range": {
                 "timestamp": {
-                  "gt": "2018-07-11T07:57:48.035Z"
+                  "gt": "{{.Start}}"
                 }
               }
             },
             {
               "range": {
                 "timestamp": {
-                  "lte": "2018-07-12T07:57:48.035Z"
-                }
-              }
-            },
-            {
-              "range": {
-                "timestampmeasured": {
-                  "lte": "2018-07-12T07:57:48.035Z"
+                  "lte": "{{.End}}"
                 }
               }
             },
             {
               "term": {
-                "datumname": "Weather Dew Point Value"
+                "datumname": "{{.DatumName}}"
               }
             },
             {
               "term": {
-                "site": "coj"
+                "site": "{{.Site}}"
               }
             }
           ]
