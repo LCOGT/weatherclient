@@ -70,9 +70,6 @@ export default {
         point => ({time: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
           reason: point.ValueString}));
 
-      console.log("in Timeline.vue, closed_end:");
-      console.log(closed_end);
-
     let open_intervals = this.computeIntervals(open_start, open_end);
     let closed_intervals = this.computeIntervals(closed_start, closed_end);
     return ([open_intervals, closed_intervals]);

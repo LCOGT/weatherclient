@@ -59,32 +59,32 @@
             {
               "range": {
                 "timestamp": {
-                  "gt": "2018-07-11T07:57:48.035Z"
+                  "gt": "{{.Start}}"
                 }
               }
             },
             {
               "range": {
                 "timestamp": {
-                  "lte": "2018-07-12T07:57:48.035Z"
+                  "lte": "{{.End}}"
                 }
               }
             },
             {
               "range": {
                 "timestampmeasured": {
-                  "lte": "2018-07-12T07:57:48.035Z"
+                  "lte": "{{.End}}"
                 }
               }
             },
             {
               "term": {
-                "datumname": "Weather Dew Point Value"
+                "datumname": "{{.DatumName}}"
               }
             },
             {
               "term": {
-                "site": "coj"
+                "site": "{{.Site}}"
               }
             }
           ]
