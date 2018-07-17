@@ -13,10 +13,22 @@ export default {
       if(!this.cdata) return [];
       // timeline.js only plots the value of .t and .y, so you have to figure out how to
       // set t to be timestampmeasured instead of timestamp for only the last value?
+
+      /*
       return this.cdata.map(point =>
         ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
           y: point.Value,
         t_measured: moment.utc(point.TimeStampMeasured, 'YYYY/MM/DD HH:mm:ss')}));
+        */
+
+      let realigned_data = this.cdata.map(point =>
+        ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+          y: point.Value,
+          t_measured: moment.utc(point.TimeStampMeasured, 'YYYY/MM/DD HH:mm:ss')}));
+
+      //
+      realigned_data[realigned_data.length - 1].t = realigned_data[realigned_data.length - 1].t_measured;
+      return realigned_data;
     },
     chartMin(){
       return this.$store.getters.start;
