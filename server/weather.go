@@ -38,7 +38,8 @@ type Aggregation struct {
 }
 
 type Aggregations struct {
-	Aggregation Aggregation `json:"date(timestamp15m)"`
+	TimestampAggregation         Aggregation `json:"date(timestamp15m)"`
+	TimestampMeasuredAggregation Aggregation `json:"date(timestampmeasured15m)"`
 }
 
 type EsAggResponse struct {
@@ -86,11 +87,32 @@ func (esStdResponse *EsStdResponse) toDatums() []Datum {
 
 func (esAggResponse *EsAggResponse) toDatums() []Datum {
 	var datums []Datum
-	for _, bucket := range esAggResponse.Aggregations.Aggregation.Buckets {
+	for index, bucket := range esAggResponse.Aggregations.TimestampAggregation.Buckets {
 		log.Print("printing bucket:")
 		log.Print(bucket)
+		log.Print("index:")
+		log.Print(index)
+		log.Print("Printing TSM bucket type")
+		//log.Print(esAggResponse.Aggregations.TimestampMeasuredAggregation.Buckets)
+		//log.Print(reflect.TypeOf(esAggResponse.Aggregations.TimestampMeasuredAggregation.Buckets))
+		//log.Print((esAggResponse.Aggregations.TimestampMeasuredAggregation.Buckets)[index])
+		if (index < len(esAggResponse.Aggregations.TimestampMeasuredAggregation.Buckets)) {
+
+			datums = append(datums, Datum{bucket.KeyAsString, bucket.Value.Val, "", esAggResponse.Aggregations.TimestampMeasuredAggregation.Buckets[index].KeyAsString})
+
+		} else {
 		datums = append(datums, Datum{bucket.KeyAsString, bucket.Value.Val, "", ""})
+		}
 	}
+
+	/*
+	for _, bucket := range esAggResponse.Aggregations.TimestampMeasuredAggregation.Buckets {
+		log.Print("printing bucket:")
+		log.Print(bucket)
+		datums = append(datums, Datum{"", bucket.Value.Val, "", bucket.KeyAsString})
+	}
+	*/
+
 	log.Print("func esAggResponse: Checking timestamp measured property..")
 	log.Print(datums[0].TimeStampMeasured)
 	return datums
