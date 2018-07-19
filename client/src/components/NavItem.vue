@@ -10,7 +10,9 @@
   </div>
   <div class="columns">
     <div class="column minimap">
-      <img width="400" :src="mapimg" alt="Google Map of site">
+      <figure class="image is-5by3">
+        <img :src="mapimg" alt="Google Map of site">
+      </figure>
     </div>
   </div>
 </div>
