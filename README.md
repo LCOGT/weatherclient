@@ -19,6 +19,16 @@ This will build a Docker image named `weatherserver`, containing the server code
 This Docker image can be run by executing this command:
 
     $ docker run -d weatherserver
+    
+#### Local development
+
+To run the web server locally:
+
+```bash
+$ cd server/
+$ go run weather.go
+```
+
 
 ### Weather Client
 
@@ -29,6 +39,14 @@ This will build a Docker image named `weatherclient`, containing the client code
 This Docker image can be run by executing this command:
 
     $ docker run -d -p 80:80 weatherclient
+    
+#### Local development
+
+To run the client locally:
+```bash
+$ cd client/
+$ npm run dev
+```
 
 License
 -------
