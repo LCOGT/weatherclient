@@ -12,8 +12,6 @@ import (
 	"time"
 )
 
-//fake comment
-
 // Start, End format: 2017-04-01T00:00:00Z
 type DatumQuery struct {
 	Site      string
@@ -195,7 +193,7 @@ func main() {
 	http.HandleFunc("/", Index)
 	http.HandleFunc("/query", Query)
 	// note that if you run locally, you'll have to change the port number, since Linux doesn't
-	// let you use ports below 1024
+	// let you use ports below 1024 unless you run as a privileged user via sudo
 	log.Println("Starting server on http://127.0.0.1:80")
 	log.Fatal(http.ListenAndServe(":3005", nil))
 }
