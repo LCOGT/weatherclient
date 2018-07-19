@@ -80,22 +80,12 @@ func (esStdResponse *EsStdResponse) toDatums() []Datum {
 	for _, subhit := range esStdResponse.Hit.SubHits {
 		datums = append(datums, Datum{subhit.Source.TimeStamp, subhit.Source.ValueFloat, subhit.Source.ValueString, subhit.Source.TimeStampMeasured})
 	}
-	log.Print("func esStdResponse: Checking timestamp measured..")
-	log.Print(datums[0].TimeStampMeasured)
 	return datums
 }
 
 func (esAggResponse *EsAggResponse) toDatums() []Datum {
 	var datums []Datum
 	for index, bucket := range esAggResponse.Aggregations.TimestampAggregation.Buckets {
-		log.Print("printing bucket:")
-		log.Print(bucket)
-		log.Print("index:")
-		log.Print(index)
-		log.Print("Printing TSM bucket type")
-		//log.Print(esAggResponse.Aggregations.TimestampMeasuredAggregation.Buckets)
-		//log.Print(reflect.TypeOf(esAggResponse.Aggregations.TimestampMeasuredAggregation.Buckets))
-		//log.Print((esAggResponse.Aggregations.TimestampMeasuredAggregation.Buckets)[index])
 		if (index < len(esAggResponse.Aggregations.TimestampMeasuredAggregation.Buckets)) {
 
 			datums = append(datums, Datum{bucket.KeyAsString, bucket.Value.Val, "", esAggResponse.Aggregations.TimestampMeasuredAggregation.Buckets[index].KeyAsString})
@@ -104,17 +94,6 @@ func (esAggResponse *EsAggResponse) toDatums() []Datum {
 		datums = append(datums, Datum{bucket.KeyAsString, bucket.Value.Val, "", ""})
 		}
 	}
-
-	/*
-	for _, bucket := range esAggResponse.Aggregations.TimestampMeasuredAggregation.Buckets {
-		log.Print("printing bucket:")
-		log.Print(bucket)
-		datums = append(datums, Datum{"", bucket.Value.Val, "", bucket.KeyAsString})
-	}
-	*/
-
-	log.Print("func esAggResponse: Checking timestamp measured property..")
-	log.Print(datums[0].TimeStampMeasured)
 	return datums
 }
 
@@ -167,7 +146,7 @@ func EsSearch(SearchString []byte, agg bool) (EsResponse, error) {
 }
 
 func Query(w http.ResponseWriter, r *http.Request) {
-        log.Println(r.RequestURI)
+	log.Println(r.RequestURI)
 	queryValues := r.URL.Query()
 	site := queryValues.Get("site")
 	datumName := queryValues.Get("datumname")
@@ -215,9 +194,8 @@ func Query(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", Index)
 	http.HandleFunc("/query", Query)
+	// note that if you run locally, you'll have to change the port number, since Linux doesn't
+	// let you use ports below 1024
 	log.Println("Starting server on http://127.0.0.1:80")
-	//log.Fatal(http.ListenAndServe(":80", nil))
-
-	// temporarily change port to like, 3005 so that it doesnt interfere with existing port 80 stuff
 	log.Fatal(http.ListenAndServe(":3005", nil))
 }
