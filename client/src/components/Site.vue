@@ -76,8 +76,6 @@
       </nav>
     </div>
 
-
-
     <section class="section section-medium">
       <p class="heading is-size-3 has-text-centered">Last {{ this.$store.state.range }}</p>
       <h4 class="is-size-4 helptoggle">  OK to Open
@@ -93,7 +91,7 @@
     </section>
 
     <div class="notification is-warning">
-          Data is interpolated between sensor readings.
+          Data is interpolated between sensor readings and may not be accurate.
     </div>
 
     <section class="section section-xsmall ">
