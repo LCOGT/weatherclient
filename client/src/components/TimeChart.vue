@@ -26,8 +26,28 @@ export default {
           y: point.Value,
           t_measured: moment.utc(point.TimeStampMeasured, 'YYYY/MM/DD HH:mm:ss')}));
 
-      //
-      realigned_data[realigned_data.length - 1].t = realigned_data[realigned_data.length - 1].t_measured;
+
+      if (realigned_data.length > 1)
+      {
+
+        let last_measurement = realigned_data[realigned_data.length - 1];
+
+        let hours_since_received = moment.duration(last_measurement['t'].diff(moment().utc())).asHours();
+        console.log("Last measurement was receieved " + String(hours_since_received)  + " ago");
+
+        if (hours_since_received < -1)
+        {
+            last_measurement["t"] = moment().utc().format('YYYY/MM/DD HH:mm:ss');
+        }
+
+        else {
+          last_measurement["t"] = last_measurement["t_measured"];
+
+        }
+        return realigned_data;
+
+      }
+
       return realigned_data;
     },
     chartMin(){
