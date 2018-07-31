@@ -11,7 +11,7 @@ export default {
   computed: {
     chartData(){
       if(!this.cdata) return [];
-      
+
       let realigned_data = this.cdata.map(point =>
         ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
           y: point.Value,
@@ -40,7 +40,6 @@ export default {
           last_measurement["t"] = last_measurement["t_measured"];
 
         }
-        return realigned_data;
 
       }
 
