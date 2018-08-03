@@ -1,3 +1,8 @@
+## 1.1.2
+2018-08-03
+
+* Change data polling rate to eliminate gaps in data
+
 ## 1.1.1
 2018-05-31
 
