@@ -349,8 +349,8 @@ export default {
     fetchDatum(datumName, cb){
       let request = new XMLHttpRequest();
       // if debugging, change this to localhost
-      //let url = 'https://weather-api.lco.global/query?site=' + this.site.code + '&datumname=' + datumName;
-      let url='http://localhost:3005/query?site=' + this.site.code + '&datumname=' + datumName;
+      let url = 'https://weather-api.lco.global/query?site=' + this.site.code + '&datumname=' + datumName;
+      // let url='http://localhost:3005/query?site=' + this.site.code + '&datumname=' + datumName;
       if(datumName === 'Weather Ok To Open' || datumName === 'Weather Failure Reason'){
         url += '&agg=False';
       }
