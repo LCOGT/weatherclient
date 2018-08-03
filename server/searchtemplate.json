@@ -5,7 +5,8 @@
       "site",
       "timestamp",
       "value_string",
-      "value_float"
+      "value_float",
+      "timestampmeasured"
     ]
   },
   "from" : 0,

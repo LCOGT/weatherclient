@@ -11,7 +11,39 @@ export default {
   computed: {
     chartData(){
       if(!this.cdata) return [];
-      return this.cdata.map(point => ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'), y: point.Value}));
+
+      let realigned_data = this.cdata.map(point =>
+        ({t: moment.utc(point.TimeStamp, 'YYYY/MM/DD HH:mm:ss'),
+          y: point.Value,
+          t_measured: moment.utc(point.TimeStampMeasured, 'YYYY/MM/DD HH:mm:ss')}));
+
+
+      // if there is no data, we will skip this branch and just return the regular data as we would
+      if (realigned_data.length > 1)
+      {
+
+        let last_measurement = realigned_data[realigned_data.length - 1];
+
+
+        let hours_since_received = moment.duration(last_measurement['t'].diff(moment().utc())).asHours();
+
+        // if the last measurement was received over an hour ago, then set the last measurement's time
+        // to current UTC time, the point will not appear on the graph and the graph will end with a line
+        if (hours_since_received < -1)
+        {
+            last_measurement["t"] = moment().utc().format('YYYY/MM/DD HH:mm:ss');
+        }
+
+        // if the last measurement was less than an hour ago, then just the timestamp measured property on the plot
+        else
+          {
+          last_measurement["t"] = last_measurement["t_measured"];
+
+        }
+
+      }
+
+      return realigned_data;
     },
     chartMin(){
       return this.$store.getters.start;

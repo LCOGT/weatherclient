@@ -76,8 +76,6 @@
       </nav>
     </div>
 
-
-
     <section class="section section-medium">
       <p class="heading is-size-3 has-text-centered">Last {{ this.$store.state.range }}</p>
       <h4 class="is-size-4 helptoggle">  OK to Open
@@ -91,6 +89,10 @@
                   :fdata="datums['Weather Failure Reason'].data"></Timeline>
       </figure>
     </section>
+
+    <div class="notification is-warning">
+          Data is interpolated between sensor readings and may not be accurate.
+    </div>
 
     <section class="section section-xsmall ">
       <h4 class="is-size-4">Air Temperature
@@ -346,7 +348,9 @@ export default {
     },
     fetchDatum(datumName, cb){
       let request = new XMLHttpRequest();
+      // if debugging, change this to localhost
       let url = 'https://weather-api.lco.global/query?site=' + this.site.code + '&datumname=' + datumName;
+      // let url='http://localhost:3005/query?site=' + this.site.code + '&datumname=' + datumName;
       if(datumName === 'Weather Ok To Open' || datumName === 'Weather Failure Reason'){
         url += '&agg=False';
       }
@@ -391,6 +395,7 @@ export default {
       {
         let packet = {};
           packet['TimeStamp'] = datum1[packet_number].TimeStamp;
+          packet['TimeStampMeasured'] = datum1[packet_number].TimeStampMeasured;
           packet['Value'] = Math.abs(datum1[packet_number].Value - datum2[packet_number].Value);
           datum_difference.push(packet);
 

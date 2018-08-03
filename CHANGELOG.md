@@ -1,5 +1,11 @@
+## 1.1.3
+2018-08-03
+
+* Change data polling rate to eliminate gaps in data
+
+
 ## 1.1.2
-2018-6-29
+2018-06-29
 
 * Changed LCO logo to link to LCO homepage
 

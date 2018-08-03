@@ -82,6 +82,7 @@
           let request = new XMLHttpRequest();
           let url = 'https://weather-api.lco.global/query?site=' + site_code + '&datumname=' + 'Weather Ok To Open' +
             '&agg=False' + '&start=' + start.format() + '&end=' + end.format();
+
           request.open('GET', url, false);
           request.onload = () => {
             if (request.status >= 200 && request.status < 400)
