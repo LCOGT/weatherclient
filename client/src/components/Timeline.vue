@@ -175,13 +175,13 @@ export default {
           data: that.statusData[0],
           backgroundColor: '#009ec366', // blue
           yAxisID: 'y-axis-0',
-          label: 'open'
+          label: 'True'
         },
           {
             data: that.statusData[1],
             backgroundColor: '#A9A9A9', // gray
             yAxisID: 'y-axis-0',
-            label: 'closed'
+            label: 'False'
           }]
       },
       options: {
