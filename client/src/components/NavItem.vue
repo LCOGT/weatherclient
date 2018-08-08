@@ -5,7 +5,7 @@
     <div class="column place is-two-thirds">
       {{site.name}} {{ site.country }}
     </div>
-    <div class="column time is-one-fifth">{{ offsetSign }}{{ site.tz }}</div>
+    <div class="column time is-one-fifth">{{ site.code }}</div>
     <div class="column mini-weather"><i :class="[isNight ? 'wi-night-clear' : 'wi-day-sunny', 'wi']"></i></div>
   </div>
   <div class="columns">

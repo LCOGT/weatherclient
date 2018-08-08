@@ -78,7 +78,7 @@
 
     <section class="section section-medium">
       <p class="heading is-size-3 has-text-centered">Last {{ this.$store.state.range }}</p>
-      <h4 class="is-size-4 helptoggle">  OK to Open
+      <h4 class="is-size-4 helptoggle">  Open Status
         <a class="helptoggle is-pulled-right "><sup>?</sup>
 
         </a><span class="help is-pulled-right">All weather conditions are within acceptable range to allow observing.</span>
@@ -90,9 +90,9 @@
       </figure>
     </section>
 
-    <div class="notification is-warning">
-          Data is interpolated between sensor readings and may not be accurate.
-    </div>
+    <p class="has-text-centered">
+      ❗ Data is interpolated between sensor readings and may not be accurate.
+    </p>
 
     <section class="section section-xsmall ">
       <h4 class="is-size-4">Air Temperature
@@ -204,16 +204,6 @@
       </figure>
     </section>
 
-    <div class="box">
-    <div class="columns is-centered">
-      <div class="column is-narrow">
-        Minimum <div class="min-line"></div>
-      </div>
-      <div class="column is-narrow">
-        Maximum <div class="max-line"></div>
-      </div>
-    </div>
-    </div>
 
   </div>
 </template>

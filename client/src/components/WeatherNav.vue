@@ -27,7 +27,7 @@
         <div class="columns level-left mini-info">
           <div class="column status is-one-fifth heading">Open?</div>
           <div class="column place is-two-thirds heading">Location</div>
-          <div class="column time is-one-fifth  heading">UTC</div>
+          <div class="column time is-one-fifth  heading">Code</div>
           <div class="column mini-weather is-pulled-right heading">Night</div>
         </div>
       </div>
@@ -45,6 +45,14 @@
     </div>
     <div class="column is-narrow">
       <span class="tag is-warning is-large"> {{numOpenedandClosed[1]}} closed </span>
+    </div>
+  </div>
+  <div class="columns is-centered">
+    <div class="column is-narrow">
+      Minimum <div class="min-line"></div>
+    </div>
+    <div class="column is-narrow">
+      Maximum <div class="max-line"></div>
     </div>
   </div>
 
