@@ -20,7 +20,7 @@ export const sites = [
     'name': 'Teide',
     'country': 'ESP',
     'tz': 1,
-    'lat': 20.30,
+    'lat': 28.30,
     'lng': -16.511,
     'elevation': 2390
   },{
