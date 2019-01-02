@@ -1,4 +1,4 @@
-FROM node:9.4-alpine
+FROM node:11-alpine
 MAINTAINER Austin Riba <ariba@lco.global>
 
 EXPOSE 80
