@@ -1,3 +1,8 @@
+## 1.2.0
+2019-01-02
+
+* Upgrade webpack to 4, node to 11, and various other dependencies.
+
 ## 1.1.3
 2018-08-03
 
