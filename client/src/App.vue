@@ -23,7 +23,7 @@
     components: {WeatherNav}
   };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   @media screen and (min-width: 1224px){
   .fixed {
 

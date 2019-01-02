@@ -193,6 +193,9 @@
       display: block;
   }
 }
+</style>
+
+<style lang="scss" scoped>
 .navheader {
   padding: 0.5em 0.75em;
 }
@@ -207,6 +210,10 @@
 
 .menu-list {
   padding-bottom: 10px;
+}
+.mini-info {
+  margin-right: 2rem;
+  padding-right: 2rem;
 }
 
 
