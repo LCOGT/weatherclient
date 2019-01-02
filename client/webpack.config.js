@@ -1,8 +1,12 @@
 var path = require('path')
 var webpack = require('webpack')
+var VueLoader = require('vue-loader')
 
 module.exports = {
   entry: './src/main.js',
+  plugins: [
+    new VueLoader.VueLoaderPlugin()
+  ],
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
@@ -44,7 +48,7 @@ module.exports = {
             'scss': [
               'vue-style-loader',
               'css-loader',
-              'sass-loader',
+              'sass-loader?indentedSyntax',
             ],
             'sass': [
               'vue-style-loader',
