@@ -1,14 +1,9 @@
-FROM node:11-alpine
-MAINTAINER Austin Riba <ariba@lco.global>
+# Builder container
+FROM node:11-alpine as builder
+COPY . .
+RUN npm install && npm run build
 
-EXPOSE 80
-
-COPY package*.json ./
-RUN npm install
-
-COPY . ./
-RUN npm run build && npm cache clean --force
-
-RUN mkdir /srv/weather && cp -r dist/ index.html index.js /srv/weather
-
-CMD ["node", "/srv/weather/index.js"]
+# Production Deployment container
+FROM nginx:1.16-alpine
+COPY --from=builder dist/ /usr/share/nginx/html/dist
+COPY --from=builder index.html index.js /usr/share/nginx/html/
