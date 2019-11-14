@@ -1,3 +1,7 @@
+## 1.3.0
+
+* Clean up Docker container build.
+
 ## 1.2.5
 2019-11-14
 
