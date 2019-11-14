@@ -1,3 +1,8 @@
+## 1.2.4
+2019-11-14
+
+* Remove "SONG" text from TFN site page.
+
 ## 1.2.3
 2019-04-04
 

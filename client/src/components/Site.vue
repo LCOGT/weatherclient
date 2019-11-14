@@ -2,7 +2,6 @@
   <div class="site">
     <div class="site-header has-text-centered">
       <h2 class="is-size-2">{{ site.name }} ({{ site.code | uppercase }})</h2>
-      <h4 class="is-size-4" v-if="site.code === 'tfn'">Weather data from SONG site.</h4>
       <p class="subtitle">
         <span class="heading">
           Elevation: {{ site.elevation }}m
