@@ -16,9 +16,9 @@ This project is deployed to the LCO Kubernetes Cluster. Please see the
 These instructions will get you a copy of the project up and running on your
 local machine for development and testing purposes.
 
-### Weather Server
+### Weather API Server
 
-Please see the [Weather Server Github Repository](https://github.com/LCOGT/weatherserver)
+Please see the [Weather API Server Github Repository](https://github.com/LCOGT/weatherapi)
 for details about how to use the Weather Server.
 
 ### Weather Client
