@@ -1,3 +1,8 @@
+## 1.2.5
+2019-11-14
+
+* Dummy tag to trigger Jenkins build.
+
 ## 1.2.4
 2019-11-14
 
