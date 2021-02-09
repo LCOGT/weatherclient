@@ -1,3 +1,7 @@
+## 1.3.1
+
+* Remove sqa, Add tlv, hide graphs and stats when there is no api data returned
+
 ## 1.3.0
 
 * Clean up Docker container build.

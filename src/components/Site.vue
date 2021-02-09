@@ -18,55 +18,55 @@
     <div>
       <h3 class="level-heading heading title is-size-4 is-bold">Current Values</h3>
       <nav class="level is-mobile">
-        <div class="level-item has-text-centered">
+        <div class="level-item has-text-centered" v-if="datums['Weather Air Temperature Value'].data">
           <div>
             <p class="heading">Air Temp &deg;C</p>
             <p class="title">{{ datums['Weather Air Temperature Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
-        <div class="level-item has-text-centered">
+        <div class="level-item has-text-centered" v-if="datums['Weather Barometric Pressure Value'].data">
           <div>
             <p class="heading">Pressure mbar</p>
             <p class="title">{{ datums['Weather Barometric Pressure Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
-      <div class="level-item has-text-centered">
+      <div class="level-item has-text-centered" v-if="datums['Weather Dew Point Value'].data">
         <div>
           <p class="heading">Dewpoint &deg;C</p>
           <p class="title">{{ datums['Weather Dew Point Value'].data | latestResult('Value') }}</p>
         </div>
       </div>
-      <div class="level-item has-text-centered">
+      <div class="level-item has-text-centered" v-if="datums['Weather Humidity Value'].data">
           <div>
             <p class="heading">Humidity %</p>
             <p class="title">{{ datums['Weather Humidity Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
-        <div class="level-item has-text-centered">
+        <div class="level-item has-text-centered" v-if="datums['Weather Wind Speed Value'].data">
           <div>
             <p class="heading">Wind meters/second</p>
             <p class="title">{{ datums['Weather Wind Speed Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
-        <div class="level-item has-text-centered">
+        <div class="level-item has-text-centered" v-if="datums['Weather Wind Direction Value'].data">
           <div>
             <p class="heading">Wind &deg;E of N</p>
             <p class="title">{{ datums['Weather Wind Direction Value'].data | latestResult('Value') }}&deg;</p>
           </div>
         </div>
-        <div class="level-item has-text-centered">
+        <div class="level-item has-text-centered" v-if="datums['Weather Sky Brightness Value'].data">
           <div>
             <p class="heading">Brightness mag/arcsec<sup>^</sup>2</p>
             <p class="title">{{ datums['Weather Sky Brightness Value'].data | latestResult('Value') }}</p>
           </div>
         </div>
-        <div class="level-item has-text-centered">
+        <div class="level-item has-text-centered" v-if="datums['Boltwood Transparency Measure'].data">
           <div>
             <p class="heading">Sky Transparency %</p>
             <p class="title">{{ datums['Boltwood Transparency Measure'].data | latestResult('Value') }}</p>
           </div>
         </div>
-        <div class="level-item has-text-centered">
+        <div class="level-item has-text-centered" v-if="datums['Boltwood Sky Minus Ambient Temperature'].data">
           <div>
             <p class="heading">Sky Temp &deg;C</p>
             <p class="title">{{ datums['Boltwood Sky Minus Ambient Temperature'].data | latestResult('Value') }}</p>
@@ -93,7 +93,7 @@
       ❗ Data is interpolated between sensor readings and may not be accurate.
     </p>
 
-    <section class="section section-xsmall ">
+    <section class="section section-xsmall " v-if="datums['Weather Air Temperature Value'].data">
       <h4 class="is-size-4">Air Temperature
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right"> Ambient temperature measured by HMP45C-L temperature probe at the site's weather station.</span>
       </h4>
@@ -105,7 +105,7 @@
       </figure>
     </section>
 
-    <section class="section section-xsmall ">
+    <section class="section section-xsmall " v-if="datums['Boltwood Sky Minus Ambient Temperature'].data">
       <h4 class="is-size-4">Sky Temp
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Temperature is inferred from 8-14µm irradiance measure by a Boltwood II cloud sensor at the site's weather station.</span>
 
@@ -118,7 +118,7 @@
       </figure>
     </section>
 
-    <section class="section section-xsmall ">
+    <section class="section section-xsmall " v-if="datums['Boltwood Transparency Measure'].data">
       <h4 class="is-size-4">Sky Transparency (computed)
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky Transparency is a calculated value and is not measured directly.</span>
       </h4>
@@ -130,7 +130,7 @@
       </figure>
     </section>
 
-    <section class="section section-xsmall ">
+    <section class="section section-xsmall " v-if="datums['Weather Humidity Value'].data">
       <h4 class="is-size-4">Humidity
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Relative humidity measured by HMP45C-L humidity probe at the site's weather station.</span>
       </h4>
@@ -142,7 +142,7 @@
       </figure>
     </section>
 
-    <section class="section section-xsmall ">
+    <section class="section section-xsmall " v-if="datums['Weather Barometric Pressure Value'].data">
       <h4 class="is-size-4">Pressure
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Barometric pressure measured by Vaisala PTB110 barometer at the site's weather station.</span>
       </h4>
@@ -154,7 +154,7 @@
       </figure>
     </section>
 
-    <section class="section section-xsmall">
+    <section class="section section-xsmall" v-if="datumDifference(datums['Weather Dew Point Value'].data, datums['Weather Air Temperature Value'].data)">
       <h4 class="is-size-4">Air temperature minus dewpoint
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Absolute value of difference between Dew Point and Air Temperature.</span>
       </h4>
@@ -166,7 +166,7 @@
       </figure>
     </section>
 
-    <section class="section section-xsmall ">
+    <section class="section section-xsmall " v-if="datums['Weather Wind Speed Value'].data">
       <h4 class="is-size-4">Wind Speed
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Wind speed measured by Windsonic1-L wind sensor at the site's weather station.</span>
       </h4>
@@ -178,7 +178,7 @@
       </figure>
     </section>
 
-    <section class="section section-xsmall ">
+    <section class="section section-xsmall " v-if="datums['Weather Wind Direction Value'].data">
       <h4 class="is-size-4">Wind Direction
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Wind direction, in degrees East of North, measured by Windsonic1-L wind sensor at the site's weather station.</span>
       </h4>
@@ -190,7 +190,7 @@
       </figure>
     </section>
 
-    <section class="section section-xsmall ">
+    <section class="section section-xsmall " v-if="datums['Weather Sky Brightness Value'].data">
       <h4 class="is-size-4">Sky Brightness
         <a class="helptoggle is-pulled-right"><sup><small>?</small></sup></a><span class="help is-pulled-right">Sky brightness, in magnitudes per square arcsecond, measured by Unihedron SQM-LE at the site's weather station.</span>
 

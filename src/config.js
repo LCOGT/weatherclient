@@ -48,13 +48,13 @@ export const sites = [
     'lng': -119.863,
     'elevation': 7
   },{
-    'code': 'sqa',
-    'name': 'Sedgwick Reserve',
-    'country': 'USA',
-    'tz': -8,
-    'lat': 34.691,
-    'lng': -120.042,
-    'elevation': 328
+    'code': 'tlv',
+    'name': 'Wise',
+    'country': 'ISR',
+    'tz': 2,
+    'lat': 30.595833,
+    'lng': 34.763333,
+    'elevation': 861
   },{
     'code': 'ogg',
     'name': 'Haleakala',
