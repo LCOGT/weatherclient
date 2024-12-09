@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master-standalone/service.json
+apiVersion: v1
+kind: Service
+metadata: # kpt-merge: /example
+  name: svc-client
+  labels:
+    app.kubernetes.io/component: client
+  annotations:
+    internal.kpt.dev/upstream-identifier: '|Service|default|example'
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/component: client
+  ports:
+  - name: svc-port
+    port: 8080
+    targetPort: "frontend"

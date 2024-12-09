@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/master-standalone/deployment-apps-v1.json
+apiVersion: apps/v1
+kind: Deployment
+metadata: # kpt-merge: /example
+  # Name will be used as the value for the `app.kubernetes.io/component`
+  # selector label and updated automatically by `kpt fn render`.
+  # So no need to set those manually.
+  name: client
+  labels:
+    app.kubernetes.io/component: client
+  annotations:
+    internal.kpt.dev/upstream-identifier: 'apps|Deployment|default|example'
+spec:
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: client
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: client
+    spec:
+      volumes:
+        - name: static-files
+          emptyDir:
+            sizeLimit: 256Mi
+      initContainers:
+        - name: copy-static
+          image: weatherclient
+          command:
+            - "sh"
+            - "-c"
+            - "mkdir -p /static/dist && cp -r dist/* /static/dist && cp index.html index.js /static"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            readOnlyRootFilesystem: true
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 256Mi
+            limits:
+              cpu: 2000m
+              memory: 512Mi
+          volumeMounts:
+            - name: static-files
+              mountPath: /static
+      containers:
+        - name: default
+          image: ghcr.io/static-web-server/static-web-server:2
+          command:
+            - /static-web-server
+            - --root=/static
+            - --health
+            - --port=8080
+            - --host=0.0.0.0
+            - --page-fallback=/static/index.html
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            readOnlyRootFilesystem: true
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 256Mi
+            limits:
+              cpu: 2000m
+              memory: 512Mi
+          volumeMounts:
+            - name: static-files
+              mountPath: /static
+          ports:
+            - name: frontend
+              containerPort: 8080
+              protocol: TCP
